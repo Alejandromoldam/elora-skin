@@ -240,10 +240,44 @@ export async function GET(
     DEFAULT_API_VERSION;
 
   if (!domain || !token) {
-    return NextResponse.json(
-      { ok: false, error: "Faltan variables SHOPIFY_STORE_DOMAIN y token Storefront." },
-      { status: 500 }
-    );
+    // Sin credenciales: servimos el catálogo local de desarrollo con la misma
+    // forma de respuesta que la ruta real, para que la página funcione igual.
+    const { getMockProduct } = await import("@/lib/mockCatalog");
+    const mock = getMockProduct(handle);
+    if (!mock) {
+      return NextResponse.json(
+        { ok: false, error: "Producto no encontrado." },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json({
+      ok: true,
+      error: null,
+      product: {
+        id: mock.id,
+        title: mock.title,
+        handle: mock.handle,
+        description: mock.descriptionLong,
+        descriptionHtml: `<p>${mock.descriptionLong}</p>`,
+        availableForSale: mock.availableForSale,
+        vendor: "Elora Skin",
+        productType: "Skincare",
+        priceAmount: mock.priceAmount,
+        priceCurrency: mock.priceCurrency,
+        compareAtAmount: mock.compareAtAmount,
+        selectedVariantId: null,
+        selectedVariantSku: null,
+        selectedVariantInventory: null,
+        variants: [],
+        images: mock.gallery.map((img) => ({ url: img.url, altText: img.altText })),
+        videos: [],
+        productUrl: `/products/${mock.handle}`,
+        buyNowUrl: `/products/${mock.handle}`,
+        benefits: mock.benefits,
+        ingredients: mock.ingredients,
+        usage: mock.usage,
+      },
+    });
   }
 
   if (isAutomationToken(token)) {

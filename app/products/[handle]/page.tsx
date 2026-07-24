@@ -118,7 +118,23 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
     DEFAULT_API_VERSION;
 
   if (!domain || !token || token.startsWith("atkn_")) {
-    return null;
+    // Sin credenciales: metadata desde el catálogo local de desarrollo.
+    const { getMockProduct } = await import("@/lib/mockCatalog");
+    const mock = getMockProduct(handle);
+    if (!mock) return null;
+    return {
+      title: mock.title,
+      handle: mock.handle,
+      description: mock.descriptionShort,
+      imageUrl: mock.imageUrl,
+      imageAlt: mock.imageAlt,
+      images: mock.gallery.map((img) => img.url),
+      availableForSale: mock.availableForSale,
+      category: "Skincare",
+      priceAmount: mock.priceAmount,
+      priceCurrency: mock.priceCurrency,
+      sku: null,
+    };
   }
 
   const endpoint = `https://${domain}/api/${version}/graphql.json`;

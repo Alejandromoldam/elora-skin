@@ -16,6 +16,9 @@ const nextConfig = {
     ];
   },
   images: {
+    // Placeholders locales del catálogo de desarrollo (public/mock/*.svg).
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",

@@ -145,17 +145,16 @@ export async function GET(request: Request) {
   const cursor = searchParams.get("cursor");
 
   if (!domain || !token) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error:
-          "Faltan variables SHOPIFY_STORE_DOMAIN y token Storefront (SHOPIFY_STOREFRONT_PRIVATE_TOKEN o SHOPIFY_STOREFRONT_ACCESS_TOKEN).",
-        products: [],
-        hasMore: false,
-        nextCursor: null,
-      },
-      { status: 500 }
-    );
+    // Sin credenciales: catálogo local de desarrollo (misma forma de respuesta).
+    const { getMockSnapshot } = await import("@/lib/mockCatalog");
+    const snapshot = getMockSnapshot();
+    return NextResponse.json({
+      ok: true,
+      error: null,
+      products: snapshot.products,
+      hasMore: snapshot.hasMore,
+      nextCursor: snapshot.nextCursor,
+    });
   }
 
   if (isAutomationToken(token)) {

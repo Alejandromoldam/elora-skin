@@ -122,7 +122,11 @@ export async function fetchHomeCatalogSnapshot(
     DEFAULT_API_VERSION;
 
   if (!domain || !token || token.startsWith("atkn_")) {
-    return { products: [], hasMore: false, nextCursor: null };
+    // Sin credenciales de Shopify: catálogo local de desarrollo para que la
+    // landing se vea completa. Se importa dinámicamente para no cargar los
+    // mocks en producción cuando las credenciales sí existen.
+    const { getMockSnapshot } = await import("./mockCatalog");
+    return getMockSnapshot();
   }
 
   const endpoint = `https://${domain}/api/${version}/graphql.json`;

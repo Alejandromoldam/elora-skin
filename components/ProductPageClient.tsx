@@ -55,6 +55,11 @@ type ProductPayload = {
   videos: ProductVideo[];
   productUrl: string;
   buyNowUrl: string;
+  // Contenido editorial de la landing por producto. Hoy lo llena el catálogo
+  // local de desarrollo; con Shopify real puede venir de metafields.
+  benefits?: string[];
+  ingredients?: string[];
+  usage?: string[];
 };
 
 type ProductApiResponse = {
@@ -567,6 +572,56 @@ export default function ProductPage() {
                 </div>
               </div>
             </RevealOnScroll>
+
+            {(product.benefits?.length || product.ingredients?.length || product.usage?.length) ? (
+              <RevealOnScroll as="section" className="mt-14">
+                <div className="mb-6 text-center">
+                  <p className="elora-shop-eyebrow">Conócelo a fondo</p>
+                  <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Por qué lo vas a amar</h2>
+                </div>
+                <div className="grid gap-5 lg:grid-cols-3">
+                  {product.benefits?.length ? (
+                    <article className="elora-shop-panel p-6">
+                      <p className="elora-shop-eyebrow">Beneficios</p>
+                      <ul className="mt-4 grid gap-3 text-sm sm:text-base">
+                        {product.benefits.map((item) => (
+                          <li key={item} className="flex items-start gap-2">
+                            <span aria-hidden="true" className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: "var(--pink-solid, #e5658f)" }} />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </article>
+                  ) : null}
+                  {product.ingredients?.length ? (
+                    <article className="elora-shop-panel p-6">
+                      <p className="elora-shop-eyebrow">Ingredientes clave</p>
+                      <ul className="mt-4 grid gap-3 text-sm sm:text-base">
+                        {product.ingredients.map((item) => (
+                          <li key={item} className="flex items-start gap-2">
+                            <span aria-hidden="true" className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: "var(--pink-solid, #e5658f)" }} />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </article>
+                  ) : null}
+                  {product.usage?.length ? (
+                    <article className="elora-shop-panel p-6">
+                      <p className="elora-shop-eyebrow">Modo de uso</p>
+                      <ol className="mt-4 grid gap-3 text-sm sm:text-base">
+                        {product.usage.map((item, index) => (
+                          <li key={item} className="flex items-start gap-3">
+                            <span className="shrink-0 font-semibold italic" style={{ color: "var(--pink-solid, #e5658f)" }}>{String(index + 1).padStart(2, "0")}</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </article>
+                  ) : null}
+                </div>
+              </RevealOnScroll>
+            ) : null}
 
             <RevealOnScroll as="section" className="mt-14">
               <div className="mb-6 text-center">
