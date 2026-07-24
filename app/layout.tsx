@@ -91,7 +91,7 @@ export default function RootLayout({
   const websiteJsonLd = toJsonLd(buildWebsiteSchema(siteUrl));
 
   return (
-    <html lang="es">
+    <html lang="en">
       <body
         className={`${inter.className} ${fraunces.variable} ${outfit.variable} relative overflow-x-hidden`}
       >

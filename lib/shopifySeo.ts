@@ -228,6 +228,16 @@ async function storefrontQuery<T>({
 }
 
 export async function getAllProductHandles(limit = 500) {
+  {
+    // Sin credenciales de Shopify: el sitemap se alimenta del catálogo local.
+    const { isMockCatalogEnabled, getMockSnapshot } = await import("./mockCatalog");
+    if (isMockCatalogEnabled()) {
+      return getMockSnapshot("en").products.map((p) => ({
+        handle: p.handle,
+        updatedAt: null as string | null,
+      }));
+    }
+  }
   const query = `
     query SeoProducts($first: Int!, $after: String) {
       products(first: $first, after: $after, sortKey: UPDATED_AT, reverse: true) {

@@ -10,7 +10,7 @@ import {
 
 const DEFAULT_API_VERSION = "2025-04";
 const DEFAULT_STORE_DOMAIN = "all-in-one-22092396.myshopify.com";
-const FALLBACK_TITLE = "Producto premium";
+const FALLBACK_TITLE = "Elora Skin";
 const FALLBACK_DESCRIPTION =
   "Compra skincare premium en Elora Skin con disponibilidad real, pago seguro y envio confiable.";
 
@@ -105,7 +105,7 @@ function compactDescription(rawText: string, maxLength = 160) {
   return `${cleanText.slice(0, maxLength - 3).trimEnd()}...`;
 }
 
-async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
+async function fetchSeoProduct(handle: string, locale: "en" | "es" = "en"): Promise<SeoProduct | null> {
   const domain = normalizeStoreDomain(
     process.env.SHOPIFY_STORE_DOMAIN ||
       process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
@@ -120,7 +120,7 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
   if (!domain || !token || token.startsWith("atkn_")) {
     // Sin credenciales: metadata desde el catálogo local de desarrollo.
     const { getMockProduct } = await import("@/lib/mockCatalog");
-    const mock = getMockProduct(handle);
+    const mock = getMockProduct(handle, locale);
     if (!mock) return null;
     return {
       title: mock.title,
@@ -268,19 +268,24 @@ export async function generateMetadata({
   const siteUrl = getSiteUrl();
   const fallbackImage = `${siteUrl}/producto-real.png`;
 
-  const seoProduct = await fetchSeoProduct(params.handle);
+  const seoProduct = await fetchSeoProduct(params.handle, "en");
   const productName = seoProduct?.title || FALLBACK_TITLE;
-  const socialTitle = `Comprar ${productName} | Elora Skin`;
+  const socialTitle = `Buy ${productName} | Elora Skin`;
   const description = compactDescription(seoProduct?.description || "");
   const productPathHandle = seoProduct?.handle || params.handle;
   const productPageUrl = `${siteUrl}/products/${productPathHandle}`;
   const imageUrl = seoProduct?.imageUrl || fallbackImage;
 
   return {
-    title: `Comprar ${productName}`,
+    title: `Buy ${productName}`,
     description,
     alternates: {
       canonical: productPageUrl,
+      languages: {
+        en: productPageUrl,
+        es: `${siteUrl}/es/products/${productPathHandle}`,
+        "x-default": productPageUrl,
+      },
     },
     openGraph: {
       title: socialTitle,
@@ -350,7 +355,7 @@ export default async function ProductPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
       />
-      <ProductPageClient />
+      <ProductPageClient locale="en" />
     </>
   );
 }

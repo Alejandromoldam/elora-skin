@@ -26,7 +26,7 @@ function readCartQuantity() {
  * Elora-styled cart pill for the nav. Reads the same local cart storage/event
  * used across the store so the existing cart + checkout flow stays intact.
  */
-export default function EloraCartLink() {
+export default function EloraCartLink({ label = "Bag" }: { label?: string }) {
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
@@ -53,10 +53,10 @@ export default function EloraCartLink() {
     <a
       href="/cart"
       className="elora-bag-btn"
-      aria-label={`Ir a la bolsa${quantity > 0 ? ` con ${quantity} producto${quantity === 1 ? "" : "s"}` : ""}`}
+      aria-label={quantity > 0 ? `${label} (${quantity})` : label}
     >
       <BagIcon className="elora-bag-icon" />
-      Bolsa
+      {label}
       {quantity > 0 ? <span className="elora-cart-count">{quantity}</span> : null}
     </a>
   );

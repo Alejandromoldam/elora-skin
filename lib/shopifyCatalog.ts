@@ -107,7 +107,8 @@ function normalizeShopifyImageUrl(
 }
 
 export async function fetchHomeCatalogSnapshot(
-  first = 24
+  first = 24,
+  locale?: string
 ): Promise<CatalogSnapshot> {
   const domain =
     process.env.SHOPIFY_STORE_DOMAIN ||
@@ -126,7 +127,7 @@ export async function fetchHomeCatalogSnapshot(
     // landing se vea completa. Se importa dinámicamente para no cargar los
     // mocks en producción cuando las credenciales sí existen.
     const { getMockSnapshot } = await import("./mockCatalog");
-    return getMockSnapshot();
+    return getMockSnapshot(locale);
   }
 
   const endpoint = `https://${domain}/api/${version}/graphql.json`;

@@ -243,7 +243,8 @@ export async function GET(
     // Sin credenciales: servimos el catálogo local de desarrollo con la misma
     // forma de respuesta que la ruta real, para que la página funcione igual.
     const { getMockProduct } = await import("@/lib/mockCatalog");
-    const mock = getMockProduct(handle);
+    const mockLocale = new URL(_request.url).searchParams.get("locale") ?? undefined;
+    const mock = getMockProduct(handle, mockLocale);
     if (!mock) {
       return NextResponse.json(
         { ok: false, error: "Producto no encontrado." },

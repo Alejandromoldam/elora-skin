@@ -1,5 +1,6 @@
 "use client";
 
+import { getMessages, type Locale } from "@/lib/i18n";
 import { useState } from "react";
 import PillButton from "./PillButton";
 
@@ -14,7 +15,8 @@ const NEWSLETTER_ENDPOINT = process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT || "";
  * Real, functional newsletter signup: validates the email, submits to the
  * configured endpoint when present, and always gives the user feedback.
  */
-export default function NewsletterForm() {
+export default function NewsletterForm({ locale = "en" }: { locale?: Locale }) {
+  const nt = getMessages(locale).newsletter;
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -26,7 +28,7 @@ export default function NewsletterForm() {
     const value = email.trim();
     if (!EMAIL_RE.test(value)) {
       setStatus("error");
-      setMessage("Escribe un correo válido para continuar.");
+      setMessage(nt.invalid);
       return;
     }
 
@@ -45,11 +47,11 @@ export default function NewsletterForm() {
         }
       }
       setStatus("success");
-      setMessage("¡Gracias! Revisa tu correo para confirmar tu suscripción.");
+      setMessage(nt.success);
       setEmail("");
     } catch {
       setStatus("error");
-      setMessage("No pudimos completar la suscripción. Inténtalo de nuevo.");
+      setMessage(nt.error);
     }
   }
 
@@ -57,14 +59,14 @@ export default function NewsletterForm() {
     <form className="elora-newsletter" onSubmit={handleSubmit} noValidate>
       <div className="elora-newsletter-row">
         <label className="sr-only" htmlFor="elora-newsletter-email">
-          Correo electrónico
+          {locale === "es" ? "Correo electrónico" : "Email address"}
         </label>
         <input
           id="elora-newsletter-email"
           type="email"
           inputMode="email"
           autoComplete="email"
-          placeholder="tu@correo.com"
+          placeholder={nt.placeholder}
           value={email}
           onChange={(event) => {
             setEmail(event.target.value);
@@ -78,7 +80,7 @@ export default function NewsletterForm() {
           required
         />
         <PillButton type="submit" disabled={status === "loading"}>
-          {status === "loading" ? "Enviando…" : "Obtener mi descuento"}
+          {status === "loading" ? nt.sending : nt.submit}
         </PillButton>
       </div>
       {message ? (

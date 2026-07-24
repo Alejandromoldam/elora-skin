@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { trackAddToCart } from "@/lib/ga";
 import type { CatalogProduct } from "@/lib/shopifyCatalog";
+import { getMessages, currencyLocale, type Locale } from "@/lib/i18n";
 import RevealOnScroll from "./RevealOnScroll";
 
 type CatalogApiResponse = {
@@ -33,12 +34,12 @@ type CartLine = {
   productUrl: string;
 };
 
-function formatMoney(amount: string, currencyCode: string) {
+function formatMoney(amount: string, currencyCode: string, intlLocale = "en-US") {
   const value = Number(amount);
   if (Number.isNaN(value)) {
     return `${amount} ${currencyCode}`;
   }
-  return new Intl.NumberFormat("es-MX", {
+  return new Intl.NumberFormat(intlLocale, {
     style: "currency",
     currency: currencyCode || "USD",
     maximumFractionDigits: 2,
@@ -126,9 +127,13 @@ function addProductToLocalCart(product: CatalogProduct) {
 
 export default function EloraBestsellers({
   initialProducts = [],
+  locale = "en",
 }: {
   initialProducts?: CatalogProduct[];
+  locale?: Locale;
 }) {
+  const bt = getMessages(locale).bestsellers;
+  const intlLocale = currencyLocale(locale);
   const [products, setProducts] = useState<CatalogProduct[]>(initialProducts);
   const [loading, setLoading] = useState(initialProducts.length === 0);
   const [addedId, setAddedId] = useState<string | null>(null);
@@ -140,7 +145,7 @@ export default function EloraBestsellers({
     let active = true;
     (async () => {
       try {
-        const response = await fetch("/api/catalog", { cache: "no-store" });
+        const response = await fetch(`/api/catalog?locale=${locale}`, { cache: "no-store" });
         const payload = (await response.json()) as CatalogApiResponse;
         if (!active) return;
         if (response.ok && payload.ok && Array.isArray(payload.products)) {
@@ -174,15 +179,12 @@ export default function EloraBestsellers({
   return (
     <section className="elora-section" id="bestsellers">
       <RevealOnScroll className="elora-section-head" as="div">
-        <span className="elora-eyebrow">Bestsellers</span>
+        <span className="elora-eyebrow">{bt.eyebrow}</span>
         <h2 className="elora-h2">
-          Los favoritos de la comunidad
+          {bt.title}
           <span className="elora-underline" />
         </h2>
-        <p className="elora-section-sub">
-          Nuestros esenciales más queridos — elegidos por lo que de verdad
-          funciona, no por lo que luce bonito en la repisa.
-        </p>
+        <p className="elora-section-sub">{bt.sub}</p>
       </RevealOnScroll>
 
       {loading ? (
@@ -204,7 +206,7 @@ export default function EloraBestsellers({
               key={`bento-empty-${index}`}
               className={`elora-empty-card ${index === 0 ? "elora-bento-feature" : ""}`}
             >
-              <p className="elora-empty-card-text">Muy pronto ✦ nueva colección</p>
+              <p className="elora-empty-card-text">{bt.comingSoon}</p>
             </div>
           ))}
         </div>
@@ -212,7 +214,7 @@ export default function EloraBestsellers({
         <div className="elora-bento">
           {feature ? (
             <RevealOnScroll as="article" className="elora-bento-feature">
-              <span className="elora-badge">Más vendido</span>
+              <span className="elora-badge">{bt.badge}</span>
               <div className="elora-feature-media">
                 <Image
                   src={feature.imageUrl}
@@ -226,7 +228,7 @@ export default function EloraBestsellers({
               <h3 className="elora-feature-title">{feature.title}</h3>
               <p className="elora-feature-desc">{feature.descriptionShort}</p>
               <div className="elora-price">
-                {formatMoney(feature.priceAmount, feature.priceCurrency)}
+                {formatMoney(feature.priceAmount, feature.priceCurrency, intlLocale)}
               </div>
               <div className="elora-card-actions">
                 <button
@@ -236,13 +238,13 @@ export default function EloraBestsellers({
                   disabled={!feature.availableForSale}
                 >
                   {!feature.availableForSale
-                    ? "Agotado"
+                    ? bt.soldOut
                     : addedId === feature.id
-                    ? "Agregado ✓"
-                    : "Agregar al ritual"}
+                    ? bt.added
+                    : bt.addToRitual}
                 </button>
                 <a className="elora-card-link" href={feature.productUrl}>
-                  Ver detalle
+                  {bt.viewDetail}
                 </a>
               </div>
             </RevealOnScroll>
@@ -267,7 +269,7 @@ export default function EloraBestsellers({
               </a>
               <h3 className="elora-card-title">{product.title}</h3>
               <div className="elora-price">
-                {formatMoney(product.priceAmount, product.priceCurrency)}
+                {formatMoney(product.priceAmount, product.priceCurrency, intlLocale)}
               </div>
               <button
                 type="button"
@@ -276,10 +278,10 @@ export default function EloraBestsellers({
                 disabled={!product.availableForSale}
               >
                 {!product.availableForSale
-                  ? "Agotado"
+                  ? bt.soldOut
                   : addedId === product.id
-                  ? "Agregado ✓"
-                  : "Agregar"}
+                  ? bt.added
+                  : bt.add}
               </button>
             </RevealOnScroll>
           ))}

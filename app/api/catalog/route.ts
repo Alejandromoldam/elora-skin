@@ -147,7 +147,7 @@ export async function GET(request: Request) {
   if (!domain || !token) {
     // Sin credenciales: catálogo local de desarrollo (misma forma de respuesta).
     const { getMockSnapshot } = await import("@/lib/mockCatalog");
-    const snapshot = getMockSnapshot();
+    const snapshot = getMockSnapshot(searchParams.get("locale") ?? undefined);
     return NextResponse.json({
       ok: true,
       error: null,

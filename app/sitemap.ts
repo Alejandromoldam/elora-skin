@@ -22,6 +22,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "daily",
       priority: 1,
+      alternates: {
+        languages: { en: `${siteUrl}/`, es: `${siteUrl}/es` },
+      },
+    },
+    {
+      url: `${siteUrl}/es`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.95,
+      alternates: {
+        languages: { en: `${siteUrl}/`, es: `${siteUrl}/es` },
+      },
     },
     {
       url: `${siteUrl}/categorias`,
@@ -61,12 +73,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const productEntries: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${siteUrl}/products/${product.handle}`,
-    lastModified: product.updatedAt ? new Date(product.updatedAt) : now,
-    changeFrequency: "daily",
-    priority: 0.9,
-  }));
+  const productEntries: MetadataRoute.Sitemap = products.flatMap((product) => {
+    const lastModified = product.updatedAt ? new Date(product.updatedAt) : now;
+    const languages = {
+      en: `${siteUrl}/products/${product.handle}`,
+      es: `${siteUrl}/es/products/${product.handle}`,
+    };
+    return [
+      {
+        url: languages.en,
+        lastModified,
+        changeFrequency: "daily" as const,
+        priority: 0.9,
+        alternates: { languages },
+      },
+      {
+        url: languages.es,
+        lastModified,
+        changeFrequency: "daily" as const,
+        priority: 0.85,
+        alternates: { languages },
+      },
+    ];
+  });
 
   const categoryEntries: MetadataRoute.Sitemap = collections.map((collection) => ({
     url: `${siteUrl}/categorias/${collection.handle}`,

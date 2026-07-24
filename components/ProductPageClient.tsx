@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
+import { getMessages, localizePath, currencyLocale, type Locale } from "@/lib/i18n";
+import LangSwitcher from "@/components/elora/LangSwitcher";
 import PillButton from "@/components/elora/PillButton";
 import RevealOnScroll from "@/components/elora/RevealOnScroll";
 import EloraCartLink from "@/components/elora/EloraCartLink";
@@ -131,24 +133,21 @@ type TrustSignalIconType =
   | "lock"
   | "badge";
 
-const productTrustSignals: Array<{
-  title: string;
-  icon: TrustSignalIconType;
-}> = [
-  { title: "Pago seguro con Shopify", icon: "shield" },
-  { title: "Envios internacionales", icon: "truck" },
-  { title: "Garantia de satisfaccion", icon: "spark" },
-  { title: "Soporte especializado", icon: "support" },
-  { title: "Checkout cifrado", icon: "lock" },
-  { title: "Productos verificados", icon: "badge" },
+const TRUST_SIGNAL_ICONS: TrustSignalIconType[] = [
+  "shield",
+  "truck",
+  "spark",
+  "support",
+  "lock",
+  "badge",
 ];
 
-function formatMoney(amount: string, currencyCode: string) {
+function formatMoney(amount: string, currencyCode: string, intlLocale = "en-US") {
   const value = Number(amount);
   if (Number.isNaN(value)) {
     return `${amount} ${currencyCode}`;
   }
-  return new Intl.NumberFormat("es-MX", {
+  return new Intl.NumberFormat(intlLocale, {
     style: "currency",
     currency: currencyCode,
     maximumFractionDigits: 2,
@@ -252,7 +251,10 @@ function TrustSignalIcon({
   );
 }
 
-export default function ProductPage() {
+export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
+  const pt = getMessages(locale).product;
+  const bt = getMessages(locale).bestsellers;
+  const intlLocale = currencyLocale(locale);
   const params = useParams<{ handle: string }>();
   const handle = params?.handle || "";
 
@@ -279,7 +281,7 @@ export default function ProductPage() {
       setError(null);
       setCartMessage(null);
       try {
-        const response = await fetch(`/api/product/${handle}`, { cache: "no-store" });
+        const response = await fetch(`/api/product/${handle}?locale=${locale}`, { cache: "no-store" });
         const payload = (await response.json()) as ProductApiResponse;
         if (!active) return;
         if (!response.ok || !payload.ok || !payload.product) {
@@ -341,10 +343,10 @@ export default function ProductPage() {
   }, [maxQuantity]);
 
   const inventoryText = useMemo(() => {
-    if (selectedVariant?.availableForSale === true) return "Disponible";
-    if (selectedVariant?.availableForSale === false) return "Agotado";
-    if (product?.availableForSale === true) return "Disponible";
-    if (product?.availableForSale === false) return "Agotado";
+    if (selectedVariant?.availableForSale === true) return pt.available;
+    if (selectedVariant?.availableForSale === false) return pt.soldOut;
+    if (product?.availableForSale === true) return pt.available;
+    if (product?.availableForSale === false) return pt.soldOut;
     if ((product?.variants?.length || 0) > 0) return "En stock";
     return "Agotado";
   }, [product, selectedVariant]);
@@ -386,7 +388,7 @@ export default function ProductPage() {
       if (!product?.id) { setRelatedProducts([]); setRelatedError(null); return; }
       setLoadingRelated(true); setRelatedError(null);
       try {
-        const res = await fetch("/api/catalog", { cache: "no-store" });
+        const res = await fetch(`/api/catalog?locale=${locale}`, { cache: "no-store" });
         const payload = (await res.json()) as CatalogApiResponse;
         if (!active) return;
         if (!res.ok || !payload.ok) { setRelatedProducts([]); setRelatedError(payload.error || "Error al cargar relacionados."); return; }
@@ -448,10 +450,13 @@ export default function ProductPage() {
       <div className="elora-bg" aria-hidden="true" />
       <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(6.8rem+env(safe-area-inset-bottom))] pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-20">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <Link href="/" className="elora-pill is-outline elora-shop-cta-sm">
-            <span className="elora-pill-label">Volver al catálogo</span>
+          <Link href={localizePath("/", locale)} className="elora-pill is-outline elora-shop-cta-sm">
+            <span className="elora-pill-label">{pt.back}</span>
           </Link>
-          <EloraCartLink />
+          <div className="flex items-center gap-4">
+            <LangSwitcher />
+            <EloraCartLink label={pt.bag} />
+          </div>
         </div>
 
         {loading ? (
@@ -508,22 +513,22 @@ export default function ProductPage() {
               </div>
 
               <div>
-                <p className="elora-shop-eyebrow">Producto</p>
+                <p className="elora-shop-eyebrow">{pt.eyebrow}</p>
                 <h1 className="mt-3 break-words text-2xl font-semibold leading-tight sm:text-4xl">{product.title}</h1>
-                <p className="elora-shop-price mt-4 text-2xl">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
+                <p className="elora-shop-price mt-4 text-2xl">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency, intlLocale)}</p>
 
                 {typeof selectedVariant?.quantityAvailable === "number" && selectedVariant.quantityAvailable > 0 && selectedVariant.quantityAvailable <= 10 ? (
                   <p className="elora-shop-lowstock mt-3">
                     <LightningIcon className="h-3.5 w-3.5" />
-                    {selectedVariant.quantityAvailable === 1 ? "¡Última unidad disponible!" : `¡Últimas ${selectedVariant.quantityAvailable} unidades disponibles!`}
+                    {locale === "es" ? (selectedVariant.quantityAvailable === 1 ? "¡Última unidad disponible!" : `¡Últimas ${selectedVariant.quantityAvailable} unidades disponibles!`) : (selectedVariant.quantityAvailable === 1 ? "Only 1 left in stock!" : `Only ${selectedVariant.quantityAvailable} left in stock!`)}
                   </p>
                 ) : null}
 
                 <div className="elora-shop-soft mt-4 p-4">
                   <div className="grid gap-2">
                     <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{inventoryText}</p>
-                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>Envío rápido</p>
-                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>Pago seguro</p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{pt.fastShipping}</p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{pt.securePayment}</p>
                   </div>
                 </div>
 
@@ -531,13 +536,13 @@ export default function ProductPage() {
                   <div className="mt-4">
                     <label className="elora-shop-eyebrow">Variante</label>
                     <select value={selectedVariant?.id || ""} onChange={(e) => setSelectedVariantId(e.target.value)} className="elora-shop-select mt-2">
-                      {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {formatMoney(v.priceAmount, v.priceCurrency)}</option>)}
+                      {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {formatMoney(v.priceAmount, v.priceCurrency, intlLocale)}</option>)}
                     </select>
                   </div>
                 ) : null}
 
                 <div className="mt-4">
-                  <p className="elora-shop-eyebrow">Cantidad</p>
+                  <p className="elora-shop-eyebrow">{pt.quantity}</p>
                   <div className="elora-shop-qty mt-2">
                     <button type="button" onClick={() => setQuantity((c) => Math.max(1, c - 1))} className="elora-shop-qty-btn" aria-label="Disminuir cantidad">-</button>
                     <span className="elora-shop-qty-value">{quantity}</span>
@@ -549,10 +554,10 @@ export default function ProductPage() {
 
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
                   <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="elora-shop-cta">
-                    {addingToCart ? "Agregando..." : "Agregar al carrito"}
+                    {addingToCart ? pt.adding : pt.addToCart}
                   </PillButton>
                   <PillButton href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} variant="outline" className="elora-shop-cta">
-                    Comprar ahora
+                    {pt.buyNow}
                   </PillButton>
                 </div>
 
@@ -560,12 +565,12 @@ export default function ProductPage() {
                 <p className="elora-shop-eyebrow mt-4">{product.vendor || "Elora Skin"} - {product.productType || "Skincare premium"}</p>
 
                 <div className="elora-shop-soft mt-6 p-4">
-                  <p className="elora-shop-eyebrow">Confianza Elora</p>
+                  <p className="elora-shop-eyebrow">{pt.trustEyebrow}</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {productTrustSignals.map((signal) => (
-                      <article key={signal.title} className="elora-shop-trust-item">
-                        <span className="elora-shop-trust-ico"><TrustSignalIcon icon={signal.icon} className="h-4 w-4" /></span>
-                        <span>{signal.title}</span>
+                    {pt.trustSignals.map((title, index) => (
+                      <article key={title} className="elora-shop-trust-item">
+                        <span className="elora-shop-trust-ico"><TrustSignalIcon icon={TRUST_SIGNAL_ICONS[index] ?? "shield"} className="h-4 w-4" /></span>
+                        <span>{title}</span>
                       </article>
                     ))}
                   </div>
@@ -576,13 +581,13 @@ export default function ProductPage() {
             {(product.benefits?.length || product.ingredients?.length || product.usage?.length) ? (
               <RevealOnScroll as="section" className="mt-14">
                 <div className="mb-6 text-center">
-                  <p className="elora-shop-eyebrow">Conócelo a fondo</p>
-                  <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Por qué lo vas a amar</h2>
+                  <p className="elora-shop-eyebrow">{pt.knowEyebrow}</p>
+                  <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">{pt.knowTitle}</h2>
                 </div>
                 <div className="grid gap-5 lg:grid-cols-3">
                   {product.benefits?.length ? (
                     <article className="elora-shop-panel p-6">
-                      <p className="elora-shop-eyebrow">Beneficios</p>
+                      <p className="elora-shop-eyebrow">{pt.benefits}</p>
                       <ul className="mt-4 grid gap-3 text-sm sm:text-base">
                         {product.benefits.map((item) => (
                           <li key={item} className="flex items-start gap-2">
@@ -595,7 +600,7 @@ export default function ProductPage() {
                   ) : null}
                   {product.ingredients?.length ? (
                     <article className="elora-shop-panel p-6">
-                      <p className="elora-shop-eyebrow">Ingredientes clave</p>
+                      <p className="elora-shop-eyebrow">{pt.ingredients}</p>
                       <ul className="mt-4 grid gap-3 text-sm sm:text-base">
                         {product.ingredients.map((item) => (
                           <li key={item} className="flex items-start gap-2">
@@ -608,7 +613,7 @@ export default function ProductPage() {
                   ) : null}
                   {product.usage?.length ? (
                     <article className="elora-shop-panel p-6">
-                      <p className="elora-shop-eyebrow">Modo de uso</p>
+                      <p className="elora-shop-eyebrow">{pt.usage}</p>
                       <ol className="mt-4 grid gap-3 text-sm sm:text-base">
                         {product.usage.map((item, index) => (
                           <li key={item} className="flex items-start gap-3">
@@ -625,8 +630,8 @@ export default function ProductPage() {
 
             <RevealOnScroll as="section" className="mt-14">
               <div className="mb-6 text-center">
-                <p className="elora-shop-eyebrow">Recomendados</p>
-                <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">También te puede interesar</h2>
+                <p className="elora-shop-eyebrow">{pt.recommendedEyebrow}</p>
+                <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">{pt.recommendedTitle}</h2>
               </div>
               {loadingRelated ? (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -654,17 +659,17 @@ export default function ProductPage() {
                       </div>
                       <h3 className="elora-shop-card-title mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
                       <div className="mt-2 flex items-center justify-between gap-2">
-                        <p className="elora-shop-price text-lg">{formatMoney(related.priceAmount, related.priceCurrency)}</p>
+                        <p className="elora-shop-price text-lg">{formatMoney(related.priceAmount, related.priceCurrency, intlLocale)}</p>
                         <span className={related.availableForSale ? "elora-shop-badge-ok" : "elora-shop-badge-off"}>
-                          {related.availableForSale ? "Disponible" : "Agotado"}
+                          {related.availableForSale ? pt.available : pt.soldOut}
                         </span>
                       </div>
                       <div className="mt-4 grid grid-cols-2 gap-2">
                         <PillButton onClick={() => void addRelatedToCart(related)} disabled={addingRelatedId === related.id || !related.availableForSale || !related.variantId} className="elora-shop-cta elora-shop-cta-sm">
-                          {addingRelatedId === related.id ? "Agregando..." : "Agregar"}
+                          {addingRelatedId === related.id ? pt.adding : pt.addToCart}
                         </PillButton>
                         <Link href={related.handle ? `/products/${related.handle}` : related.productUrl} className="elora-pill is-outline elora-shop-cta elora-shop-cta-sm">
-                          <span className="elora-pill-label">Ver detalles</span>
+                          <span className="elora-pill-label">{bt.viewDetail}</span>
                         </Link>
                       </div>
                     </article>
@@ -681,7 +686,7 @@ export default function ProductPage() {
           <div className="mx-auto flex w-full max-w-7xl items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="elora-shop-muted truncate text-xs font-medium">{shortenTitle(product.title, 34)}</p>
-              <p className="elora-shop-price text-base">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
+              <p className="elora-shop-price text-base">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency, intlLocale)}</p>
             </div>
             <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} variant="outline" className="elora-shop-cta-sm shrink-0">
               {addingToCart ? "..." : "Agregar"}
