@@ -133,7 +133,12 @@ export default async function HomePage({ locale }: { locale: Locale }) {
             ) : (
               <div className="eg-hero-frame is-empty" aria-hidden="true" />
             )}
-            <span className="eg-podium" aria-hidden="true" />
+            <span className="eg-podium" aria-hidden="true"><span className="eg-podium-top" /></span>
+            <span className="eg-streak s1" aria-hidden="true" />
+            <span className="eg-streak s2" aria-hidden="true" />
+            <span className="eg-twinkle t1" aria-hidden="true" />
+            <span className="eg-twinkle t2" aria-hidden="true" />
+            <span className="eg-twinkle t3" aria-hidden="true" />
           </div>
         </section>
 
@@ -202,7 +207,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
 
         {/* Footer */}
         <footer className="eg-footer">
-          <span className="eg-footer-logo notranslate" translate="no">Elora Skin</span>
+          <span className="eg-footer-logo notranslate" translate="no"><b>Elora</b> Skin</span>
           <nav className="eg-footer-links" aria-label="Footer">
             <a href="/contacto">{home.footerHelp}</a>
             <a href="/politica-de-envios">{home.footerShipping}</a>

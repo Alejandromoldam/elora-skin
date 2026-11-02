@@ -5130,3 +5130,52 @@ body.cart-page-active .whatsapp-float-root {
 /* Imagen de pasos en "Cómo se usa" */
 .elx-howto-img { max-width: 760px; margin: 0 auto 18px; border-radius: 28px; overflow: hidden; background: rgba(255, 228, 238, .7);
   border: 1px solid rgba(255,255,255,.42); box-shadow: 0 24px 64px -26px rgba(192, 67, 111, .32), inset 0 1px 1px rgba(255,255,255,.65); }
+
+/* =====================================================================
+   Detalles del mockup: podio brillante, haces holográficos y destellos
+   ===================================================================== */
+/* Podio con canto iridiscente y reflejo superior, como en el diseño */
+.eg-podium { height: 54px; bottom: -2px; left: 2%; right: 2%; overflow: hidden;
+  background: linear-gradient(180deg, #fff 0%, #ffe3ee 35%, #f6c7d9 100%);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 22px 40px -16px rgba(192, 67, 111, .45), 0 0 70px rgba(255, 200, 225, .85); }
+.eg-podium::before { content: ""; position: absolute; inset: auto 0 0 0; height: 46%; border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  background: linear-gradient(90deg, #f7b7cf, #fff3f8 22%, #e4d6ff 45%, #ffe2d3 65%, #ffc6da 85%, #f7b7cf); opacity: .9; }
+.eg-podium-top { position: absolute; left: 8%; right: 8%; top: 6px; height: 40%; border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%); }
+
+/* Haces de luz holográficos detrás del producto */
+.eg-hero-media { isolation: isolate; }
+.eg-streak { position: absolute; z-index: 0; pointer-events: none; height: 26%; width: 150%; left: -25%; border-radius: 50%; filter: blur(10px); opacity: .55;
+  background: linear-gradient(90deg, transparent, rgba(255,182,214,.9) 20%, rgba(214,196,255,.85) 45%, rgba(190,236,255,.7) 60%, rgba(255,230,200,.7) 75%, transparent);
+  mix-blend-mode: screen; animation: eg-streak 9s ease-in-out infinite alternate; }
+.eg-streak.s1 { top: 8%; transform: rotate(-16deg); }
+.eg-streak.s2 { top: 52%; transform: rotate(12deg); animation-delay: -4s; opacity: .4; }
+@keyframes eg-streak { from { translate: -6% 0; } to { translate: 6% -4%; } }
+.eg-hero-frame { z-index: 2; }
+
+/* Destellos que titilan (brillo de producto premium) */
+.eg-twinkle { position: absolute; z-index: 3; width: 18px; height: 18px; pointer-events: none;
+  background: radial-gradient(circle, #fff 0 12%, transparent 13%), conic-gradient(from 45deg, transparent 0 20%, #fff 22% 28%, transparent 30% 45%, #fff 47% 53%, transparent 55% 70%, #fff 72% 78%, transparent 80% 95%, #fff 97%);
+  -webkit-mask: radial-gradient(circle, #000 0 45%, transparent 70%); mask: radial-gradient(circle, #000 0 45%, transparent 70%);
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.9)); animation: eg-twinkle 3.6s ease-in-out infinite; }
+.eg-twinkle.t1 { top: 4%; right: 6%; }
+.eg-twinkle.t2 { top: 46%; left: -4px; width: 12px; height: 12px; animation-delay: 1.2s; }
+.eg-twinkle.t3 { bottom: 16%; right: -2px; width: 14px; height: 14px; animation-delay: 2.3s; }
+@keyframes eg-twinkle { 0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); } 45%, 55% { opacity: 1; transform: scale(1) rotate(25deg); } }
+
+/* Footer como el diseño: logo con peso, separadores finos */
+.eg-footer-logo b { font-weight: 700; }
+@media (min-width: 900px) {
+  .eg-footer-links { position: relative; padding-inline: 28px; }
+  .eg-footer-links::before, .eg-footer-links::after { content: ""; position: absolute; top: 15%; bottom: 15%; width: 1px; background: rgba(255,255,255,.4); }
+  .eg-footer-links::before { left: 0; } .eg-footer-links::after { right: 0; }
+}
+
+/* Subtítulo del hero algo más presente, como en el diseño */
+.eg-lead { font-size: clamp(14.5px, 4.1vw, 20px); color: var(--eg-ink); }
+
+/* Producto: el mismo brillo en la foto principal */
+.elx .elx-main-media::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(120deg, rgba(255,255,255,.35), transparent 30%, transparent 70%, rgba(255,255,255,.18)); }
+
+@media (prefers-reduced-motion: reduce) { .eg-streak, .eg-twinkle { animation: none; } .eg-twinkle { opacity: .8; } }
