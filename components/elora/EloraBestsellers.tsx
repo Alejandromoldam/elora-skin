@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { trackAddToCart } from "@/lib/ga";
 import type { CatalogProduct } from "@/lib/shopifyCatalog";
-import { getMessages, currencyLocale, type Locale } from "@/lib/i18n";
+import { getMessages, currencyLocale, localizePath, type Locale } from "@/lib/i18n";
 import RevealOnScroll from "./RevealOnScroll";
 
 type CatalogApiResponse = {
@@ -210,6 +210,50 @@ export default function EloraBestsellers({
             </div>
           ))}
         </div>
+      ) : selected.length === 1 && feature ? (
+        // Un solo producto: tarjeta destacada horizontal en lugar del bento
+        // (que dejaría dos tercios de la sección vacíos).
+        <RevealOnScroll as="article" className="elora-spotlight">
+          <a className="elora-spotlight-media" href={localizePath(feature.productUrl, locale)} aria-label={feature.title}>
+            <span className="elora-badge">{bt.badge}</span>
+            <Image
+              src={feature.imageUrl}
+              alt={feature.imageAlt || feature.title}
+              width={900}
+              height={900}
+              sizes="(max-width: 900px) 92vw, 46vw"
+              className="elora-spotlight-img"
+            />
+          </a>
+          <div className="elora-spotlight-body">
+            <span className="elora-eyebrow">{bt.spotlightEyebrow}</span>
+            <h3 className="elora-spotlight-title">{feature.title}</h3>
+            <p className="elora-spotlight-desc">{feature.descriptionShort}</p>
+            <ul className="elora-spotlight-points">
+              {bt.spotlightPoints.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+            <div className="elora-spotlight-price">
+              <span>{bt.from}</span> {formatMoney(feature.priceAmount, feature.priceCurrency, intlLocale)}
+            </div>
+            <div className="elora-spotlight-actions">
+              <a className="elora-pill" href={localizePath(feature.productUrl, locale)}>
+                <span className="elora-pill-label">{bt.shopNow}</span>
+              </a>
+              <button
+                type="button"
+                className="elora-pill is-outline"
+                onClick={() => handleAdd(feature)}
+                disabled={!feature.availableForSale}
+              >
+                <span className="elora-pill-label">
+                  {!feature.availableForSale ? bt.soldOut : addedId === feature.id ? bt.added : bt.addToRitual}
+                </span>
+              </button>
+            </div>
+          </div>
+        </RevealOnScroll>
       ) : (
         <div className="elora-bento">
           {feature ? (

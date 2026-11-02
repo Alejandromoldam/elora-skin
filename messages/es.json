@@ -1,63 +1,63 @@
 {
   "home": {
     "announcement": [
-      "Envío gratis desde USD 40",
-      "Ingredientes reales",
-      "Cruelty free",
-      "Pago seguro · Visa · Mastercard"
+      "Envío gratis con seguimiento en todos los pedidos",
+      "Suave con la piel sensible",
+      "Pago seguro y cifrado",
+      "Nuevo: Sérum refinador de poros"
     ],
     "nav": {
-      "skincare": "Skincare",
+      "skincare": "Tienda",
       "makeup": "Maquillaje",
-      "ritual": "Tu ritual",
+      "ritual": "Cómo se usa",
       "contact": "Contacto"
     },
-    "heroEyebrow": "Nueva colección facial · 2026",
-    "heroTitlePre": "Tu piel, pero en su",
-    "heroTitleEm": "mejor día.",
-    "heroLead": "Rituales de skincare formulados con ingredientes reales, fórmulas limpias y un cuidado que se siente como un abrazo.",
-    "ctaShop": "Comprar bestsellers",
-    "ctaRitual": "Descubre tu ritual",
+    "heroEyebrow": "Nuevo · Sérum refinador de poros",
+    "heroTitlePre": "Piel más lisa,",
+    "heroTitleEm": "poros menos visibles.",
+    "heroLead": "Un sérum suave con ácido lactobiónico (PHA) que limpia la acumulación en los poros y alisa la textura, ideal incluso para piel sensible.",
+    "ctaShop": "Comprar el sérum",
+    "ctaRitual": "Cómo se usa",
     "heroComingSoon": "Muy pronto — nueva colección",
     "chips": [
-      "Glow real",
-      "Dermo-amigable",
-      "Pago seguro"
+      "Afina poros",
+      "PHA suave",
+      "Envío gratis"
     ],
     "trust": [
-      "Envíos a todo el mundo",
+      "Envío gratis con seguimiento",
       "Pago 100% seguro",
-      "Ingredientes reales",
-      "Cruelty free"
+      "Fórmulas suaves",
+      "Atención real"
     ],
-    "ritualEyebrow": "Tu ritual",
-    "ritualTitle": "Un ritual de 3 minutos",
-    "ritualSub": "Tres pasos simples, pensados para volverse un momento tuyo cada día.",
+    "ritualEyebrow": "Cómo se usa",
+    "ritualTitle": "Un ritual de 1 minuto",
+    "ritualSub": "Tres pasos sencillos, mañana y noche.",
     "ritualSteps": [
       {
         "number": "01",
         "title": "Limpia",
-        "desc": "Retira impurezas y maquillaje sin resecar la piel."
+        "desc": "Empieza con la piel limpia y seca para que el sérum actúe."
       },
       {
         "number": "02",
-        "title": "Trata & hidrata",
-        "desc": "Nutre en profundidad con ingredientes reales, sin relleno."
+        "title": "Aplica 4–5 gotas",
+        "desc": "Distribuye en rostro y cuello, sobre todo donde se ven los poros."
       },
       {
         "number": "03",
-        "title": "Realza",
-        "desc": "Un toque final que ilumina tu piel tal como es."
+        "title": "Hidrata y protege",
+        "desc": "Termina con hidratante y, de día, protector solar."
       }
     ],
     "honestEyebrow": "Belleza honesta",
-    "honestTitle": "Ingredientes reales, rituales honestos",
-    "honestBody": "Creemos que el cuidado de la piel no debería ser un misterio. Elegimos ingredientes reales y fórmulas limpias, pensadas para pieles reales y para acompañarte cada día.",
+    "honestTitle": "Cuidado de la piel sin exageraciones",
+    "honestBody": "Elegimos fórmulas que hacen bien una cosa, las explicamos claro y les ponemos un precio justo. Sin promesas milagrosas: productos que de verdad vas a usar.",
     "honestList": [
-      "Sin cifras infladas ni promesas imposibles",
-      "Sin reseñas inventadas: solo lo que es real",
-      "Cruelty free, siempre",
-      "Precios claros en USD, sin sorpresas"
+      "Sin promesas exageradas ni imposibles",
+      "Sin reseñas falsas, solo lo que es real",
+      "Fórmulas suaves para el día a día",
+      "Precios claros, envío gratis, sin sorpresas"
     ],
     "newsTitle": "Únete al club del glow",
     "newsSub": "Suscríbete y recibe novedades y beneficios de Elora Skin en tu correo.",
@@ -71,20 +71,28 @@
     "footerPrivacy": "Privacidad",
     "footerTerms": "Términos",
     "footerRights": "© 2026 Elora Skin — Todos los derechos reservados",
-    "metaTitle": "Elora Skin | Skincare con ingredientes reales",
-    "metaDescription": "Elora Skin — rituales de skincare formulados con ingredientes reales, fórmulas limpias y resultados que se sienten como un abrazo."
+    "metaTitle": "Elora Skin | Cuidado de la piel suave que funciona",
+    "metaDescription": "Elora Skin — cuidado de la piel suave y honesto. Compra el Sérum refinador de poros con ácido lactobiónico con envío gratis."
   },
   "bestsellers": {
-    "eyebrow": "Bestsellers",
-    "title": "Los favoritos de la comunidad",
-    "sub": "Nuestros esenciales más queridos — elegidos por lo que de verdad funciona, no por lo que luce bonito en la repisa.",
+    "eyebrow": "El más vendido",
+    "title": "El favorito de todas",
+    "sub": "Empieza por el sérum que afina la apariencia de los poros, con suavidad.",
     "badge": "Más vendido",
     "soldOut": "Agotado",
     "added": "Agregado ✓",
     "addToRitual": "Agregar al ritual",
     "add": "Agregar",
     "viewDetail": "Ver detalle",
-    "comingSoon": "Muy pronto ✦ nueva colección"
+    "comingSoon": "Muy pronto ✦ nueva colección",
+    "spotlightEyebrow": "Cuidado de poros",
+    "spotlightPoints": [
+      "Afina visiblemente la apariencia de los poros",
+      "Exfoliación PHA suave para puntos negros",
+      "Envío gratis con seguimiento en todos los pedidos"
+    ],
+    "from": "Desde",
+    "shopNow": "Comprar ahora"
   },
   "newsletter": {
     "placeholder": "tu@correo.com",

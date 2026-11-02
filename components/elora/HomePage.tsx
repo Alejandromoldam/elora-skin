@@ -51,9 +51,9 @@ export default async function HomePage({ locale }: { locale: Locale }) {
   const featured = catalogSnapshot.products[0] ?? null;
   const p = (path: string) => localizePath(path, locale);
 
+  const featuredUrl = featured?.productUrl ? p(featured.productUrl) : "#bestsellers";
   const navItems = [
-    { label: home.nav.skincare, href: "/categorias" },
-    { label: home.nav.makeup, href: "/categorias" },
+    { label: home.nav.skincare, href: "#bestsellers" },
     { label: home.nav.ritual, href: "#ritual" },
     { label: home.nav.contact, href: "/contacto" },
   ];
@@ -70,7 +70,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
       {/* 2 — Nav ------------------------------------------------------------ */}
       <header className="elora-header">
         <nav className="elora-nav">
-          <Link href={p("/")} className="elora-logo">
+          <Link href={p("/")} className="elora-logo notranslate" translate="no">
             Elora <span>Skin</span>
           </Link>
           <ul className="elora-nav-links">
@@ -130,7 +130,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
             </h1>
             <p className="elora-hero-lead">{home.heroLead}</p>
             <div className="elora-hero-cta">
-              <PillButton href="#bestsellers">{home.ctaShop}</PillButton>
+              <PillButton href={featuredUrl}>{home.ctaShop}</PillButton>
               <PillButton href="#ritual" variant="outline">
                 {home.ctaRitual}
               </PillButton>
@@ -139,7 +139,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
 
           <div className="elora-hero-media">
             {featured ? (
-              <div className="elora-hero-frame">
+              <Link href={featuredUrl} className="elora-hero-frame" aria-label={featured.title}>
                 <Image
                   src={featured.imageUrl}
                   alt={featured.imageAlt || featured.title}
@@ -148,7 +148,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
                   priority
                   sizes="(max-width: 980px) 80vw, 360px"
                 />
-              </div>
+              </Link>
             ) : (
               <div className="elora-hero-frame is-placeholder" aria-hidden="true">
                 <div>
@@ -285,17 +285,14 @@ export default async function HomePage({ locale }: { locale: Locale }) {
       <footer className="elora-footer">
         <div className="elora-footer-grid">
           <div>
-            <div className="elora-footer-logo">Elora Skin</div>
+            <div className="elora-footer-logo notranslate" translate="no">Elora Skin</div>
             <p className="elora-footer-tag">{home.footerTag}</p>
           </div>
           <div>
             <h4>{home.footerShop}</h4>
             <ul>
               <li>
-                <a href="/categorias">{home.nav.skincare}</a>
-              </li>
-              <li>
-                <a href="/categorias">{home.nav.makeup}</a>
+                <a href="#bestsellers">{home.nav.skincare}</a>
               </li>
               <li>
                 <a href="/cart">{home.footerBag}</a>

@@ -175,20 +175,28 @@ export async function fetchHomeCatalogSnapshot(
   `;
 
   try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": token,
-      },
-      body: JSON.stringify({
-        query,
-        variables: { first },
-      }),
-      next: { revalidate: 180 },
-    });
+    // El token puede ser público o privado (Headless). Probamos ambos
+    // encabezados, igual que /api/catalog, para que la portada renderice
+    // los productos desde el servidor y no dependa del navegador.
+    const authHeaderOptions: Array<Record<string, string>> = [
+      { "Shopify-Storefront-Private-Token": token },
+      { "X-Shopify-Storefront-Access-Token": token },
+    ];
+    let response: Response | null = null;
+    for (const authHeaders of authHeaderOptions) {
+      const candidate = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...authHeaders },
+        body: JSON.stringify({ query, variables: { first } }),
+        next: { revalidate: 180 },
+      });
+      if (candidate.ok) {
+        response = candidate;
+        break;
+      }
+    }
 
-    if (!response.ok) {
+    if (!response) {
       return { products: [], hasMore: false, nextCursor: null };
     }
 

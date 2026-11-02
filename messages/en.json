@@ -1,63 +1,63 @@
 {
   "home": {
     "announcement": [
-      "Free shipping over USD 40",
-      "Real ingredients",
-      "Cruelty free",
-      "Secure checkout · Visa · Mastercard"
+      "Free tracked shipping on every order",
+      "Gentle on sensitive skin",
+      "Secure, encrypted checkout",
+      "New: Pore Refining Serum"
     ],
     "nav": {
-      "skincare": "Skincare",
+      "skincare": "Shop",
       "makeup": "Makeup",
-      "ritual": "Your ritual",
+      "ritual": "How to use",
       "contact": "Contact"
     },
-    "heroEyebrow": "New facial collection · 2026",
-    "heroTitlePre": "Your skin, at its",
-    "heroTitleEm": "very best.",
-    "heroLead": "Skincare rituals made with real ingredients, clean formulas, and care that feels like a hug.",
-    "ctaShop": "Shop bestsellers",
-    "ctaRitual": "Find your ritual",
+    "heroEyebrow": "New · Pore Refining Serum",
+    "heroTitlePre": "Smoother skin,",
+    "heroTitleEm": "less visible pores.",
+    "heroLead": "A gentle lactobionic acid (PHA) serum that clears pore buildup and smooths texture — kind enough for sensitive skin.",
+    "ctaShop": "Shop the serum",
+    "ctaRitual": "How to use it",
     "heroComingSoon": "Coming soon — new collection",
     "chips": [
-      "Real glow",
-      "Skin-friendly",
-      "Secure checkout"
+      "Refines pores",
+      "Gentle PHA",
+      "Free shipping"
     ],
     "trust": [
-      "Worldwide shipping",
+      "Free tracked shipping",
       "100% secure checkout",
-      "Real ingredients",
-      "Cruelty free"
+      "Gentle formulas",
+      "Real support"
     ],
-    "ritualEyebrow": "Your ritual",
-    "ritualTitle": "A 3-minute ritual",
-    "ritualSub": "Three simple steps designed to become a moment of your own, every day.",
+    "ritualEyebrow": "How to use",
+    "ritualTitle": "A 1-minute ritual",
+    "ritualSub": "Three simple steps, morning and night.",
     "ritualSteps": [
       {
         "number": "01",
         "title": "Cleanse",
-        "desc": "Removes impurities and makeup without stripping your skin."
+        "desc": "Start with clean, dry skin to let the serum work."
       },
       {
         "number": "02",
-        "title": "Treat & hydrate",
-        "desc": "Deeply nourishes with real ingredients, no fillers."
+        "title": "Apply 4–5 drops",
+        "desc": "Pat over face and neck, focusing where pores are most visible."
       },
       {
         "number": "03",
-        "title": "Enhance",
-        "desc": "A finishing touch that lets your skin glow as it is."
+        "title": "Moisturize & protect",
+        "desc": "Follow with moisturizer, and SPF during the day."
       }
     ],
     "honestEyebrow": "Honest beauty",
-    "honestTitle": "Real ingredients, honest rituals",
-    "honestBody": "We believe skincare shouldn't be a mystery. We choose real ingredients and clean formulas, made for real skin and for showing up for you every day.",
+    "honestTitle": "Skincare without the hype",
+    "honestBody": "We pick formulas that do one job well, explain them clearly and price them fairly. No miracle promises — just products you can actually stick with.",
     "honestList": [
       "No inflated claims or impossible promises",
       "No fake reviews — only what's real",
-      "Cruelty free, always",
-      "Clear prices in USD, no surprises"
+      "Gentle formulas for everyday use",
+      "Clear prices, free shipping, no surprises"
     ],
     "newsTitle": "Join the glow club",
     "newsSub": "Subscribe for news and perks from Elora Skin, straight to your inbox.",
@@ -71,20 +71,28 @@
     "footerPrivacy": "Privacy",
     "footerTerms": "Terms",
     "footerRights": "© 2026 Elora Skin — All rights reserved",
-    "metaTitle": "Elora Skin | Skincare with real ingredients",
-    "metaDescription": "Elora Skin — skincare rituals made with real ingredients, clean formulas, and results that feel like a hug."
+    "metaTitle": "Elora Skin | Gentle skincare that works",
+    "metaDescription": "Elora Skin — gentle, honest skincare. Shop the Lactobionic Acid Pore Refining Serum with free tracked shipping."
   },
   "bestsellers": {
-    "eyebrow": "Bestsellers",
-    "title": "Community favorites",
-    "sub": "Our most-loved essentials — chosen for what truly works, not for what looks pretty on a shelf.",
+    "eyebrow": "Bestseller",
+    "title": "The one everyone's talking about",
+    "sub": "Start with the serum that refines the look of pores, gently.",
     "badge": "Bestseller",
     "soldOut": "Sold out",
     "added": "Added ✓",
     "addToRitual": "Add to ritual",
     "add": "Add",
     "viewDetail": "View details",
-    "comingSoon": "Coming soon ✦ new collection"
+    "comingSoon": "Coming soon ✦ new collection",
+    "spotlightEyebrow": "Pore care",
+    "spotlightPoints": [
+      "Visibly refines the look of pores",
+      "Gentle PHA exfoliation for blackheads",
+      "Free tracked shipping on every order"
+    ],
+    "from": "From",
+    "shopNow": "Shop now"
   },
   "newsletter": {
     "placeholder": "you@email.com",
