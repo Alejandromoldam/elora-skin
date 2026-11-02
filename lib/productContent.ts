@@ -30,20 +30,19 @@ const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
       highlights: [
         "Visibly refines the look of pores",
         "Lifts blackheads with gentle PHA exfoliation",
-        "Balances oil with niacinamide",
+        "Helps balance oil and shine",
         "Gentle enough for sensitive skin",
       ],
       benefitsTitle: "Why you'll love it",
       benefits: [
         { icon: "pores", title: "Refines pores", text: "Clears the buildup that makes pores look bigger, for a smoother, more even surface." },
         { icon: "blackheads", title: "Clears blackheads", text: "Lactobionic acid gently loosens congestion without scrubbing or stinging." },
-        { icon: "oil", title: "Balances oil", text: "Niacinamide helps keep shine under control throughout the day." },
+        { icon: "oil", title: "Balances oil", text: "Helps regulate the water-oil balance so skin looks less shiny through the day." },
         { icon: "gentle", title: "Gentle on skin", text: "A PHA formula designed to be kind to sensitive and reactive skin." },
       ],
-      ingredientsTitle: "What's inside",
+      ingredientsTitle: "The hero ingredient",
       ingredients: [
         { name: "Lactobionic Acid", tag: "PHA exfoliant", text: "A gentle polyhydroxy acid that exfoliates the surface and loosens pore buildup, with less irritation than classic acids." },
-        { name: "Niacinamide", tag: "Vitamin B3", text: "Helps balance excess oil and supports a smoother, more even-looking complexion." },
       ],
       howToTitle: "Your 1-minute ritual",
       howTo: [
@@ -68,20 +67,19 @@ const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
       highlights: [
         "Afina visiblemente la apariencia de los poros",
         "Ayuda con los puntos negros con exfoliación PHA suave",
-        "Equilibra la grasa con niacinamida",
+        "Ayuda a equilibrar la grasa y los brillos",
         "Suave incluso para piel sensible",
       ],
       benefitsTitle: "Por qué te va a encantar",
       benefits: [
         { icon: "pores", title: "Afina los poros", text: "Limpia la acumulación que hace ver los poros más grandes, para una piel más lisa y uniforme." },
         { icon: "blackheads", title: "Menos puntos negros", text: "El ácido lactobiónico afloja la congestión sin frotar ni arder." },
-        { icon: "oil", title: "Equilibra la grasa", text: "La niacinamida ayuda a controlar los brillos durante el día." },
+        { icon: "oil", title: "Equilibra la grasa", text: "Ayuda a regular el balance agua-grasa para que la piel brille menos durante el día." },
         { icon: "gentle", title: "Suave con tu piel", text: "Una fórmula PHA pensada para pieles sensibles y reactivas." },
       ],
-      ingredientsTitle: "Qué contiene",
+      ingredientsTitle: "El ingrediente estrella",
       ingredients: [
         { name: "Ácido lactobiónico", tag: "Exfoliante PHA", text: "Un polihidroxiácido suave que exfolia la superficie y afloja la acumulación en los poros, con menos irritación que los ácidos clásicos." },
-        { name: "Niacinamida", tag: "Vitamina B3", text: "Ayuda a equilibrar el exceso de grasa y a lograr un tono más liso y uniforme." },
       ],
       howToTitle: "Tu ritual de 1 minuto",
       howTo: [
