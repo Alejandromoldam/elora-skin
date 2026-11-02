@@ -40,10 +40,10 @@ function drawBubble(ctx: CanvasRenderingContext2D, b: Bubble, t: number) {
 
   // Cuerpo: centro casi transparente, borde iridiscente
   const body = ctx.createRadialGradient(x - r * 0.25, y - r * 0.3, r * 0.1, x, y, r);
-  body.addColorStop(0, "rgba(255, 255, 255, 0.04)");
-  body.addColorStop(0.62, `hsla(${b.hue + shift}, 90%, 92%, 0.08)`);
-  body.addColorStop(0.86, `hsla(${b.hue + 40 + shift}, 85%, 82%, 0.28)`);
-  body.addColorStop(0.97, `hsla(${b.hue - 30 + shift}, 90%, 88%, 0.55)`);
+  body.addColorStop(0, "rgba(255, 255, 255, 0.08)");
+  body.addColorStop(0.62, `hsla(${b.hue + shift}, 90%, 90%, 0.14)`);
+  body.addColorStop(0.86, `hsla(${b.hue + 40 + shift}, 85%, 80%, 0.42)`);
+  body.addColorStop(0.97, `hsla(${b.hue - 30 + shift}, 90%, 86%, 0.78)`);
   body.addColorStop(1, "rgba(255, 255, 255, 0)");
   ctx.fillStyle = body;
   ctx.beginPath();
@@ -52,7 +52,7 @@ function drawBubble(ctx: CanvasRenderingContext2D, b: Bubble, t: number) {
 
   // Contorno fino con brillo
   ctx.lineWidth = Math.max(0.8, r * 0.025);
-  ctx.strokeStyle = `hsla(${b.hue + 60 + shift}, 80%, 96%, 0.45)`;
+  ctx.strokeStyle = `hsla(${b.hue + 60 + shift}, 85%, 97%, 0.7)`;
   ctx.beginPath();
   ctx.arc(x, y, r * 0.985, 0, Math.PI * 2);
   ctx.stroke();
@@ -62,7 +62,7 @@ function drawBubble(ctx: CanvasRenderingContext2D, b: Bubble, t: number) {
   ctx.translate(x - r * 0.38, y - r * 0.42);
   ctx.rotate(-0.7);
   const spec = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 0.32);
-  spec.addColorStop(0, "rgba(255, 255, 255, 0.85)");
+  spec.addColorStop(0, "rgba(255, 255, 255, 0.95)");
   spec.addColorStop(1, "rgba(255, 255, 255, 0)");
   ctx.fillStyle = spec;
   ctx.beginPath();
@@ -72,7 +72,7 @@ function drawBubble(ctx: CanvasRenderingContext2D, b: Bubble, t: number) {
 
   // Reflejo secundario abajo-derecha (la "ventana" del agua)
   ctx.lineWidth = Math.max(0.8, r * 0.05);
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
   ctx.beginPath();
   ctx.arc(x, y, r * 0.78, 0.15 * Math.PI, 0.42 * Math.PI);
   ctx.stroke();
@@ -104,7 +104,7 @@ export default function BubbleBackground({ className = "" }: { className?: strin
       canvas!.style.width = `${w}px`;
       canvas!.style.height = `${h}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = w < 640 ? 11 : w < 1100 ? 15 : 20;
+      const count = w < 640 ? 13 : w < 1100 ? 17 : 22;
       if (bubbles.length === 0) bubbles = Array.from({ length: count }, () => makeBubble(w, h, true));
       else if (bubbles.length > count) bubbles = bubbles.slice(0, count);
       else while (bubbles.length < count) bubbles.push(makeBubble(w, h, true));
