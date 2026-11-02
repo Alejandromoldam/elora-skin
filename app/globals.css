@@ -4928,3 +4928,4 @@ body.cart-page-active .whatsapp-float-root {
 .elx .elora-pill { font-weight: 500; box-shadow: var(--eg-btn-glow); }
 .elx .elora-pill.is-outline { border: 1px solid rgba(255, 255, 255, .7); }
 .elx .elx-final { background: linear-gradient(135deg, #d9689a, #b8487a); box-shadow: 0 30px 70px -24px rgba(192, 67, 111, .5); border-radius: 36px; }
+.eg-pack-tag { max-width: calc(100% + 6px); overflow: hidden; text-overflow: ellipsis; }
