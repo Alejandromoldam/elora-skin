@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useParams } from "next/navigation";
 import { getMessages, localizePath, currencyLocale, type Locale } from "@/lib/i18n";
 import LangSwitcher from "@/components/elora/LangSwitcher";
@@ -11,7 +11,7 @@ import RevealOnScroll from "@/components/elora/RevealOnScroll";
 import EloraCartLink from "@/components/elora/EloraCartLink";
 import { LightningIcon } from "@/components/elora/Icons";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
-import { getProductLandingContent, type BenefitIcon } from "@/lib/productContent";
+import { getProductLandingContent, getProductTheme, type BenefitIcon } from "@/lib/productContent";
 import BubbleBackground from "@/components/elora/BubbleBackground";
 
 type ProductImage = {
@@ -445,6 +445,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     () => (product ? getProductLandingContent(product.handle, locale) : null),
     [product, locale]
   );
+  const theme = useMemo(() => getProductTheme(handle), [handle]);
   const [buyingNow, setBuyingNow] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const touchStartX = useRef<number | null>(null);
@@ -537,11 +538,14 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
   const priceWas = selectedPack && selectedPack.saving > 0 ? selectedPack.reference : 0;
 
   return (
-    <main className="elora-shop elx relative min-h-[100svh]">
+    <main
+      className={`elora-shop elx relative min-h-[100svh]${theme ? " has-theme" : ""}`}
+      style={theme ? ({ "--p-accent": theme.accent, "--p-accent-soft": theme.accentSoft, "--p-mist-1": theme.mist[0], "--p-mist-2": theme.mist[1] } as CSSProperties) : undefined}
+    >
       <div className="elora-bg" aria-hidden="true">
         <span className="eg-ribbon r1" />
         <span className="eg-ribbon r2" />
-        <BubbleBackground />
+        <BubbleBackground hues={theme?.hues} />
       </div>
 
       <header className="elx-top">

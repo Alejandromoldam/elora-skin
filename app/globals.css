@@ -5003,3 +5003,40 @@ body.cart-page-active .whatsapp-float-root {
 @media (prefers-reduced-motion: reduce) {
   .eg *, .elx * { animation: none !important; transition: none !important; }
 }
+
+/* =====================================================================
+   Glow · Profundidad, suavidad extra y tema por producto
+   ===================================================================== */
+/* Burbujas: capa lejana muy difuminada, cercana suave (no distraen) */
+.eg-bubbles.is-far { filter: blur(7px); opacity: .7; }
+.eg-bubbles.is-near { filter: blur(1.6px); opacity: .85; }
+
+/* Texto más suave y nítido */
+.eg, .elx { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.eg-h1, .elx .elx-title { text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 6px 26px rgba(255, 255, 255, .55); }
+.eg-h2, .eg-pack-price, .elx .elx-h2 { text-shadow: 0 4px 18px rgba(255, 255, 255, .5); }
+.eg-lead, .eg-benefit-title, .eg-step-label, .elx .elx-tagline, .elx .elx-highlights li { color: color-mix(in srgb, var(--eg-ink) 88%, #fff); }
+
+/* Bordes de vidrio “plumados”: línea casi invisible + halo luminoso */
+.eg-glass, .eg-pack, .eg-benefit, .eg-step-img, .eg-hero-frame,
+.elx .elx-pack, .elx .elx-trust-item, .elx .elx-benefit, .elx .elx-ingredient, .elx .elx-step, .elx .elx-faq-item, .elx .elx-main-media, .elx .elx-split-media {
+  border-color: rgba(255, 255, 255, .42) !important;
+  box-shadow: 0 24px 64px -26px rgba(192, 67, 111, .32), 0 0 0 1px rgba(255, 255, 255, .18), inset 0 1px 1px rgba(255, 255, 255, .65), inset 0 -10px 24px -18px rgba(255, 205, 225, .45) !important;
+}
+.eg-pack.is-on, .elx .elx-pack.is-active { border-color: rgba(255, 255, 255, .35) !important; }
+.eg-glass { border-radius: 30px; }
+.eg-trust { border-radius: 999px; }
+.eg-btn, .elx .elora-pill:not(.is-outline) { border-color: rgba(255, 255, 255, .25); }
+
+/* Tema por producto: acentos secundarios y neblina del fondo */
+.elx.has-theme .elx-eyebrow, .elx.has-theme .elx-label, .elx.has-theme .elx-check, .elx.has-theme .elx-assure svg { color: var(--p-accent); }
+.elx.has-theme .elx-trust-ico, .elx.has-theme .elx-benefit-ico, .elx.has-theme .elx-tag { background: var(--p-accent-soft); color: var(--p-accent); }
+.elx.has-theme .elx-thumb.is-active { border-color: var(--p-accent) !important; box-shadow: 0 0 0 2px var(--p-accent-soft) !important; }
+.elx.has-theme .elx-faq-sign { color: var(--p-accent); }
+.elx.has-theme .elora-bg {
+  background:
+    radial-gradient(900px 620px at 88% 4%, rgba(255, 255, 255, .75), transparent 60%),
+    radial-gradient(760px 560px at 0% 40%, var(--p-mist-1), transparent 65%),
+    radial-gradient(820px 600px at 75% 95%, var(--p-mist-2), transparent 65%),
+    linear-gradient(172deg, #fff5f7 0%, #fbe6ee 45%, #f4dbe6 100%);
+}

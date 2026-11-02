@@ -8,6 +8,35 @@ import type { Locale } from "@/lib/i18n";
 
 export type BenefitIcon = "pores" | "blackheads" | "oil" | "gentle" | "glow" | "hydrate";
 
+// Tema visual propio de cada producto: tiñe el fondo, las burbujas y los
+// acentos secundarios con los tonos de su empaque. Los botones de compra
+// mantienen el frambuesa de la marca para no romper la identidad.
+export type ProductTheme = {
+  /** Tonos de las burbujas (grados HSL). */
+  hues: number[];
+  /** Acento secundario: etiquetas, viñetas, miniaturas. */
+  accent: string;
+  /** Versión suave del acento para fondos de íconos y chips. */
+  accentSoft: string;
+  /** Dos neblinas de color para el fondo. */
+  mist: [string, string];
+};
+
+export const PRODUCT_THEMES: Record<string, ProductTheme> = {
+  // Sérum EELHOE: caja blanca con línea azul real -> rosa lechoso con
+  // neblina azul lavanda y acentos azul pervinca.
+  "pore-refining-serum": {
+    hues: [338, 226, 250, 300, 205],
+    accent: "#4f6fc4",
+    accentSoft: "rgba(118, 146, 226, 0.16)",
+    mist: ["rgba(186, 204, 255, 0.55)", "rgba(255, 214, 230, 0.6)"],
+  },
+};
+
+export function getProductTheme(handle: string): ProductTheme | null {
+  return PRODUCT_THEMES[handle] ?? null;
+}
+
 export type ProductLandingContent = {
   tagline: string;
   highlights: string[];
