@@ -13,6 +13,9 @@ export type CatalogProduct = {
   availableForSale: boolean;
   productUrl: string;
   buyNowUrl: string;
+  /** Galería (hasta 6 imágenes) y variantes; las usa la portada. */
+  gallery?: Array<{ url: string; alt: string }>;
+  variants?: Array<{ id: string; title: string; availableForSale: boolean; priceAmount: string; compareAtAmount: string | null }>;
 };
 
 export type CatalogSnapshot = {
@@ -54,7 +57,10 @@ type ShopifyProductsResponse = {
             edges: Array<{
               node: {
                 id: string;
+                title?: string | null;
                 availableForSale?: boolean | null;
+                price?: { amount?: string | null } | null;
+                compareAtPrice?: { amount?: string | null } | null;
               };
             }>;
           };
@@ -146,7 +152,7 @@ export async function fetchHomeCatalogSnapshot(
             description
             descriptionHtml
             availableForSale
-            images(first: 1) {
+            images(first: 6) {
               edges {
                 node {
                   url
@@ -164,7 +170,10 @@ export async function fetchHomeCatalogSnapshot(
               edges {
                 node {
                   id
+                  title
                   availableForSale
+                  price { amount }
+                  compareAtPrice { amount }
                 }
               }
             }
@@ -233,6 +242,17 @@ export async function fetchHomeCatalogSnapshot(
         availableForSale: Boolean(node.availableForSale),
         productUrl,
         buyNowUrl,
+        gallery: node.images.edges.map(({ node: img }) => ({
+          url: normalizeShopifyImageUrl(domain, img.url),
+          alt: img.altText || title,
+        })),
+        variants: node.variants.edges.map(({ node: v }) => ({
+          id: v.id,
+          title: v.title || "",
+          availableForSale: Boolean(v.availableForSale),
+          priceAmount: v.price?.amount || node.priceRange?.minVariantPrice?.amount || "0",
+          compareAtAmount: v.compareAtPrice?.amount || null,
+        })),
       } satisfies CatalogProduct;
     });
 

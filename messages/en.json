@@ -15,7 +15,7 @@
     "heroEyebrow": "New · Pore Refining Serum",
     "heroTitlePre": "Smoother skin,",
     "heroTitleEm": "less visible pores.",
-    "heroLead": "A gentle lactobionic acid (PHA) serum that clears pore buildup and smooths texture — kind enough for sensitive skin.",
+    "heroLead": "A gentle lactobionic acid serum that clears pore buildup and smooths texture.",
     "ctaShop": "Shop the serum",
     "ctaRitual": "How to use it",
     "heroComingSoon": "Coming soon — new collection",
@@ -25,29 +25,29 @@
       "Free shipping"
     ],
     "trust": [
-      "Free tracked shipping",
-      "100% secure checkout",
+      "Free shipping",
+      "Secure checkout",
       "Gentle formulas",
       "Real support"
     ],
     "ritualEyebrow": "How to use",
-    "ritualTitle": "A 1-minute ritual",
+    "ritualTitle": "How to use",
     "ritualSub": "Three simple steps, morning and night.",
     "ritualSteps": [
       {
         "number": "01",
         "title": "Cleanse",
-        "desc": "Start with clean, dry skin to let the serum work."
+        "desc": "Start with clean, dry skin."
       },
       {
         "number": "02",
         "title": "Apply 4–5 drops",
-        "desc": "Pat over face and neck, focusing where pores are most visible."
+        "desc": "Pat over face and neck."
       },
       {
         "number": "03",
-        "title": "Moisturize & protect",
-        "desc": "Follow with moisturizer, and SPF during the day."
+        "title": "Pat & glow",
+        "desc": "Follow with moisturizer and SPF by day."
       }
     ],
     "honestEyebrow": "Honest beauty",

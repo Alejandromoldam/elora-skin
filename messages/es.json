@@ -15,7 +15,7 @@
     "heroEyebrow": "Nuevo · Sérum refinador de poros",
     "heroTitlePre": "Piel más lisa,",
     "heroTitleEm": "poros menos visibles.",
-    "heroLead": "Un sérum suave con ácido lactobiónico (PHA) que limpia la acumulación en los poros y alisa la textura, ideal incluso para piel sensible.",
+    "heroLead": "Un sérum suave con ácido lactobiónico que limpia los poros y alisa la textura.",
     "ctaShop": "Comprar el sérum",
     "ctaRitual": "Cómo se usa",
     "heroComingSoon": "Muy pronto — nueva colección",
@@ -25,29 +25,29 @@
       "Envío gratis"
     ],
     "trust": [
-      "Envío gratis con seguimiento",
-      "Pago 100% seguro",
+      "Envío gratis",
+      "Pago seguro",
       "Fórmulas suaves",
       "Atención real"
     ],
     "ritualEyebrow": "Cómo se usa",
-    "ritualTitle": "Un ritual de 1 minuto",
+    "ritualTitle": "Cómo se usa",
     "ritualSub": "Tres pasos sencillos, mañana y noche.",
     "ritualSteps": [
       {
         "number": "01",
         "title": "Limpia",
-        "desc": "Empieza con la piel limpia y seca para que el sérum actúe."
+        "desc": "Empieza con la piel limpia y seca."
       },
       {
         "number": "02",
         "title": "Aplica 4–5 gotas",
-        "desc": "Distribuye en rostro y cuello, sobre todo donde se ven los poros."
+        "desc": "Distribuye en rostro y cuello."
       },
       {
         "number": "03",
-        "title": "Hidrata y protege",
-        "desc": "Termina con hidratante y, de día, protector solar."
+        "title": "Toques y brillo",
+        "desc": "Luego hidratante y protector solar de día."
       }
     ],
     "honestEyebrow": "Belleza honesta",

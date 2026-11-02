@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, Fraunces, Outfit } from "next/font/google";
+import { Inter, Lexend } from "next/font/google";
 import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
@@ -16,15 +16,15 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Elora Skin "Glow Ritual" brand type system (loaded via next/font, exposed as CSS variables).
-const fraunces = Fraunces({
+// Elora Skin "Glow" type system: Lexend (geométrica, redondeada y moderna)
+// para titulares y texto, expuesta como variables CSS.
+const fraunces = Lexend({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["500", "600", "700", "800"],
   variable: "--font-display",
   display: "swap",
 });
-const outfit = Outfit({
+const outfit = Lexend({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-body",
