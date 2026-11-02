@@ -70,7 +70,7 @@
     "footerLegal": "Legal",
     "footerPrivacy": "Privacy",
     "footerTerms": "Terms",
-    "footerRights": "© 2026 Elora Skin — All rights reserved",
+    "footerRights": "© 2026 Elora Skin. All rights reserved.",
     "metaTitle": "Elora Skin | Gentle skincare that works",
     "metaDescription": "Elora Skin — gentle, honest skincare. Shop the Lactobionic Acid Pore Refining Serum with free tracked shipping."
   },
@@ -111,8 +111,8 @@
     "fastShipping": "Fast shipping",
     "securePayment": "Secure checkout",
     "quantity": "Quantity",
-    "addToCart": "Add to cart",
-    "adding": "Adding...",
+    "addToCart": "Add to bag",
+    "adding": "Adding…",
     "buyNow": "Buy now",
     "trustEyebrow": "The Elora promise",
     "trustSignals": [
@@ -139,7 +139,7 @@
     "mostPopular": "Most popular",
     "bestValue": "Best value",
     "addToBag": "Add to bag",
-    "redirecting": "Opening checkout...",
+    "redirecting": "Opening checkout…",
     "shippingLine": "Free tracked shipping · Arrives in 2–3 weeks",
     "secureLine": "Secure, encrypted checkout",
     "details": "Product details",

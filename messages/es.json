@@ -4,7 +4,7 @@
       "Envío gratis con seguimiento en todos los pedidos",
       "Suave con la piel sensible",
       "Pago seguro y cifrado",
-      "Nuevo: Sérum refinador de poros"
+      "Nuevo: sérum refinador de poros"
     ],
     "nav": {
       "skincare": "Tienda",
@@ -46,8 +46,8 @@
       },
       {
         "number": "03",
-        "title": "Toques y brillo",
-        "desc": "Luego hidratante y protector solar de día."
+        "title": "Toques suaves",
+        "desc": "Termina con hidratante y, de día, protector solar."
       }
     ],
     "honestEyebrow": "Belleza honesta",
@@ -59,9 +59,9 @@
       "Fórmulas suaves para el día a día",
       "Precios claros, envío gratis, sin sorpresas"
     ],
-    "newsTitle": "Únete al club del glow",
+    "newsTitle": "Únete al club Elora",
     "newsSub": "Suscríbete y recibe novedades y beneficios de Elora Skin en tu correo.",
-    "footerTag": "Skincare formulado con ingredientes reales para pieles reales.",
+    "footerTag": "Cuidado de la piel con ingredientes reales, para piel real.",
     "footerShop": "Tienda",
     "footerBag": "Mi bolsa",
     "footerHelp": "Ayuda",
@@ -70,7 +70,7 @@
     "footerLegal": "Legal",
     "footerPrivacy": "Privacidad",
     "footerTerms": "Términos",
-    "footerRights": "© 2026 Elora Skin — Todos los derechos reservados",
+    "footerRights": "© 2026 Elora Skin. Todos los derechos reservados.",
     "metaTitle": "Elora Skin | Cuidado de la piel suave que funciona",
     "metaDescription": "Elora Skin — cuidado de la piel suave y honesto. Compra el Sérum refinador de poros con ácido lactobiónico con envío gratis."
   },
@@ -80,9 +80,9 @@
     "sub": "Empieza por el sérum que afina la apariencia de los poros, con suavidad.",
     "badge": "Más vendido",
     "soldOut": "Agotado",
-    "added": "Agregado ✓",
-    "addToRitual": "Agregar al ritual",
-    "add": "Agregar",
+    "added": "Añadido ✓",
+    "addToRitual": "Añadir al ritual",
+    "add": "Añadir",
     "viewDetail": "Ver detalle",
     "comingSoon": "Muy pronto ✦ nueva colección",
     "spotlightEyebrow": "Cuidado de poros",
@@ -111,8 +111,8 @@
     "fastShipping": "Envío rápido",
     "securePayment": "Pago seguro",
     "quantity": "Cantidad",
-    "addToCart": "Agregar al carrito",
-    "adding": "Agregando...",
+    "addToCart": "Añadir a la bolsa",
+    "adding": "Añadiendo…",
     "buyNow": "Comprar ahora",
     "trustEyebrow": "Confianza Elora",
     "trustSignals": [
@@ -120,7 +120,7 @@
       "Envíos internacionales",
       "Garantía de satisfacción",
       "Soporte especializado",
-      "Checkout cifrado",
+      "Pago cifrado",
       "Productos verificados"
     ],
     "knowEyebrow": "Conócelo a fondo",
@@ -139,7 +139,7 @@
     "mostPopular": "Más popular",
     "bestValue": "Mejor precio",
     "addToBag": "Añadir a la bolsa",
-    "redirecting": "Abriendo el pago...",
+    "redirecting": "Abriendo el pago…",
     "shippingLine": "Envío gratis con seguimiento · Llega en 2–3 semanas",
     "secureLine": "Pago seguro y cifrado",
     "details": "Detalles del producto",

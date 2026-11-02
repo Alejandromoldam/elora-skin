@@ -5040,3 +5040,22 @@ body.cart-page-active .whatsapp-float-root {
     radial-gradient(820px 600px at 75% 95%, var(--p-mist-2), transparent 65%),
     linear-gradient(172deg, #fff5f7 0%, #fbe6ee 45%, #f4dbe6 100%);
 }
+
+/* =====================================================================
+   Tipografía editorial: alineación, cortes de línea y puntuación
+   ===================================================================== */
+.eg, .elx { hyphens: manual; -webkit-hyphens: manual; font-kerning: normal; font-feature-settings: "kern" 1, "liga" 1; }
+.eg-h1, .eg-h2, .elx .elx-title, .elx .elx-h2, .elx .elx-tagline, .eg-pack-name, .eg-benefit-title, .eg-step-label { text-wrap: balance; }
+.eg-lead, .elx .elx-benefit p, .elx .elx-ingredient p, .elx .elx-step p, .elx .elx-faq-item p, .elx .elx-final p, .elx .elx-tip, .elx .product-description-rich p { text-wrap: pretty; }
+/* Alineación según ubicación */
+.eg-hero-copy, .eg-benefit, .eg-step-label, .elx .elx-info, .elx .elx-benefit, .elx .elx-ingredient, .elx .elx-step, .elx .elx-faq-item { text-align: left; }
+.eg-pack, .eg-h2, .eg-footer, .elx .elx-head, .elx .elx-final, .elx .elx-tip { text-align: center; }
+@media (min-width: 900px) { .eg-footer { text-align: left; } .eg-footer-rights { text-align: right; } }
+/* Medidas de lectura cómodas */
+.eg-lead { max-width: 32ch; }
+.elx .elx-faq-item p, .elx .elx-ingredient p { max-width: 68ch; }
+.elx .elx-final p { max-width: 46ch; margin-inline: auto; }
+/* Etiquetas en versalitas con aire */
+.elx .elx-eyebrow, .elx .elx-label, .elx .elx-tag { letter-spacing: .14em; font-weight: 500; }
+/* Números alineados en precios */
+.eg-pack-price, .elx .elx-price, .elx .elx-pack-price strong, .elx .elx-was { font-variant-numeric: tabular-nums lining-nums; }
