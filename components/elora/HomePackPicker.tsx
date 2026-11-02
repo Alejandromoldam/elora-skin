@@ -28,7 +28,7 @@ function units(title: string) {
 }
 
 function money(amount: number, currency: string, locale: Locale) {
-  return new Intl.NumberFormat(locale === "es" ? "es-ES" : "en-US", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency,
     maximumFractionDigits: amount % 1 === 0 ? 0 : 2,

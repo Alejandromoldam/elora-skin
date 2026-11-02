@@ -61,7 +61,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
   const heroImg = gallery[0] ?? (featured ? { url: featured.imageUrl, alt: featured.imageAlt } : null);
   const howToImg = gallery.find((g) => /how to use|modo de/i.test(g.alt)) ?? null;
   const priceLabel = featured
-    ? new Intl.NumberFormat(locale === "es" ? "es-ES" : "en-US", { style: "currency", currency: featured.priceCurrency, maximumFractionDigits: 0 }).format(Number(featured.priceAmount))
+    ? new Intl.NumberFormat("en-US", { style: "currency", currency: featured.priceCurrency, maximumFractionDigits: 0 }).format(Number(featured.priceAmount))
     : "";
 
   const navItems = [

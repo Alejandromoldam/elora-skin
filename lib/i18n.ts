@@ -26,6 +26,8 @@ export function localizePath(path: string, locale: Locale): string {
 }
 
 /** Locale de formateo de moneda por idioma de la página. */
-export function currencyLocale(locale: Locale): string {
-  return locale === "es" ? "es-ES" : "en-US";
+export function currencyLocale(_locale: Locale): string {
+  // Precios en USD: formato "$29.00" en ambos idiomas para que la cifra sea
+  // idéntica a la del checkout y se lea igual en EE. UU. y Latinoamérica.
+  return "en-US";
 }
