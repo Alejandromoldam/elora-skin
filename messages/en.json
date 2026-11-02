@@ -1,7 +1,17 @@
 {
   "home": {
-    "announcement": ["Free shipping over USD 40", "Real ingredients", "Cruelty free", "Secure checkout · Visa · Mastercard"],
-    "nav": { "skincare": "Skincare", "makeup": "Makeup", "ritual": "Your ritual", "contact": "Contact" },
+    "announcement": [
+      "Free shipping over USD 40",
+      "Real ingredients",
+      "Cruelty free",
+      "Secure checkout · Visa · Mastercard"
+    ],
+    "nav": {
+      "skincare": "Skincare",
+      "makeup": "Makeup",
+      "ritual": "Your ritual",
+      "contact": "Contact"
+    },
     "heroEyebrow": "New facial collection · 2026",
     "heroTitlePre": "Your skin, at its",
     "heroTitleEm": "very best.",
@@ -9,15 +19,36 @@
     "ctaShop": "Shop bestsellers",
     "ctaRitual": "Find your ritual",
     "heroComingSoon": "Coming soon — new collection",
-    "chips": ["Real glow", "Skin-friendly", "Secure checkout"],
-    "trust": ["Worldwide shipping", "100% secure checkout", "Real ingredients", "Cruelty free"],
+    "chips": [
+      "Real glow",
+      "Skin-friendly",
+      "Secure checkout"
+    ],
+    "trust": [
+      "Worldwide shipping",
+      "100% secure checkout",
+      "Real ingredients",
+      "Cruelty free"
+    ],
     "ritualEyebrow": "Your ritual",
     "ritualTitle": "A 3-minute ritual",
     "ritualSub": "Three simple steps designed to become a moment of your own, every day.",
     "ritualSteps": [
-      { "number": "01", "title": "Cleanse", "desc": "Removes impurities and makeup without stripping your skin." },
-      { "number": "02", "title": "Treat & hydrate", "desc": "Deeply nourishes with real ingredients, no fillers." },
-      { "number": "03", "title": "Enhance", "desc": "A finishing touch that lets your skin glow as it is." }
+      {
+        "number": "01",
+        "title": "Cleanse",
+        "desc": "Removes impurities and makeup without stripping your skin."
+      },
+      {
+        "number": "02",
+        "title": "Treat & hydrate",
+        "desc": "Deeply nourishes with real ingredients, no fillers."
+      },
+      {
+        "number": "03",
+        "title": "Enhance",
+        "desc": "A finishing touch that lets your skin glow as it is."
+      }
     ],
     "honestEyebrow": "Honest beauty",
     "honestTitle": "Real ingredients, honest rituals",
@@ -76,7 +107,14 @@
     "adding": "Adding...",
     "buyNow": "Buy now",
     "trustEyebrow": "The Elora promise",
-    "trustSignals": ["Secure Shopify checkout", "Worldwide shipping", "Satisfaction guarantee", "Expert support", "Encrypted checkout", "Verified products"],
+    "trustSignals": [
+      "Secure Shopify checkout",
+      "Worldwide shipping",
+      "Satisfaction guarantee",
+      "Expert support",
+      "Encrypted checkout",
+      "Verified products"
+    ],
     "knowEyebrow": "Get to know it",
     "knowTitle": "Why you'll love it",
     "benefits": "Benefits",
@@ -84,6 +122,25 @@
     "usage": "How to use",
     "recommendedEyebrow": "Recommended",
     "recommendedTitle": "You may also like",
-    "metaBuy": "Buy"
+    "metaBuy": "Buy",
+    "packTitle": "Choose your pack",
+    "oneUnit": "1 bottle",
+    "nUnits": "{n} bottles",
+    "perUnit": "{price} each",
+    "save": "Save {amount}",
+    "mostPopular": "Most popular",
+    "bestValue": "Best value",
+    "addToBag": "Add to bag",
+    "redirecting": "Opening checkout...",
+    "shippingLine": "Free tracked shipping · Arrives in 2–3 weeks",
+    "secureLine": "Secure, encrypted checkout",
+    "details": "Product details",
+    "faqEyebrow": "Questions",
+    "faqTitle": "Good to know",
+    "ingredientsEyebrow": "Formula",
+    "howToEyebrow": "How to use",
+    "chooseMyPack": "Choose my pack",
+    "added": "Added to your bag.",
+    "addError": "We couldn't add it to your bag. Please try again."
   }
 }

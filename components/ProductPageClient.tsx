@@ -11,6 +11,7 @@ import RevealOnScroll from "@/components/elora/RevealOnScroll";
 import EloraCartLink from "@/components/elora/EloraCartLink";
 import { LightningIcon } from "@/components/elora/Icons";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
+import { getProductLandingContent, type BenefitIcon } from "@/lib/productContent";
 
 type ProductImage = {
   url: string;
@@ -36,6 +37,7 @@ type ProductVariant = {
   availableForSale: boolean;
   priceAmount: string;
   priceCurrency: string;
+  compareAtAmount?: string | null;
 };
 
 type ProductPayload = {
@@ -325,13 +327,6 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     return plain.replace(/\r\n/g, "\n").split(/\n{2,}/).map((b) => b.trim()).filter(Boolean).map((b) => `<p>${escapeHtml(b).replace(/\n/g, "<br />")}</p>`).join("");
   }, [product]);
 
-  const buyNowUrl = useMemo(() => {
-    if (!product) return "#";
-    const numericVariantId = extractVariantNumericId(selectedVariant?.id);
-    if (!numericVariantId) return product.productUrl;
-    return `https://all-in-one-22092396.myshopify.com/cart/${numericVariantId}:${quantity}`;
-  }, [product, selectedVariant, quantity]);
-
   const maxQuantity = useMemo(() => {
     if (!selectedVariant?.availableForSale) return 1;
     if (selectedVariant.quantityAvailable === null) return 99;
@@ -445,258 +440,477 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     finally { setAddingRelatedId(null); }
   }
 
+  const landing = useMemo(
+    () => (product ? getProductLandingContent(product.handle, locale) : null),
+    [product, locale]
+  );
+  const [buyingNow, setBuyingNow] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const touchStartX = useRef<number | null>(null);
+
+  // Packs: si las variantes son "1 Bottle / 2 Bottles / 3 Bottles" se muestran
+  // como tarjetas con precio por unidad y ahorro frente al precio unitario.
+  const packs = useMemo(() => {
+    if (!product?.variants?.length) return [];
+    const base = product.variants.find((v) => parseUnits(v.title) === 1);
+    const basePrice = base ? getPriceNumber(base.priceAmount) : 0;
+    return product.variants.map((v, index) => {
+      const units = parseUnits(v.title);
+      const price = getPriceNumber(v.priceAmount);
+      const reference = v.compareAtAmount
+        ? getPriceNumber(v.compareAtAmount)
+        : basePrice && units > 1
+          ? basePrice * units
+          : 0;
+      const saving = reference > price ? reference - price : 0;
+      const isLast = index === product.variants.length - 1;
+      const badge =
+        units > 1 && product.variants.length > 2
+          ? isLast
+            ? pt.bestValue
+            : index === 1
+              ? pt.mostPopular
+              : null
+          : null;
+      const label = units > 0
+        ? units === 1
+          ? pt.oneUnit
+          : pt.nUnits.replace("{n}", String(units))
+        : v.title;
+      return { variant: v, units, price, reference, saving, badge, label };
+    });
+  }, [product, pt]);
+
+  const usesPacks = packs.length > 1 && packs.every((p) => p.units > 0);
+  const selectedPack = packs.find((p) => p.variant.id === selectedVariant?.id) || null;
+  const effectiveQty = usesPacks ? 1 : Math.max(1, Math.min(quantity, maxQuantity));
+
+  useEffect(() => {
+    if (usesPacks) setQuantity(1);
+  }, [usesPacks]);
+
+  function money(amount: number | string, currency?: string) {
+    return formatMoney(
+      String(amount),
+      currency || selectedVariant?.priceCurrency || product?.priceCurrency || "USD",
+      intlLocale
+    );
+  }
+
+  async function buyNow() {
+    if (!product || !selectedVariant?.id || !selectedVariant.availableForSale) return;
+    trackBuyNowIntent();
+    setBuyingNow(true);
+    setCartMessage(null);
+    try {
+      const res = await fetch("/api/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ merchandiseId: selectedVariant.id, quantity: effectiveQty }),
+      });
+      const payload = (await res.json()) as CartApiResponse;
+      if (!res.ok || !payload.ok || !payload.cart?.checkoutUrl) {
+        setCartMessage(payload.error || pt.addError);
+        setBuyingNow(false);
+        return;
+      }
+      syncLocalCartLine({ lineId: selectedVariant.id, merchandiseId: selectedVariant.id, quantityToAdd: effectiveQty, title: product.title, variantTitle: selectedVariant.title || "", imageUrl: product.images[0]?.url || currentImage.url, imageAlt: product.images[0]?.altText || currentImage.altText, unitPriceAmount: selectedVariant.priceAmount, unitPriceCurrency: selectedVariant.priceCurrency, availableForSale: selectedVariant.availableForSale, productUrl: product.productUrl });
+      window.location.href = payload.cart.checkoutUrl;
+    } catch {
+      setCartMessage(pt.addError);
+      setBuyingNow(false);
+    }
+  }
+
+  function goToImage(delta: number) {
+    if (!product?.images?.length) return;
+    const total = product.images.length;
+    setActiveImage((c) => (c + delta + total) % total);
+  }
+
+  function scrollToPacks() {
+    document.getElementById("elx-buy")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  const priceNow = selectedPack ? selectedPack.price : getPriceNumber(selectedVariant?.priceAmount || product?.priceAmount || "0");
+  const priceWas = selectedPack && selectedPack.saving > 0 ? selectedPack.reference : 0;
+
   return (
-    <main className="elora-shop relative min-h-[100svh]">
+    <main className="elora-shop elx relative min-h-[100svh]">
       <div className="elora-bg" aria-hidden="true" />
-      <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(6.8rem+env(safe-area-inset-bottom))] pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-20">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <Link href={localizePath("/", locale)} className="elora-pill is-outline elora-shop-cta-sm">
-            <span className="elora-pill-label">{pt.back}</span>
+
+      <header className="elx-top">
+        <div className="elx-wrap elx-top-inner">
+          <Link href={localizePath("/", locale)} className="elx-logo" aria-label="Elora Skin">
+            Elora <em>Skin</em>
           </Link>
           <div className="flex items-center gap-4">
             <LangSwitcher />
             <EloraCartLink label={pt.bag} />
           </div>
         </div>
+      </header>
 
+      <div className="elx-wrap pb-[calc(7rem+env(safe-area-inset-bottom))] pt-4 sm:pt-8 lg:pb-24">
         {loading ? (
-          <div className="elora-shop-panel p-8">
-            <div className="elora-shop-skeleton h-6 w-56" />
-            <div className="elora-shop-skeleton mt-4 h-4 w-72" />
-            <div className="elora-shop-skeleton mt-8 h-[22rem]" />
+          <div className="elx-hero">
+            <div className="elora-shop-skeleton aspect-square w-full rounded-3xl" />
+            <div>
+              <div className="elora-shop-skeleton h-8 w-3/4" />
+              <div className="elora-shop-skeleton mt-4 h-5 w-1/2" />
+              <div className="elora-shop-skeleton mt-8 h-40" />
+            </div>
           </div>
         ) : null}
 
         {!loading && error ? (
           <div className="elora-shop-panel p-8 text-center">
             <p className="text-[#b3244f]">{error}</p>
-            <Link href="/" className="elora-pill elora-shop-cta-sm mt-4">
-              <span className="elora-pill-label">Ir al inicio</span>
+            <Link href={localizePath("/", locale)} className="elora-pill elora-shop-cta-sm mt-4">
+              <span className="elora-pill-label">{pt.back}</span>
             </Link>
           </div>
         ) : null}
 
         {!loading && !error && product ? (
           <>
-            <RevealOnScroll as="section" className="elora-shop-panel grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr]">
-              <div>
-                <div className="elora-shop-media overflow-hidden p-3">
-                  <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} priority className="h-auto w-full rounded-2xl object-cover" />
+            {/* ───────── HERO: galería + compra ───────── */}
+            <section className="elx-hero">
+              <div className="elx-gallery">
+                <div
+                  className="elx-main-media"
+                  onTouchStart={(e) => { touchStartX.current = e.touches[0]?.clientX ?? null; }}
+                  onTouchEnd={(e) => {
+                    const start = touchStartX.current;
+                    const end = e.changedTouches[0]?.clientX ?? null;
+                    touchStartX.current = null;
+                    if (start === null || end === null || Math.abs(end - start) < 40) return;
+                    goToImage(end < start ? 1 : -1);
+                  }}
+                >
+                  <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} priority sizes="(min-width: 1024px) 50vw, 100vw" className="elx-main-img" />
+                  {product.images.length > 1 ? (
+                    <>
+                      <button type="button" className="elx-arrow is-prev" onClick={() => goToImage(-1)} aria-label="Previous image">‹</button>
+                      <button type="button" className="elx-arrow is-next" onClick={() => goToImage(1)} aria-label="Next image">›</button>
+                      <div className="elx-dots" aria-hidden="true">
+                        {product.images.map((img, i) => <span key={`${img.url}-dot`} className={i === activeImage ? "is-on" : ""} />)}
+                      </div>
+                    </>
+                  ) : null}
                 </div>
-
                 {product.images.length > 1 ? (
-                  <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+                  <div className="elx-thumbs">
                     {product.images.map((image, index) => (
-                      <button key={`${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={index === activeImage ? "elora-shop-thumb is-active" : "elora-shop-thumb"}>
-                        <Image src={image.url} alt={image.altText} width={280} height={280} className="h-20 w-full object-cover" />
+                      <button key={`${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={index === activeImage ? "elx-thumb is-active" : "elx-thumb"} aria-label={image.altText}>
+                        <Image src={image.url} alt="" width={200} height={200} className="h-full w-full object-cover" />
                       </button>
                     ))}
                   </div>
                 ) : null}
-
-                {product.videos && product.videos.length > 0 ? (
-                  <div className="mt-6">
-                    <p className="elora-shop-eyebrow mb-3">Videos del producto</p>
-                    <div className="grid gap-4">
-                      {product.videos.map((video, index) => {
-                        const src = video.sources.find((s) => s.mimeType.includes("mp4")) || video.sources[0];
-                        if (!src?.url) return null;
-                        return (
-                          <video key={`video-${index}`} controls playsInline poster={video.previewImageUrl || undefined} className="elora-shop-media w-full" aria-label={video.alt}>
-                            {video.sources.map((s) => <source key={s.url} src={s.url} type={s.mimeType} />)}
-                          </video>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : null}
               </div>
 
-              <div>
-                <p className="elora-shop-eyebrow">{pt.eyebrow}</p>
-                <h1 className="mt-3 break-words text-2xl font-semibold leading-tight sm:text-4xl">{product.title}</h1>
-                <p className="elora-shop-price mt-4 text-2xl">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency, intlLocale)}</p>
+              <div className="elx-info" id="elx-buy">
+                <p className="elx-eyebrow">{product.vendor || "Elora Skin"}</p>
+                <h1 className="elx-title">{product.title}</h1>
+                {landing?.tagline ? <p className="elx-tagline">{landing.tagline}</p> : null}
 
-                {typeof selectedVariant?.quantityAvailable === "number" && selectedVariant.quantityAvailable > 0 && selectedVariant.quantityAvailable <= 10 ? (
-                  <p className="elora-shop-lowstock mt-3">
-                    <LightningIcon className="h-3.5 w-3.5" />
-                    {locale === "es" ? (selectedVariant.quantityAvailable === 1 ? "¡Última unidad disponible!" : `¡Últimas ${selectedVariant.quantityAvailable} unidades disponibles!`) : (selectedVariant.quantityAvailable === 1 ? "Only 1 left in stock!" : `Only ${selectedVariant.quantityAvailable} left in stock!`)}
-                  </p>
+                <div className="elx-price-row">
+                  <span className="elx-price">{money(priceNow)}</span>
+                  {priceWas ? <span className="elx-was">{money(priceWas)}</span> : null}
+                  {selectedPack && selectedPack.saving > 0 ? <span className="elx-save">{pt.save.replace("{amount}", money(selectedPack.saving))}</span> : null}
+                </div>
+
+                {landing?.highlights?.length ? (
+                  <ul className="elx-highlights">
+                    {landing.highlights.map((h) => (
+                      <li key={h}><CheckGlyph />{h}</li>
+                    ))}
+                  </ul>
                 ) : null}
 
-                <div className="elora-shop-soft mt-4 p-4">
-                  <div className="grid gap-2">
-                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{inventoryText}</p>
-                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{pt.fastShipping}</p>
-                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{pt.securePayment}</p>
-                  </div>
-                </div>
+                {usesPacks ? (
+                  <fieldset className="elx-packs">
+                    <legend className="elx-label">{pt.packTitle}</legend>
+                    {packs.map((p) => {
+                      const active = p.variant.id === selectedVariant?.id;
+                      return (
+                        <label key={p.variant.id} className={`elx-pack${active ? " is-active" : ""}${p.badge ? " has-badge" : ""}`}>
+                          <input type="radio" name="pack" value={p.variant.id} checked={active} onChange={() => setSelectedVariantId(p.variant.id)} disabled={!p.variant.availableForSale} />
+                          <span className="elx-radio" aria-hidden="true" />
+                          <span className="elx-pack-main">
+                            <span className="elx-pack-name">{p.label}</span>
+                            {p.units > 1 ? <span className="elx-pack-sub">{pt.perUnit.replace("{price}", money(p.price / p.units))}</span> : null}
+                          </span>
+                          <span className="elx-pack-price">
+                            <strong>{money(p.price)}</strong>
+                            {p.saving > 0 ? <span className="elx-pack-save">{pt.save.replace("{amount}", money(p.saving))}</span> : null}
+                          </span>
+                          {p.badge ? <span className="elx-pack-badge">{p.badge}</span> : null}
+                        </label>
+                      );
+                    })}
+                  </fieldset>
+                ) : (
+                  <>
+                    {product.variants.length > 1 ? (
+                      <div className="mt-5">
+                        <label className="elx-label">{pt.eyebrow}</label>
+                        <select value={selectedVariant?.id || ""} onChange={(e) => setSelectedVariantId(e.target.value)} className="elora-shop-select mt-2">
+                          {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {money(v.priceAmount, v.priceCurrency)}</option>)}
+                        </select>
+                      </div>
+                    ) : null}
+                    <div className="mt-5">
+                      <p className="elx-label">{pt.quantity}</p>
+                      <div className="elora-shop-qty mt-2">
+                        <button type="button" onClick={() => setQuantity((c) => Math.max(1, c - 1))} className="elora-shop-qty-btn" aria-label="-">-</button>
+                        <span className="elora-shop-qty-value">{quantity}</span>
+                        <button type="button" onClick={() => setQuantity((c) => Math.min(maxQuantity, c + 1))} className="elora-shop-qty-btn" aria-label="+">+</button>
+                      </div>
+                    </div>
+                  </>
+                )}
 
-                {product.variants.length > 1 ? (
-                  <div className="mt-4">
-                    <label className="elora-shop-eyebrow">Variante</label>
-                    <select value={selectedVariant?.id || ""} onChange={(e) => setSelectedVariantId(e.target.value)} className="elora-shop-select mt-2">
-                      {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {formatMoney(v.priceAmount, v.priceCurrency, intlLocale)}</option>)}
-                    </select>
-                  </div>
-                ) : null}
+                {cartMessage ? <div className="elora-shop-msg mt-4" role="status">{cartMessage}</div> : null}
 
-                <div className="mt-4">
-                  <p className="elora-shop-eyebrow">{pt.quantity}</p>
-                  <div className="elora-shop-qty mt-2">
-                    <button type="button" onClick={() => setQuantity((c) => Math.max(1, c - 1))} className="elora-shop-qty-btn" aria-label="Disminuir cantidad">-</button>
-                    <span className="elora-shop-qty-value">{quantity}</span>
-                    <button type="button" onClick={() => setQuantity((c) => Math.min(maxQuantity, c + 1))} className="elora-shop-qty-btn" aria-label="Aumentar cantidad">+</button>
-                  </div>
-                </div>
-
-                {cartMessage ? <div className="elora-shop-msg mt-4">{cartMessage}</div> : null}
-
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="elora-shop-cta">
-                    {addingToCart ? pt.adding : pt.addToCart}
+                <div className="elx-ctas">
+                  <PillButton onClick={() => void buyNow()} disabled={buyingNow || !selectedVariant?.availableForSale} className="elora-shop-cta elx-cta-main">
+                    {!selectedVariant?.availableForSale ? pt.soldOut : buyingNow ? pt.redirecting : `${pt.buyNow} · ${money(priceNow * effectiveQty)}`}
                   </PillButton>
-                  <PillButton href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} variant="outline" className="elora-shop-cta">
-                    {pt.buyNow}
+                  <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} variant="outline" className="elora-shop-cta">
+                    {addingToCart ? pt.adding : pt.addToBag}
                   </PillButton>
                 </div>
 
-                <div className="product-description-rich mt-6 text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-                <p className="elora-shop-eyebrow mt-4">{product.vendor || "Elora Skin"} - {product.productType || "Skincare premium"}</p>
+                <ul className="elx-assure">
+                  <li><TrustSignalIcon icon="truck" className="h-4 w-4" />{pt.shippingLine}</li>
+                  <li><TrustSignalIcon icon="lock" className="h-4 w-4" />{pt.secureLine}</li>
+                </ul>
 
-                <div className="elora-shop-soft mt-6 p-4">
-                  <p className="elora-shop-eyebrow">{pt.trustEyebrow}</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {pt.trustSignals.map((title, index) => (
-                      <article key={title} className="elora-shop-trust-item">
-                        <span className="elora-shop-trust-ico"><TrustSignalIcon icon={TRUST_SIGNAL_ICONS[index] ?? "shield"} className="h-4 w-4" /></span>
-                        <span>{title}</span>
+                {landing ? (
+                  <details className="elx-details">
+                    <summary>{pt.details}</summary>
+                    <div className="product-description-rich mt-3 text-sm" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+                  </details>
+                ) : (
+                  <div className="product-description-rich mt-6 text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+                )}
+              </div>
+            </section>
+
+            {/* ───────── Trust strip ───────── */}
+            <section className="elx-trust">
+              {pt.trustSignals.slice(0, 4).map((title, index) => (
+                <div key={title} className="elx-trust-item">
+                  <span className="elx-trust-ico"><TrustSignalIcon icon={TRUST_SIGNAL_ICONS[index] ?? "shield"} className="h-5 w-5" /></span>
+                  <span>{title}</span>
+                </div>
+              ))}
+            </section>
+
+            {landing ? (
+              <>
+                {/* ───────── Beneficios ───────── */}
+                <RevealOnScroll as="section" className="elx-section">
+                  <div className="elx-head">
+                    <p className="elx-eyebrow">{pt.knowEyebrow}</p>
+                    <h2 className="elx-h2">{landing.benefitsTitle}</h2>
+                  </div>
+                  <div className="elx-benefits">
+                    {landing.benefits.map((b) => (
+                      <article key={b.title} className="elx-benefit">
+                        <span className="elx-benefit-ico"><BenefitGlyph icon={b.icon} /></span>
+                        <h3>{b.title}</h3>
+                        <p>{b.text}</p>
                       </article>
                     ))}
                   </div>
-                </div>
-              </div>
-            </RevealOnScroll>
+                </RevealOnScroll>
 
-            {(product.benefits?.length || product.ingredients?.length || product.usage?.length) ? (
-              <RevealOnScroll as="section" className="mt-14">
-                <div className="mb-6 text-center">
-                  <p className="elora-shop-eyebrow">{pt.knowEyebrow}</p>
-                  <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">{pt.knowTitle}</h2>
-                </div>
-                <div className="grid gap-5 lg:grid-cols-3">
-                  {product.benefits?.length ? (
-                    <article className="elora-shop-panel p-6">
-                      <p className="elora-shop-eyebrow">{pt.benefits}</p>
-                      <ul className="mt-4 grid gap-3 text-sm sm:text-base">
-                        {product.benefits.map((item) => (
-                          <li key={item} className="flex items-start gap-2">
-                            <span aria-hidden="true" className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: "var(--pink-solid, #e5658f)" }} />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </article>
+                {/* ───────── Ingredientes ───────── */}
+                <RevealOnScroll as="section" className="elx-section elx-split">
+                  {product.images[2] || product.images[0] ? (
+                    <div className="elx-split-media">
+                      <Image src={(product.images[2] || product.images[0]).url} alt={(product.images[2] || product.images[0]).altText} width={900} height={900} className="h-full w-full object-cover" />
+                    </div>
                   ) : null}
-                  {product.ingredients?.length ? (
-                    <article className="elora-shop-panel p-6">
-                      <p className="elora-shop-eyebrow">{pt.ingredients}</p>
-                      <ul className="mt-4 grid gap-3 text-sm sm:text-base">
-                        {product.ingredients.map((item) => (
-                          <li key={item} className="flex items-start gap-2">
-                            <span aria-hidden="true" className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: "var(--pink-solid, #e5658f)" }} />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </article>
-                  ) : null}
-                  {product.usage?.length ? (
-                    <article className="elora-shop-panel p-6">
-                      <p className="elora-shop-eyebrow">{pt.usage}</p>
-                      <ol className="mt-4 grid gap-3 text-sm sm:text-base">
-                        {product.usage.map((item, index) => (
-                          <li key={item} className="flex items-start gap-3">
-                            <span className="shrink-0 font-semibold italic" style={{ color: "var(--pink-solid, #e5658f)" }}>{String(index + 1).padStart(2, "0")}</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ol>
-                    </article>
-                  ) : null}
-                </div>
-              </RevealOnScroll>
+                  <div>
+                    <p className="elx-eyebrow">{pt.ingredientsEyebrow}</p>
+                    <h2 className="elx-h2 text-left">{landing.ingredientsTitle}</h2>
+                    <div className="elx-ingredients">
+                      {landing.ingredients.map((ing) => (
+                        <article key={ing.name} className="elx-ingredient">
+                          <div className="flex flex-wrap items-baseline gap-2">
+                            <h3>{ing.name}</h3>
+                            <span className="elx-tag">{ing.tag}</span>
+                          </div>
+                          <p>{ing.text}</p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                </RevealOnScroll>
+
+                {/* ───────── Cómo se usa ───────── */}
+                <RevealOnScroll as="section" className="elx-section">
+                  <div className="elx-head">
+                    <p className="elx-eyebrow">{pt.howToEyebrow}</p>
+                    <h2 className="elx-h2">{landing.howToTitle}</h2>
+                  </div>
+                  <ol className="elx-steps">
+                    {landing.howTo.map((step, i) => (
+                      <li key={step.title} className="elx-step">
+                        <span className="elx-step-n">{i + 1}</span>
+                        <h3>{step.title}</h3>
+                        <p>{step.text}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="elx-tip">{landing.howToTip}</p>
+                </RevealOnScroll>
+
+                {/* ───────── FAQ ───────── */}
+                <RevealOnScroll as="section" className="elx-section elx-faq-wrap">
+                  <div className="elx-head">
+                    <p className="elx-eyebrow">{pt.faqEyebrow}</p>
+                    <h2 className="elx-h2">{pt.faqTitle}</h2>
+                  </div>
+                  <div className="elx-faq">
+                    {landing.faq.map((item, i) => {
+                      const open = openFaq === i;
+                      return (
+                        <div key={item.q} className={`elx-faq-item${open ? " is-open" : ""}`}>
+                          <button type="button" onClick={() => setOpenFaq(open ? null : i)} aria-expanded={open}>
+                            <span>{item.q}</span>
+                            <span className="elx-faq-sign" aria-hidden="true">{open ? "−" : "+"}</span>
+                          </button>
+                          {open ? <p>{item.a}</p> : null}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </RevealOnScroll>
+
+                {/* ───────── CTA final ───────── */}
+                <RevealOnScroll as="section" className="elx-final">
+                  <h2 className="elx-h2">{landing.finalTitle}</h2>
+                  <p>{landing.finalText}</p>
+                  <PillButton onClick={scrollToPacks} className="elx-final-btn">{pt.chooseMyPack}</PillButton>
+                </RevealOnScroll>
+              </>
             ) : null}
 
-            <RevealOnScroll as="section" className="mt-14">
-              <div className="mb-6 text-center">
-                <p className="elora-shop-eyebrow">{pt.recommendedEyebrow}</p>
-                <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">{pt.recommendedTitle}</h2>
-              </div>
-              {loadingRelated ? (
-                <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <article key={`sk-${i}`} className="elora-shop-card p-4">
-                      <div className="elora-shop-skeleton h-44" />
-                      <div className="elora-shop-skeleton mt-4 h-4 w-4/5" />
-                      <div className="elora-shop-skeleton mt-3 h-4 w-1/3" />
-                      <div className="mt-4 grid grid-cols-2 gap-2">
-                        <div className="elora-shop-skeleton h-9 rounded-full" />
-                        <div className="elora-shop-skeleton h-9 rounded-full" />
-                      </div>
-                    </article>
-                  ))}
+            {/* ───────── Relacionados (solo si hay) ───────── */}
+            {!loadingRelated && relatedProducts.length > 0 ? (
+              <RevealOnScroll as="section" className="elx-section">
+                <div className="elx-head">
+                  <p className="elx-eyebrow">{pt.recommendedEyebrow}</p>
+                  <h2 className="elx-h2">{pt.recommendedTitle}</h2>
                 </div>
-              ) : null}
-              {!loadingRelated && relatedError ? <div className="elora-shop-soft p-4"><p className="elora-shop-muted text-sm">{relatedError}</p></div> : null}
-              {!loadingRelated && !relatedError && relatedProducts.length === 0 ? <div className="elora-empty-card p-4"><p className="elora-empty-card-text">Muy pronto ✦ nueva colección</p></div> : null}
-              {!loadingRelated && relatedProducts.length > 0 ? (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
                   {relatedProducts.map((related) => (
                     <article key={related.id} className="elora-shop-card flex flex-col p-4">
-                      <div className="elora-shop-media overflow-hidden">
-                        <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} className="h-44 w-full object-cover" />
-                      </div>
+                      <Link href={localizePath(`/products/${related.handle}`, locale)} className="elora-shop-media block overflow-hidden">
+                        <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} className="aspect-square w-full object-cover" />
+                      </Link>
                       <h3 className="elora-shop-card-title mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
-                      <div className="mt-2 flex items-center justify-between gap-2">
-                        <p className="elora-shop-price text-lg">{formatMoney(related.priceAmount, related.priceCurrency, intlLocale)}</p>
-                        <span className={related.availableForSale ? "elora-shop-badge-ok" : "elora-shop-badge-off"}>
-                          {related.availableForSale ? pt.available : pt.soldOut}
-                        </span>
-                      </div>
-                      <div className="mt-4 grid grid-cols-2 gap-2">
+                      <p className="elora-shop-price mt-2 text-lg">{money(related.priceAmount, related.priceCurrency)}</p>
+                      <div className="mt-4">
                         <PillButton onClick={() => void addRelatedToCart(related)} disabled={addingRelatedId === related.id || !related.availableForSale || !related.variantId} className="elora-shop-cta elora-shop-cta-sm">
-                          {addingRelatedId === related.id ? pt.adding : pt.addToCart}
+                          {addingRelatedId === related.id ? pt.adding : pt.addToBag}
                         </PillButton>
-                        <Link href={related.handle ? `/products/${related.handle}` : related.productUrl} className="elora-pill is-outline elora-shop-cta elora-shop-cta-sm">
-                          <span className="elora-pill-label">{bt.viewDetail}</span>
-                        </Link>
                       </div>
                     </article>
                   ))}
                 </div>
-              ) : null}
-            </RevealOnScroll>
+              </RevealOnScroll>
+            ) : null}
+            {relatedError ? null : null}
           </>
         ) : null}
       </div>
 
       {!loading && !error && product ? (
-        <div className="elora-shop-stickybar fixed inset-x-0 bottom-0 z-50 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 lg:hidden">
+        <div className={`elora-shop-stickybar elx-sticky fixed inset-x-0 bottom-0 z-50 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 lg:hidden${cartDrawerOpen ? " is-hidden" : ""}`}>
           <div className="mx-auto flex w-full max-w-7xl items-center gap-3">
             <div className="min-w-0 flex-1">
-              <p className="elora-shop-muted truncate text-xs font-medium">{shortenTitle(product.title, 34)}</p>
-              <p className="elora-shop-price text-base">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency, intlLocale)}</p>
+              <p className="elora-shop-muted truncate text-xs font-medium">{selectedPack ? selectedPack.label : shortenTitle(product.title, 34)}</p>
+              <p className="elora-shop-price text-base">{money(priceNow * effectiveQty)}</p>
             </div>
-            <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} variant="outline" className="elora-shop-cta-sm shrink-0">
-              {addingToCart ? "..." : "Agregar"}
-            </PillButton>
-            <PillButton href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} className="elora-shop-cta-sm shrink-0">
-              Comprar
+            <PillButton onClick={() => void buyNow()} disabled={buyingNow || !selectedVariant?.availableForSale} className="elora-shop-cta-sm shrink-0">
+              {buyingNow ? "..." : pt.buyNow}
             </PillButton>
           </div>
         </div>
       ) : null}
     </main>
+  );
+}
+
+function parseUnits(title: string | undefined) {
+  const match = (title || "").match(/^\s*(\d+)\s/);
+  return match ? Number(match[1]) : 0;
+}
+
+function CheckGlyph() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="elx-check">
+      <circle cx="10" cy="10" r="9" fill="currentColor" opacity="0.14" />
+      <path d="m6.2 10.2 2.5 2.4 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function BenefitGlyph({ icon }: { icon: BenefitIcon }) {
+  const common = { stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  if (icon === "pores") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M4 12h6m0 0-2.5-2.5M10 12l-2.5 2.5M28 12h-6m0 0 2.5-2.5M22 12l2.5 2.5" {...common} />
+        <path d="M12 18c0 3 1.8 6 4 6s4-3 4-6" {...common} />
+        <path d="M6 18h20" {...common} />
+      </svg>
+    );
+  }
+  if (icon === "blackheads") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="12" cy="7" r="1.2" fill="currentColor" />
+        <circle cx="16" cy="5" r="1.2" fill="currentColor" />
+        <circle cx="20" cy="7" r="1.2" fill="currentColor" />
+        <path d="M5 14h22" {...common} />
+        <path d="M13 14c0 4 1.3 9 3 9s3-5 3-9" {...common} />
+      </svg>
+    );
+  }
+  if (icon === "oil") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 4c3 4.2 5 7.2 5 9.7a5 5 0 0 1-10 0C11 11.2 13 8.2 16 4Z" {...common} />
+        <path d="M5 22c3.6-2.4 7.3-2.4 11 0s7.4 2.4 11 0" {...common} />
+        <path d="M8 27h.01M13 27h.01M18 27h.01M23 27h.01" {...common} strokeWidth={2.4} />
+      </svg>
+    );
+  }
+  if (icon === "gentle") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M7 25C7 14 14 7 26 6c-1 12-8 19-19 19Z" {...common} />
+        <path d="M7 25 18 14" {...common} />
+      </svg>
+    );
+  }
+  if (icon === "hydrate") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 4c4 5.5 7 9.4 7 13a7 7 0 0 1-14 0c0-3.6 3-7.5 7-13Z" {...common} />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M16 5 18.6 13.4 27 16l-8.4 2.6L16 27l-2.6-8.4L5 16l8.4-2.6L16 5Z" {...common} />
+    </svg>
   );
 }

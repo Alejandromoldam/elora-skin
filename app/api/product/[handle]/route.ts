@@ -12,6 +12,10 @@ type ShopifyVariantNode = {
     amount?: string | null;
     currencyCode?: string | null;
   } | null;
+  compareAtPrice?: {
+    amount?: string | null;
+    currencyCode?: string | null;
+  } | null;
 };
 
 type ShopifyMediaNode = {
@@ -344,6 +348,10 @@ export async function GET(
                 amount
                 currencyCode
               }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
             }
           }
         }
@@ -401,6 +409,10 @@ export async function GET(
               sku
               availableForSale
               price {
+                amount
+                currencyCode
+              }
+              compareAtPrice {
                 amount
                 currencyCode
               }
@@ -548,6 +560,8 @@ export async function GET(
             priceCurrency:
               variant.price?.currencyCode ||
               product.priceRange.minVariantPrice.currencyCode,
+          
+            compareAtAmount: variant.compareAtPrice?.amount || null,
           })),
           images: product.images.edges.map((edge) => ({
             url: normalizeShopifyImageUrl(domain, edge.node.url),

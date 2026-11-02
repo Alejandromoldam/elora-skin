@@ -1,7 +1,17 @@
 {
   "home": {
-    "announcement": ["Envío gratis desde USD 40", "Ingredientes reales", "Cruelty free", "Pago seguro · Visa · Mastercard"],
-    "nav": { "skincare": "Skincare", "makeup": "Maquillaje", "ritual": "Tu ritual", "contact": "Contacto" },
+    "announcement": [
+      "Envío gratis desde USD 40",
+      "Ingredientes reales",
+      "Cruelty free",
+      "Pago seguro · Visa · Mastercard"
+    ],
+    "nav": {
+      "skincare": "Skincare",
+      "makeup": "Maquillaje",
+      "ritual": "Tu ritual",
+      "contact": "Contacto"
+    },
     "heroEyebrow": "Nueva colección facial · 2026",
     "heroTitlePre": "Tu piel, pero en su",
     "heroTitleEm": "mejor día.",
@@ -9,15 +19,36 @@
     "ctaShop": "Comprar bestsellers",
     "ctaRitual": "Descubre tu ritual",
     "heroComingSoon": "Muy pronto — nueva colección",
-    "chips": ["Glow real", "Dermo-amigable", "Pago seguro"],
-    "trust": ["Envíos a todo el mundo", "Pago 100% seguro", "Ingredientes reales", "Cruelty free"],
+    "chips": [
+      "Glow real",
+      "Dermo-amigable",
+      "Pago seguro"
+    ],
+    "trust": [
+      "Envíos a todo el mundo",
+      "Pago 100% seguro",
+      "Ingredientes reales",
+      "Cruelty free"
+    ],
     "ritualEyebrow": "Tu ritual",
     "ritualTitle": "Un ritual de 3 minutos",
     "ritualSub": "Tres pasos simples, pensados para volverse un momento tuyo cada día.",
     "ritualSteps": [
-      { "number": "01", "title": "Limpia", "desc": "Retira impurezas y maquillaje sin resecar la piel." },
-      { "number": "02", "title": "Trata & hidrata", "desc": "Nutre en profundidad con ingredientes reales, sin relleno." },
-      { "number": "03", "title": "Realza", "desc": "Un toque final que ilumina tu piel tal como es." }
+      {
+        "number": "01",
+        "title": "Limpia",
+        "desc": "Retira impurezas y maquillaje sin resecar la piel."
+      },
+      {
+        "number": "02",
+        "title": "Trata & hidrata",
+        "desc": "Nutre en profundidad con ingredientes reales, sin relleno."
+      },
+      {
+        "number": "03",
+        "title": "Realza",
+        "desc": "Un toque final que ilumina tu piel tal como es."
+      }
     ],
     "honestEyebrow": "Belleza honesta",
     "honestTitle": "Ingredientes reales, rituales honestos",
@@ -76,7 +107,14 @@
     "adding": "Agregando...",
     "buyNow": "Comprar ahora",
     "trustEyebrow": "Confianza Elora",
-    "trustSignals": ["Pago seguro con Shopify", "Envíos internacionales", "Garantía de satisfacción", "Soporte especializado", "Checkout cifrado", "Productos verificados"],
+    "trustSignals": [
+      "Pago seguro con Shopify",
+      "Envíos internacionales",
+      "Garantía de satisfacción",
+      "Soporte especializado",
+      "Checkout cifrado",
+      "Productos verificados"
+    ],
     "knowEyebrow": "Conócelo a fondo",
     "knowTitle": "Por qué lo vas a amar",
     "benefits": "Beneficios",
@@ -84,6 +122,25 @@
     "usage": "Modo de uso",
     "recommendedEyebrow": "Recomendados",
     "recommendedTitle": "También te puede interesar",
-    "metaBuy": "Comprar"
+    "metaBuy": "Comprar",
+    "packTitle": "Elige tu pack",
+    "oneUnit": "1 frasco",
+    "nUnits": "{n} frascos",
+    "perUnit": "{price} c/u",
+    "save": "Ahorras {amount}",
+    "mostPopular": "Más popular",
+    "bestValue": "Mejor precio",
+    "addToBag": "Añadir a la bolsa",
+    "redirecting": "Abriendo el pago...",
+    "shippingLine": "Envío gratis con seguimiento · Llega en 2–3 semanas",
+    "secureLine": "Pago seguro y cifrado",
+    "details": "Detalles del producto",
+    "faqEyebrow": "Preguntas",
+    "faqTitle": "Bueno saberlo",
+    "ingredientsEyebrow": "Fórmula",
+    "howToEyebrow": "Modo de uso",
+    "chooseMyPack": "Elegir mi pack",
+    "added": "Añadido a tu bolsa.",
+    "addError": "No pudimos añadirlo a tu bolsa. Inténtalo de nuevo."
   }
 }
