@@ -541,7 +541,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
 
       <header className="elx-top">
         <div className="elx-wrap elx-top-inner">
-          <Link href={localizePath("/", locale)} className="elx-logo" aria-label="Elora Skin">
+          <Link href={localizePath("/", locale)} className="elx-logo notranslate" translate="no" aria-label="Elora Skin">
             Elora <em>Skin</em>
           </Link>
           <div className="flex items-center gap-4">
@@ -611,7 +611,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
               </div>
 
               <div className="elx-info" id="elx-buy">
-                <p className="elx-eyebrow">{product.vendor || "Elora Skin"}</p>
+                <p className="elx-eyebrow notranslate" translate="no">{product.vendor || "Elora Skin"}</p>
                 <h1 className="elx-title">{product.title}</h1>
                 {landing?.tagline ? <p className="elx-tagline">{landing.tagline}</p> : null}
 
