@@ -84,7 +84,7 @@ export default function HomePackPicker({
       items: [{ item_id: v.id, item_name: productTitle, item_variant: v.title, currency, price: Number(v.priceAmount), quantity: 1 }],
     });
     try {
-      const res = await fetch("/api/cart/add", {
+      const res = await fetch("/api/cart/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ merchandiseId: v.id, quantity: 1 }),

@@ -505,7 +505,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     setBuyingNow(true);
     setCartMessage(null);
     try {
-      const res = await fetch("/api/cart/add", {
+      const res = await fetch("/api/cart/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ merchandiseId: selectedVariant.id, quantity: effectiveQty }),
@@ -516,7 +516,6 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
         setBuyingNow(false);
         return;
       }
-      syncLocalCartLine({ lineId: selectedVariant.id, merchandiseId: selectedVariant.id, quantityToAdd: effectiveQty, title: product.title, variantTitle: selectedVariant.title || "", imageUrl: product.images[0]?.url || currentImage.url, imageAlt: product.images[0]?.altText || currentImage.altText, unitPriceAmount: selectedVariant.priceAmount, unitPriceCurrency: selectedVariant.priceCurrency, availableForSale: selectedVariant.availableForSale, productUrl: product.productUrl });
       window.location.href = payload.cart.checkoutUrl;
     } catch {
       setCartMessage(pt.addError);
