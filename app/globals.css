@@ -4744,7 +4744,7 @@ body.cart-page-active .whatsapp-float-root {
 .eg-h1 { font-family: var(--font-display), "Lexend", sans-serif; font-weight: 700; color: var(--eg-plum); letter-spacing: -.035em;
   font-size: clamp(27px, 8.4vw, 68px); line-height: 1.02; text-wrap: balance; }
 .eg-swoosh { position: relative; display: inline; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 10C55 3 120 2 197 6' fill='none' stroke='%23d9477f' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-size: 62% .32em; background-position: 0 100%; padding-bottom: .14em; }
+  background-repeat: no-repeat; background-size: 100% .32em; background-position: 0 100%; padding-bottom: .14em; white-space: nowrap; }
 .eg-lead { margin-top: 14px; font-size: clamp(14px, 3.9vw, 19px); line-height: 1.4; color: var(--eg-ink); max-width: 30ch; }
 .eg-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; min-height: 50px; padding: 0 22px;
   border-radius: 999px; background: var(--eg-btn); color: #fff !important; font-weight: 600; font-size: clamp(14px, 3.9vw, 17px);

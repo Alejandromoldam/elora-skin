@@ -69,6 +69,9 @@ export default async function HomePage({ locale }: { locale: Locale }) {
     { label: home.nav.contact, href: "/contacto" },
   ];
 
+  const emWords = home.heroTitleEm.split(" ");
+  const swooshLast = emWords.pop() ?? "";
+  const swooshHead = emWords.length ? `${emWords.join(" ")} ` : "";
   const benefits = landing?.benefits ?? [];
   const steps = home.ritualSteps;
 
@@ -111,7 +114,8 @@ export default async function HomePage({ locale }: { locale: Locale }) {
           <div className="eg-hero-copy">
             <h1 className="eg-h1">
               {home.heroTitlePre}{" "}
-              <span className="eg-swoosh">{home.heroTitleEm}</span>
+              {swooshHead}
+              <span className="eg-swoosh">{swooshLast}</span>
             </h1>
             <p className="eg-lead">{home.heroLead}</p>
             <a className="eg-btn" href={productUrl}>
