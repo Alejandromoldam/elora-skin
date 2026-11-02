@@ -79,13 +79,14 @@ export default function HeroCarousel({ slides, labels }: { slides: HeroSlide[]; 
       <div className="eg-hero-media">
         <div className="eg-hero-stack">
           {slides.map((s, i) =>
-            s.image ? (
+            // Si dos slides comparten la misma foto, no se repite el cambio.
+            s.image && slides.findIndex((o) => o.image?.url === s.image?.url) === i ? (
               <Link
                 key={s.key}
-                href={s.href}
-                className={`eg-hero-frame${i === index ? " is-active" : ""}`}
-                aria-hidden={i !== index}
-                tabIndex={i === index ? 0 : -1}
+                href={slide.image?.url === s.image?.url ? slide.href : s.href}
+                className={`eg-hero-frame${s.image?.url === slide.image?.url ? " is-active" : ""}`}
+                aria-hidden={s.image?.url !== slide.image?.url}
+                tabIndex={s.image?.url === slide.image?.url ? 0 : -1}
               >
                 <Image src={s.image.url} alt={s.image.alt} width={720} height={720} priority={i === 0} sizes="(max-width: 700px) 46vw, 520px" />
               </Link>

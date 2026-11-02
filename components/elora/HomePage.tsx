@@ -85,8 +85,8 @@ export default async function HomePage({ locale }: { locale: Locale }) {
     lead: home.brandLead,
     cta: home.brandCta,
     href: "#shop",
-    // Imagen de estilo de vida (modelo) para la diapositiva de marca.
-    image: gallery.find((g) => /woman|mujer|model/i.test(g.alt)) ?? productSlides[0]?.image ?? null,
+    // Solo imágenes principales de producto: la marca usa la del primero.
+    image: productSlides[0]?.image ?? null,
   };
   const heroSlides: HeroSlide[] = [brandSlide, ...productSlides];
 
