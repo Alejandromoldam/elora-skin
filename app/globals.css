@@ -4870,3 +4870,61 @@ body.cart-page-active .whatsapp-float-root {
 .elx .elora-pill.is-outline { background: rgba(255,255,255,.55); color: var(--eg-plum); border: 1.5px solid rgba(255,255,255,.9); box-shadow: inset 0 1px 0 #fff, 0 8px 22px rgba(176,36,92,.12); }
 .elx .elx-final .elora-pill { background: #fff; color: var(--eg-rasp-deep); }
 .elx .elora-shop-stickybar { background: rgba(255, 240, 246, .9); border-top: 1px solid rgba(255,255,255,.85); }
+
+/* =====================================================================
+   Glow · Suavizado: contornos, sombras y tipografía más suaves
+   ===================================================================== */
+.eg, .elx, .elora-shop {
+  --eg-plum: #6e2346;          /* ciruela más suave para títulos */
+  --eg-ink: #4a2236;           /* texto con menos contraste duro */
+  --eg-rasp: #c0436f;
+  --eg-rasp-2: #dd6a93;
+  --eg-rasp-deep: #a8345f;
+  --eg-glass: rgba(255, 255, 255, 0.34);
+  --eg-glass-line: rgba(255, 255, 255, 0.55);
+  --eg-shadow: 0 20px 60px -18px rgba(192, 67, 111, 0.22);
+  --eg-btn: linear-gradient(180deg, #db6a94 0%, #c84f7e 50%, #b8426f 100%);
+  --eg-btn-glow: 0 12px 30px -10px rgba(192, 67, 111, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Tipografía: pesos y tracking más suaves */
+.eg-h1 { font-weight: 600; letter-spacing: -.025em; text-shadow: 0 2px 18px rgba(255, 255, 255, .55); }
+.eg-logo b { font-weight: 600; }
+.eg-h2 { font-weight: 500; }
+.eg-pack-price { font-weight: 600; }
+.eg-lead, .eg-trust > div, .eg-benefit-title, .eg-step-label { font-weight: 400; }
+.eg-btn { font-weight: 500; letter-spacing: .01em; }
+.elx .elx-title, .elx .elx-h2, .elx .elx-ingredient h3, .elx .elx-price { font-weight: 600; letter-spacing: -.02em; }
+
+/* Contornos: bordes finos y translúcidos, radios más amplios */
+.eg-glass { border: 1px solid var(--eg-glass-line); border-radius: 28px;
+  box-shadow: var(--eg-shadow), inset 0 1px 0 rgba(255, 255, 255, .7); }
+.eg-trust { border-radius: 999px; }
+.eg-pack { border: 1px solid rgba(255, 255, 255, .6); border-radius: 22px; background: rgba(255, 255, 255, .42);
+  box-shadow: 0 8px 22px -12px rgba(192, 67, 111, .25), inset 0 1px 0 rgba(255, 255, 255, .7); }
+.eg-pack.is-on { background: linear-gradient(180deg, #d9689a, #c04f80); border-color: rgba(255, 255, 255, .45);
+  box-shadow: 0 16px 34px -12px rgba(192, 67, 111, .6), inset 0 1px 0 rgba(255, 255, 255, .35); }
+.eg-pack-tag { box-shadow: 0 6px 14px -6px rgba(192, 67, 111, .5); font-weight: 500; }
+.eg-benefit { border-radius: 22px; }
+.eg-hero-frame { border: 1px solid rgba(255, 255, 255, .6); border-radius: 32px; box-shadow: 0 28px 70px -24px rgba(192, 67, 111, .4); }
+.eg-podium { box-shadow: 0 0 0 1px rgba(255, 255, 255, .6) inset, 0 18px 40px -14px rgba(192, 67, 111, .35), 0 0 60px rgba(255, 200, 225, .8); }
+.eg-step-img { border: 1px solid rgba(255, 255, 255, .6); border-radius: 22px; box-shadow: 0 14px 30px -14px rgba(192, 67, 111, .3); }
+.eg-trust > div + div { border-left: 1px solid rgba(192, 67, 111, .18); }
+.eg-header { border-bottom: 1px solid rgba(255, 255, 255, .5); }
+@media (min-width: 760px) { .eg-shell { border: 1px solid rgba(255, 255, 255, .55); border-radius: 40px; box-shadow: 0 40px 110px -30px rgba(192, 67, 111, .35); } }
+
+/* Barras frambuesa más suaves */
+.eg-topbar { background: linear-gradient(90deg, #c04f7e, #d96a95 50%, #c04f7e); font-weight: 400; }
+.eg-footer { background: linear-gradient(90deg, #b8487a, #d0689a 50%, #b8487a); }
+
+/* Página de producto con los mismos contornos */
+.elx .elx-pack, .elx .elx-trust-item, .elx .elx-benefit, .elx .elx-ingredient, .elx .elx-step, .elx .elx-faq-item {
+  border: 1px solid var(--eg-glass-line); box-shadow: var(--eg-shadow), inset 0 1px 0 rgba(255, 255, 255, .7); }
+.elx .elx-pack, .elx .elx-benefit, .elx .elx-step, .elx .elx-ingredient { border-radius: 24px; }
+.elx .elx-pack.is-active { background: linear-gradient(180deg, #d9689a, #c04f80); box-shadow: 0 16px 34px -12px rgba(192, 67, 111, .6); }
+.elx .elx-main-media, .elx .elx-split-media { border: 1px solid rgba(255, 255, 255, .6); border-radius: 30px; box-shadow: 0 28px 70px -24px rgba(192, 67, 111, .4); }
+.elx .elx-thumb { border: 1px solid rgba(255, 255, 255, .6); border-radius: 16px; box-shadow: none; }
+.elx .elx-thumb.is-active { border-color: var(--eg-rasp-2); box-shadow: 0 0 0 2px rgba(221, 106, 147, .35); }
+.elx .elora-pill { font-weight: 500; box-shadow: var(--eg-btn-glow); }
+.elx .elora-pill.is-outline { border: 1px solid rgba(255, 255, 255, .7); }
+.elx .elx-final { background: linear-gradient(135deg, #d9689a, #b8487a); box-shadow: 0 30px 70px -24px rgba(192, 67, 111, .5); border-radius: 36px; }
