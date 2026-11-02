@@ -38,6 +38,8 @@ export function getProductTheme(handle: string): ProductTheme | null {
 }
 
 export type ProductLandingContent = {
+  /** Diapositiva del carrusel de portada. */
+  hero?: { eyebrow: string; titlePre: string; titleEm: string; lead: string };
   tagline: string;
   highlights: string[];
   benefitsTitle: string;
@@ -61,6 +63,7 @@ export type ProductLandingContent = {
 const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
   "pore-refining-serum": {
     en: {
+      hero: { eyebrow: "New · Pore Refining Serum", titlePre: "Smoother skin,", titleEm: "less visible pores.", lead: "A gentle lactobionic acid serum that clears pore buildup and smooths texture." },
       tagline: "Smoother skin. Less visible pores.",
       highlights: [
         "Visibly refines the look of pores",
@@ -113,6 +116,7 @@ const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
       finalText: "Choose your pack and start your ritual today. Free tracked shipping on every order.",
     },
     es: {
+      hero: { eyebrow: "Nuevo · Sérum refinador de poros", titlePre: "Piel más lisa,", titleEm: "poros menos visibles.", lead: "Un sérum suave con ácido lactobiónico que limpia los poros y alisa la textura." },
       tagline: "Piel más lisa. Poros menos visibles.",
       highlights: [
         "Afina visiblemente la apariencia de los poros",

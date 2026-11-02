@@ -8,6 +8,7 @@ import MobileNav from "@/components/elora/MobileNav";
 import LangSwitcher from "@/components/elora/LangSwitcher";
 import HomePackPicker from "@/components/elora/HomePackPicker";
 import BubbleBackground from "@/components/elora/BubbleBackground";
+import HeroCarousel, { type HeroSlide } from "@/components/elora/HeroCarousel";
 
 // Portada "Glow": fondo rosa iridiscente, tarjetas de vidrio y acentos
 // frambuesa. Mobile-first: el hero mantiene texto + producto lado a lado.
@@ -58,11 +59,36 @@ export default async function HomePage({ locale }: { locale: Locale }) {
   const productUrl = featured?.productUrl ? p(featured.productUrl) : "#";
   const landing = featured ? getProductLandingContent(featured.handle, locale) : null;
   const gallery = featured?.gallery ?? [];
-  const heroImg = gallery[0] ?? (featured ? { url: featured.imageUrl, alt: featured.imageAlt } : null);
   const howToImg = gallery.find((g) => /how to use|modo de/i.test(g.alt)) ?? null;
-  const priceLabel = featured
-    ? new Intl.NumberFormat("en-US", { style: "currency", currency: featured.priceCurrency, maximumFractionDigits: 0 }).format(Number(featured.priceAmount))
-    : "";
+
+  const money0 = (amount: string, currency: string) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(Number(amount));
+  const productSlides: HeroSlide[] = catalog.products.slice(0, 6).map((prod) => {
+    const content = getProductLandingContent(prod.handle, locale);
+    const img = prod.gallery?.[0] ?? { url: prod.imageUrl, alt: prod.imageAlt };
+    return {
+      key: prod.id,
+      eyebrow: content?.hero?.eyebrow,
+      titlePre: content?.hero?.titlePre ?? prod.title,
+      titleEm: content?.hero?.titleEm ?? "",
+      lead: content?.hero?.lead ?? prod.descriptionShort,
+      cta: `${home.heroShop} – ${money0(prod.priceAmount, prod.priceCurrency)}`,
+      href: p(prod.productUrl),
+      image: img,
+    };
+  });
+  const brandSlide: HeroSlide = {
+    key: "brand",
+    eyebrow: home.brandEyebrow,
+    titlePre: home.brandTitlePre,
+    titleEm: home.brandTitleEm,
+    lead: home.brandLead,
+    cta: home.brandCta,
+    href: "#shop",
+    // Imagen de estilo de vida (modelo) para la diapositiva de marca.
+    image: gallery.find((g) => /woman|mujer|model/i.test(g.alt)) ?? productSlides[0]?.image ?? null,
+  };
+  const heroSlides: HeroSlide[] = [brandSlide, ...productSlides];
 
   const navItems = [
     { label: home.nav.skincare, href: productUrl },
@@ -70,9 +96,6 @@ export default async function HomePage({ locale }: { locale: Locale }) {
     { label: home.nav.contact, href: "/contacto" },
   ];
 
-  const emWords = home.heroTitleEm.split(" ");
-  const swooshLast = emWords.pop() ?? "";
-  const swooshHead = emWords.length ? `${emWords.join(" ")} ` : "";
   const benefits = landing?.benefits ?? [];
   const steps = home.ritualSteps;
 
@@ -111,36 +134,11 @@ export default async function HomePage({ locale }: { locale: Locale }) {
           </div>
         </header>
 
-        {/* Hero */}
-        <section className="eg-hero">
-          <div className="eg-hero-copy">
-            <h1 className="eg-h1">
-              {home.heroTitlePre}{" "}
-              {swooshHead}
-              <span className="eg-swoosh">{swooshLast}</span>
-            </h1>
-            <p className="eg-lead">{home.heroLead}</p>
-            <a className="eg-btn" href={productUrl}>
-              {home.ctaShop}{priceLabel ? ` – ${priceLabel}` : ""}
-              <span aria-hidden="true" className="eg-chev">›</span>
-            </a>
-          </div>
-          <div className="eg-hero-media">
-            {heroImg ? (
-              <Link href={productUrl} className="eg-hero-frame" aria-label={featured?.title}>
-                <Image src={heroImg.url} alt={heroImg.alt} width={720} height={720} priority sizes="(max-width: 700px) 46vw, 520px" />
-              </Link>
-            ) : (
-              <div className="eg-hero-frame is-empty" aria-hidden="true" />
-            )}
-            <span className="eg-podium" aria-hidden="true"><span className="eg-podium-top" /></span>
-            <span className="eg-streak s1" aria-hidden="true" />
-            <span className="eg-streak s2" aria-hidden="true" />
-            <span className="eg-twinkle t1" aria-hidden="true" />
-            <span className="eg-twinkle t2" aria-hidden="true" />
-            <span className="eg-twinkle t3" aria-hidden="true" />
-          </div>
-        </section>
+        {/* Hero: carrusel (marca + un slide por producto) */}
+        <HeroCarousel
+          slides={heroSlides}
+          labels={{ prev: home.heroPrev, next: home.heroNext, goTo: home.heroGoTo }}
+        />
 
         {/* Confianza */}
         <section className="eg-glass eg-trust" aria-label="Trust">
@@ -151,7 +149,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
 
         {/* Packs */}
         {featured?.variants?.length ? (
-          <section aria-label={featured.title}>
+          <section id="shop" aria-label={featured.title}>
             <HomePackPicker
               variants={featured.variants}
               currency={featured.priceCurrency}

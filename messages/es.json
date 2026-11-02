@@ -72,7 +72,16 @@
     "footerTerms": "Términos",
     "footerRights": "© 2026 Elora Skin. Todos los derechos reservados.",
     "metaTitle": "Elora Skin | Cuidado de la piel suave que funciona",
-    "metaDescription": "Elora Skin — cuidado de la piel suave y honesto. Compra el Sérum refinador de poros con ácido lactobiónico con envío gratis."
+    "metaDescription": "Elora Skin — cuidado de la piel suave y honesto. Compra el Sérum refinador de poros con ácido lactobiónico con envío gratis.",
+    "brandEyebrow": "Elora Skin · Skincare",
+    "brandTitlePre": "Tu piel,",
+    "brandTitleEm": "en su mejor momento.",
+    "brandLead": "Cuidado de la piel suave y honesto, pensado para tu ritual diario. Envío gratis con seguimiento en todos los pedidos.",
+    "brandCta": "Ver productos",
+    "heroPrev": "Anterior",
+    "heroNext": "Siguiente",
+    "heroGoTo": "Ir a la diapositiva {n}",
+    "heroShop": "Comprar ahora"
   },
   "bestsellers": {
     "eyebrow": "El más vendido",

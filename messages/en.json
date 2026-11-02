@@ -72,7 +72,16 @@
     "footerTerms": "Terms",
     "footerRights": "© 2026 Elora Skin. All rights reserved.",
     "metaTitle": "Elora Skin | Gentle skincare that works",
-    "metaDescription": "Elora Skin — gentle, honest skincare. Shop the Lactobionic Acid Pore Refining Serum with free tracked shipping."
+    "metaDescription": "Elora Skin — gentle, honest skincare. Shop the Lactobionic Acid Pore Refining Serum with free tracked shipping.",
+    "brandEyebrow": "Elora Skin · Skincare",
+    "brandTitlePre": "Your skin,",
+    "brandTitleEm": "at its very best.",
+    "brandLead": "Gentle, honest skincare made to fit your daily ritual. Free tracked shipping on every order.",
+    "brandCta": "Shop skincare",
+    "heroPrev": "Previous",
+    "heroNext": "Next",
+    "heroGoTo": "Go to slide {n}",
+    "heroShop": "Shop now"
   },
   "bestsellers": {
     "eyebrow": "Bestseller",
