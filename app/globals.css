@@ -5122,3 +5122,11 @@ body.cart-page-active .whatsapp-float-root {
 /* Fix: en móvil la fila de miniaturas ensanchaba la galería (desborde lateral) */
 .elx-hero > .elx-gallery, .elx-hero > .elx-info { min-width: 0; }
 .elx-thumbs { max-width: 100%; }
+
+/* Burbujas: tenues pero perceptibles */
+.eg-bubbles.is-far { filter: blur(4px); opacity: .95; }
+.eg-bubbles.is-near { filter: blur(.8px); opacity: 1; }
+
+/* Imagen de pasos en "Cómo se usa" */
+.elx-howto-img { max-width: 760px; margin: 0 auto 18px; border-radius: 28px; overflow: hidden; background: rgba(255, 228, 238, .7);
+  border: 1px solid rgba(255,255,255,.42); box-shadow: 0 24px 64px -26px rgba(192, 67, 111, .32), inset 0 1px 1px rgba(255,255,255,.65); }

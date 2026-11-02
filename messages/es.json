@@ -140,7 +140,7 @@
     "bestValue": "Mejor precio",
     "addToBag": "Añadir a la bolsa",
     "redirecting": "Abriendo el pago…",
-    "shippingLine": "Envío gratis con seguimiento · Llega en 2–3 semanas",
+    "shippingLine": "Envío gratis con seguimiento en todos los pedidos",
     "secureLine": "Pago seguro y cifrado",
     "details": "Detalles del producto",
     "faqEyebrow": "Preguntas",
@@ -150,7 +150,7 @@
     "chooseMyPack": "Elegir mi pack",
     "added": "Añadido a tu bolsa.",
     "addError": "No pudimos añadirlo a tu bolsa. Inténtalo de nuevo.",
-    "deliveryLine": "Pídelo hoy y recíbelo entre el {from} y el {to}",
+    "deliveryLine": "Sale en 1–3 días hábiles",
     "compareYes": "Sí",
     "compareNo": "No",
     "expectEyebrow": "Resultados"

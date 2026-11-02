@@ -43,7 +43,7 @@ function makeBubble(w: number, h: number, anywhere: boolean, hues: number[], far
 function drawBubble(ctx: CanvasRenderingContext2D, b: Bubble, t: number) {
   const { x, y, r } = b;
   const drift = Math.sin(t * 0.00045 + b.phase) * 26;
-  const a = b.far ? 0.55 : 0.8; // opacidad global por capa
+  const a = b.far ? 0.85 : 1; // opacidad global por capa
 
   // Cuerpo casi transparente con ligera tinta lechosa
   const body = ctx.createRadialGradient(x - r * 0.2, y - r * 0.25, r * 0.05, x, y, r);

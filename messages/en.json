@@ -140,7 +140,7 @@
     "bestValue": "Best value",
     "addToBag": "Add to bag",
     "redirecting": "Opening checkout…",
-    "shippingLine": "Free tracked shipping · Arrives in 2–3 weeks",
+    "shippingLine": "Free tracked shipping on every order",
     "secureLine": "Secure, encrypted checkout",
     "details": "Product details",
     "faqEyebrow": "Questions",
@@ -150,7 +150,7 @@
     "chooseMyPack": "Choose my pack",
     "added": "Added to your bag.",
     "addError": "We couldn't add it to your bag. Please try again.",
-    "deliveryLine": "Order today, get it between {from} and {to}",
+    "deliveryLine": "Ships within 1–3 business days",
     "compareYes": "Yes",
     "compareNo": "No",
     "expectEyebrow": "Results"

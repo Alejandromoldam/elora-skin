@@ -534,12 +534,8 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     document.getElementById("elx-buy")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // Entrega estimada: 14–21 días desde hoy (envío internacional con seguimiento).
-  const [deliveryFrom, deliveryTo] = useMemo(() => {
-    const fmt = new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", { month: "short", day: "numeric" });
-    const now = Date.now();
-    return [fmt.format(new Date(now + 14 * 864e5)), fmt.format(new Date(now + 21 * 864e5))];
-  }, [locale]);
+  // Imagen de "cómo se usa" de la galería (se detecta por su texto alternativo).
+  const howToImage = product?.images.find((img) => /how to use|modo de|cómo se usa/i.test(img.altText)) ?? null;
 
   const priceNow = selectedPack ? selectedPack.price : getPriceNumber(selectedVariant?.priceAmount || product?.priceAmount || "0");
   const priceWas = selectedPack && selectedPack.saving > 0 ? selectedPack.reference : 0;
@@ -704,7 +700,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
 
                 <p className="elx-delivery">
                   <TrustSignalIcon icon="truck" className="h-5 w-5" />
-                  <span>{pt.deliveryLine.replace("{from}", deliveryFrom).replace("{to}", deliveryTo)}</span>
+                  <span>{pt.deliveryLine}</span>
                 </p>
 
                 <ul className="elx-assure">
@@ -820,6 +816,11 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                     <p className="elx-eyebrow">{pt.howToEyebrow}</p>
                     <h2 className="elx-h2">{landing.howToTitle}</h2>
                   </div>
+                  {howToImage ? (
+                    <div className="elx-howto-img">
+                      <Image src={howToImage.url} alt={howToImage.altText} width={1200} height={1200} sizes="(min-width: 900px) 760px, 100vw" className="h-auto w-full" />
+                    </div>
+                  ) : null}
                   <ol className="elx-steps">
                     {landing.howTo.map((step, i) => (
                       <li key={step.title} className="elx-step">
