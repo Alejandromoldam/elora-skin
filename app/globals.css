@@ -5059,3 +5059,62 @@ body.cart-page-active .whatsapp-float-root {
 .elx .elx-eyebrow, .elx .elx-label, .elx .elx-tag { letter-spacing: .14em; font-weight: 500; }
 /* Números alineados en precios */
 .eg-pack-price, .elx .elx-price, .elx .elx-pack-price strong, .elx .elx-was { font-variant-numeric: tabular-nums lining-nums; }
+
+/* ---- Producto: entrega, precio tachado, qué esperar, comparativa ---- */
+.elx-delivery { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 14px; border-radius: 18px;
+  background: var(--p-accent-soft, rgba(255, 214, 229, .5)); color: var(--eg-ink); font-size: 14px; font-weight: 500; line-height: 1.35; }
+.elx-delivery svg { color: var(--p-accent, var(--eg-rasp)); flex: 0 0 auto; }
+.elx-pack-was { display: block; font-size: 12px; font-weight: 400; color: var(--eg-soft, #7d4560); text-decoration-thickness: 1px; margin-bottom: 1px; }
+.elx .elx-pack.is-active .elx-pack-was { color: rgba(255,255,255,.8); }
+.eg-pack-was { font-size: clamp(11px, 3vw, 13px); color: var(--eg-soft); text-decoration-thickness: 1px; line-height: 1; }
+.eg-pack-was.is-empty { text-decoration: none; }
+.eg-pack.is-on .eg-pack-was { color: rgba(255, 255, 255, .8); }
+
+.elx-timeline { position: relative; display: grid; gap: 14px; max-width: 760px; margin: 0 auto; padding: 0 0 0 30px; list-style: none; }
+.elx-timeline::before { content: ""; position: absolute; left: 10px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--p-accent, var(--eg-rasp)), rgba(221, 106, 147, .25)); }
+@media (min-width: 900px) {
+  .elx-timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 30px 0 0; gap: 18px; }
+  .elx-timeline::before { left: 8%; right: 8%; top: 10px; bottom: auto; width: auto; height: 2px; background: linear-gradient(90deg, var(--p-accent, var(--eg-rasp)), rgba(221, 106, 147, .25)); }
+}
+.elx-tl-item { position: relative; padding: 16px 18px; border-radius: 22px; background: var(--eg-glass); border: 1px solid rgba(255,255,255,.42);
+  box-shadow: 0 20px 50px -24px rgba(192, 67, 111, .3), inset 0 1px 1px rgba(255,255,255,.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.elx-tl-dot { position: absolute; left: -26px; top: 20px; width: 14px; height: 14px; border-radius: 99px; background: #fff;
+  border: 3px solid var(--p-accent, var(--eg-rasp)); box-shadow: 0 0 0 4px rgba(255,255,255,.6); }
+@media (min-width: 900px) { .elx-tl-dot { left: 50%; top: -27px; transform: translateX(-50%); } .elx-tl-item { text-align: center; } }
+.elx-tl-when { display: block; font-family: var(--font-display), "Lexend", sans-serif; font-weight: 600; color: var(--eg-plum); font-size: 17px; }
+.elx-tl-item p { margin-top: 4px; font-size: 14px; line-height: 1.55; color: var(--eg-ink); }
+
+.elx-compare { max-width: 760px; margin: 0 auto; border-radius: 26px; overflow: hidden; background: var(--eg-glass);
+  border: 1px solid rgba(255,255,255,.42); box-shadow: 0 24px 64px -26px rgba(192, 67, 111, .32), inset 0 1px 1px rgba(255,255,255,.65);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.elx-cmp-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 8px; padding: 13px 16px; }
+.elx-cmp-row + .elx-cmp-row { border-top: 1px solid rgba(255,255,255,.5); }
+.elx-cmp-row > span { min-width: 0; font-size: 14px; color: var(--eg-ink); }
+.elx-cmp-row > span:not(:first-child) { text-align: center; font-weight: 600; }
+.elx-cmp-row.is-head > span { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--eg-soft); line-height: 1.25; }
+.elx-cmp-row .is-us { background: rgba(255,255,255,.5); border-radius: 12px; padding: 6px 4px; }
+.elx-cmp-row.is-head .is-us { color: var(--eg-plum); }
+.elx-cmp-row .yes { color: var(--p-accent, var(--eg-rasp)); font-size: 17px; }
+.elx-cmp-row .no { color: rgba(125, 69, 96, .45); }
+
+/* ---- Carrito y páginas legales con estilo Glow ---- */
+.elx-page .elora-shop-panel, .elx-page .elora-shop-soft, .elx-page .elora-shop-line, .elx-page .elora-shop-summary {
+  background: var(--eg-glass) !important; border: 1px solid rgba(255,255,255,.42) !important; border-radius: 26px;
+  box-shadow: 0 24px 64px -26px rgba(192, 67, 111, .32), inset 0 1px 1px rgba(255,255,255,.65) !important;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.elx-page .elora-shop-line { border-radius: 20px; }
+.elx-page h1, .elx-page h2 { font-family: var(--font-display), "Lexend", sans-serif; color: var(--eg-plum); font-weight: 600; letter-spacing: -.02em; text-wrap: balance; }
+.elx-page .elora-shop-eyebrow { color: var(--eg-rasp); letter-spacing: .14em; }
+.elx-page .elora-shop-price { color: var(--eg-plum); font-weight: 600; font-variant-numeric: tabular-nums; }
+.elx-page .elora-shop-muted, .elx-page .legal-content { color: var(--eg-ink); }
+.elx-page .legal-content p, .elx-page .legal-content li { text-wrap: pretty; max-width: 70ch; }
+.elx-page .elora-shop-qty-btn { background: rgba(255,255,255,.6); color: var(--eg-plum); }
+.elx-page .elora-shop-qty-btn:hover { background: var(--eg-rasp-2); color: #fff; }
+
+/* ---- Carga elegante: brillo rosa en lugar de huecos grises ---- */
+.elx .elora-shop-skeleton, .elx-page .elora-shop-skeleton {
+  background: linear-gradient(100deg, rgba(255,255,255,.35) 20%, rgba(255, 214, 229, .75) 40%, rgba(255,255,255,.35) 60%) !important;
+  background-size: 220% 100% !important; animation: eg-skel 1.4s ease-in-out infinite !important; border-radius: 22px; }
+@keyframes eg-skel { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+.eg-hero-frame, .eg-step-img, .elx .elx-main-media, .elx .elx-thumb { background-color: rgba(255, 228, 238, .7); }

@@ -31,7 +31,7 @@ const outfit = Lexend({
   display: "swap",
 });
 const SITE_DESCRIPTION =
-  "Elora Skin ofrece skincare premium con disponibilidad real y una experiencia de compra segura.";
+  "Elora Skin: gentle, honest skincare. Shop the Lactobionic Acid Pore Refining Serum with free tracked shipping.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allinonestore.lat"),
@@ -63,18 +63,11 @@ export const metadata: Metadata = {
     url: "https://allinonestore.lat",
     siteName: "Elora Skin",
     type: "website",
-    images: [
-      {
-        url: "/producto-real.png",
-        alt: "Elora Skin",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Elora Skin",
     description: SITE_DESCRIPTION,
-    images: ["/producto-real.png"],
   },
 };
 

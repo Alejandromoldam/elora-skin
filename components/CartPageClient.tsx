@@ -238,7 +238,7 @@ export default function CartPageClient() {
   }
 
   return (
-    <main className="elora-shop cart-page-shell relative mx-auto min-h-screen w-full max-w-3xl px-4 pb-8 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:pb-12 lg:px-8">
+    <main className="elora-shop elx elx-page cart-page-shell relative mx-auto min-h-screen w-full max-w-3xl px-4 pb-8 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:pb-12 lg:px-8">
       <div className="elora-bg" aria-hidden="true" />
       <RevealOnScroll as="section" className="elora-shop-panel p-4 sm:p-6">
         <div className="mb-5 text-center">

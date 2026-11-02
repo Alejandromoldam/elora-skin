@@ -149,6 +149,10 @@
     "howToEyebrow": "How to use",
     "chooseMyPack": "Choose my pack",
     "added": "Added to your bag.",
-    "addError": "We couldn't add it to your bag. Please try again."
+    "addError": "We couldn't add it to your bag. Please try again.",
+    "deliveryLine": "Order today, get it between {from} and {to}",
+    "compareYes": "Yes",
+    "compareNo": "No",
+    "expectEyebrow": "Results"
   }
 }

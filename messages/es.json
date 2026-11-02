@@ -149,6 +149,10 @@
     "howToEyebrow": "Modo de uso",
     "chooseMyPack": "Elegir mi pack",
     "added": "Añadido a tu bolsa.",
-    "addError": "No pudimos añadirlo a tu bolsa. Inténtalo de nuevo."
+    "addError": "No pudimos añadirlo a tu bolsa. Inténtalo de nuevo.",
+    "deliveryLine": "Pídelo hoy y recíbelo entre el {from} y el {to}",
+    "compareYes": "Sí",
+    "compareNo": "No",
+    "expectEyebrow": "Resultados"
   }
 }

@@ -48,6 +48,12 @@ export type ProductLandingContent = {
   howTo: Array<{ title: string; text: string }>;
   howToTip: string;
   faq: Array<{ q: string; a: string }>;
+  expectTitle: string;
+  expect: Array<{ when: string; text: string }>;
+  compareTitle: string;
+  compareUs: string;
+  compareThem: string;
+  compareRows: Array<{ label: string; us: boolean; them: boolean }>;
   finalTitle: string;
   finalText: string;
 };
@@ -88,6 +94,21 @@ const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
         { q: "How long does shipping take?", a: "Shipping is free and tracked. Orders ship within 1–3 business days and usually arrive in 2–3 weeks." },
         { q: "What if it's not right for me?", a: "Write to us and we'll help you. You can read the details in our Returns policy." },
       ],
+      expectTitle: "What to expect",
+      expect: [
+        { when: "First use", text: "Skin feels softer and smoother to the touch." },
+        { when: "2 weeks", text: "Texture looks more even and less congested." },
+        { when: "4+ weeks", text: "Pores look visibly refined with daily use." },
+      ],
+      compareTitle: "Why a gentle PHA serum",
+      compareUs: "Elora PHA serum",
+      compareThem: "Harsh scrubs & strong acids",
+      compareRows: [
+        { label: "Suitable for sensitive skin", us: true, them: false },
+        { label: "Daily use, morning and night", us: true, them: false },
+        { label: "No stinging or redness", us: true, them: false },
+        { label: "Works on pore buildup", us: true, them: true },
+      ],
       finalTitle: "Ready for smoother skin?",
       finalText: "Choose your pack and start your ritual today. Free tracked shipping on every order.",
     },
@@ -124,6 +145,21 @@ const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
         { q: "¿Cuánto dura un frasco?", a: "Cada frasco de 30 ml dura unas 4–6 semanas usándolo dos veces al día. Por eso los packs de 2 y 3 frascos son los que más rinden." },
         { q: "¿Cuánto tarda el envío?", a: "El envío es gratis y con seguimiento. Los pedidos salen en 1–3 días hábiles y suelen llegar en 2–3 semanas." },
         { q: "¿Y si no es para mí?", a: "Escríbenos y te ayudamos. Puedes ver los detalles en nuestra política de devoluciones." },
+      ],
+      expectTitle: "Qué esperar",
+      expect: [
+        { when: "Primer uso", text: "La piel se siente más suave y lisa al tacto." },
+        { when: "2 semanas", text: "La textura se ve más uniforme y menos congestionada." },
+        { when: "4+ semanas", text: "Los poros se ven visiblemente más finos con el uso diario." },
+      ],
+      compareTitle: "Por qué un sérum PHA suave",
+      compareUs: "Sérum PHA Elora",
+      compareThem: "Exfoliantes fuertes",
+      compareRows: [
+        { label: "Apto para piel sensible", us: true, them: false },
+        { label: "Uso diario, mañana y noche", us: true, them: false },
+        { label: "Sin ardor ni enrojecimiento", us: true, them: false },
+        { label: "Actúa sobre la acumulación en los poros", us: true, them: true },
       ],
       finalTitle: "¿Lista para una piel más lisa?",
       finalText: "Elige tu pack y empieza tu ritual hoy. Envío gratis con seguimiento en todos los pedidos.",

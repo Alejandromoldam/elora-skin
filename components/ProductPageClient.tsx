@@ -534,6 +534,13 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     document.getElementById("elx-buy")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  // Entrega estimada: 14–21 días desde hoy (envío internacional con seguimiento).
+  const [deliveryFrom, deliveryTo] = useMemo(() => {
+    const fmt = new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", { month: "short", day: "numeric" });
+    const now = Date.now();
+    return [fmt.format(new Date(now + 14 * 864e5)), fmt.format(new Date(now + 21 * 864e5))];
+  }, [locale]);
+
   const priceNow = selectedPack ? selectedPack.price : getPriceNumber(selectedVariant?.priceAmount || product?.priceAmount || "0");
   const priceWas = selectedPack && selectedPack.saving > 0 ? selectedPack.reference : 0;
 
@@ -652,7 +659,10 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                             {p.units > 1 ? <span className="elx-pack-sub">{pt.perUnit.replace("{price}", money(p.price / p.units))}</span> : null}
                           </span>
                           <span className="elx-pack-price">
-                            <strong>{money(p.price)}</strong>
+                            <strong>
+                              {p.saving > 0 ? <s className="elx-pack-was">{money(p.reference)}</s> : null}
+                              {money(p.price)}
+                            </strong>
                             {p.saving > 0 ? <span className="elx-pack-save">{pt.save.replace("{amount}", money(p.saving))}</span> : null}
                           </span>
                           {p.badge ? <span className="elx-pack-badge">{p.badge}</span> : null}
@@ -691,6 +701,11 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                     {addingToCart ? pt.adding : pt.addToBag}
                   </PillButton>
                 </div>
+
+                <p className="elx-delivery">
+                  <TrustSignalIcon icon="truck" className="h-5 w-5" />
+                  <span>{pt.deliveryLine.replace("{from}", deliveryFrom).replace("{to}", deliveryTo)}</span>
+                </p>
 
                 <ul className="elx-assure">
                   <li><TrustSignalIcon icon="truck" className="h-4 w-4" />{pt.shippingLine}</li>
@@ -737,6 +752,23 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                   </div>
                 </RevealOnScroll>
 
+                {/* ───────── Qué esperar ───────── */}
+                <RevealOnScroll as="section" className="elx-section">
+                  <div className="elx-head">
+                    <p className="elx-eyebrow">{pt.expectEyebrow}</p>
+                    <h2 className="elx-h2">{landing.expectTitle}</h2>
+                  </div>
+                  <ol className="elx-timeline">
+                    {landing.expect.map((e) => (
+                      <li key={e.when} className="elx-tl-item">
+                        <span className="elx-tl-dot" aria-hidden="true" />
+                        <span className="elx-tl-when">{e.when}</span>
+                        <p>{e.text}</p>
+                      </li>
+                    ))}
+                  </ol>
+                </RevealOnScroll>
+
                 {/* ───────── Ingredientes ───────── */}
                 <RevealOnScroll as="section" className="elx-section elx-split">
                   {product.images[2] || product.images[0] ? (
@@ -758,6 +790,27 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                         </article>
                       ))}
                     </div>
+                  </div>
+                </RevealOnScroll>
+
+                {/* ───────── Comparativa ───────── */}
+                <RevealOnScroll as="section" className="elx-section">
+                  <div className="elx-head">
+                    <h2 className="elx-h2">{landing.compareTitle}</h2>
+                  </div>
+                  <div className="elx-compare" role="table" aria-label={landing.compareTitle}>
+                    <div className="elx-cmp-row is-head" role="row">
+                      <span role="columnheader" />
+                      <span role="columnheader" className="is-us">{landing.compareUs}</span>
+                      <span role="columnheader">{landing.compareThem}</span>
+                    </div>
+                    {landing.compareRows.map((row) => (
+                      <div key={row.label} className="elx-cmp-row" role="row">
+                        <span role="rowheader">{row.label}</span>
+                        <span role="cell" className={`is-us ${row.us ? "yes" : "no"}`} aria-label={row.us ? pt.compareYes : pt.compareNo}>{row.us ? "✓" : "—"}</span>
+                        <span role="cell" className={row.them ? "yes" : "no"} aria-label={row.them ? pt.compareYes : pt.compareNo}>{row.them ? "✓" : "—"}</span>
+                      </div>
+                    ))}
                   </div>
                 </RevealOnScroll>
 

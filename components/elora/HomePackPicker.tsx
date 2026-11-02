@@ -121,6 +121,11 @@ export default function HomePackPicker({
               {tag ? <span className="eg-pack-tag">{tag}</span> : null}
               <BottleGlyph count={n} />
               <span className="eg-pack-name">{n === 1 ? labels.oneUnit : labels.nUnits.replace("{n}", String(n))}</span>
+              {p.compareAtAmount && Number(p.compareAtAmount) > Number(p.priceAmount) ? (
+                <s className="eg-pack-was">{money(Number(p.compareAtAmount), currency, locale)}</s>
+              ) : (
+                <span className="eg-pack-was is-empty" aria-hidden="true">&nbsp;</span>
+              )}
               <span className="eg-pack-price">{money(Number(p.priceAmount), currency, locale)}</span>
             </button>
           );

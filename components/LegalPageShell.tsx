@@ -15,19 +15,18 @@ export default function LegalPageShell({
   children,
 }: LegalPageShellProps) {
   return (
-    <main className="elora-shop min-h-screen">
-      <div className="mx-auto w-full max-w-4xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
+    <main className="elora-shop elx elx-page min-h-screen">
+      <div className="elora-bg" aria-hidden="true" />
+      <div className="mx-auto w-full max-w-4xl px-4 pb-24 pt-10 sm:pt-16 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-wrap items-center gap-3">
           <Link href="/" className="elora-pill is-outline">
             Volver al inicio
           </Link>
-          <Link href="/categorias" className="elora-pill is-outline">
-            Ir al catalogo
-          </Link>
+
         </div>
 
         <article className="elora-shop-panel p-6 sm:p-8">
-          <p className="elora-shop-eyebrow">Informacion legal</p>
+          <p className="elora-shop-eyebrow">Información legal</p>
           <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">{title}</h1>
           <p className="elora-shop-muted mt-4 text-sm leading-relaxed sm:text-base">{subtitle}</p>
           {updatedAt ? (
