@@ -12,6 +12,7 @@ import EloraCartLink from "@/components/elora/EloraCartLink";
 import { LightningIcon } from "@/components/elora/Icons";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
 import { getProductLandingContent, type BenefitIcon } from "@/lib/productContent";
+import BubbleBackground from "@/components/elora/BubbleBackground";
 
 type ProductImage = {
   url: string;
@@ -537,7 +538,11 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
 
   return (
     <main className="elora-shop elx relative min-h-[100svh]">
-      <div className="elora-bg" aria-hidden="true" />
+      <div className="elora-bg" aria-hidden="true">
+        <span className="eg-ribbon r1" />
+        <span className="eg-ribbon r2" />
+        <BubbleBackground />
+      </div>
 
       <header className="elx-top">
         <div className="elx-wrap elx-top-inner">

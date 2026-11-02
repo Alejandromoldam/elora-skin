@@ -4929,3 +4929,77 @@ body.cart-page-active .whatsapp-float-root {
 .elx .elora-pill.is-outline { border: 1px solid rgba(255, 255, 255, .7); }
 .elx .elx-final { background: linear-gradient(135deg, #d9689a, #b8487a); box-shadow: 0 30px 70px -24px rgba(192, 67, 111, .5); border-radius: 36px; }
 .eg-pack-tag { max-width: calc(100% + 6px); overflow: hidden; text-overflow: ellipsis; }
+
+/* =====================================================================
+   Glow · Movimiento y cremosidad
+   ===================================================================== */
+/* Paleta más cremosa: rosas lechosos con un toque durazno */
+.eg, .elx, .elora-shop {
+  --eg-bg-1: #fff1f4;
+  --eg-bg-2: #f7d6e1;
+  --eg-cream: #fff7f3;
+  --eg-glass: rgba(255, 249, 251, 0.42);
+  --eg-glass-line: rgba(255, 255, 255, 0.6);
+}
+.eg { background: linear-gradient(172deg, #fff3f5 0%, #fde3eb 38%, #f9d9e2 70%, #f6d3dc 100%); }
+.eg-bg, .elx .elora-bg {
+  background:
+    radial-gradient(900px 620px at 88% 4%, rgba(255, 255, 255, .7), transparent 60%),
+    radial-gradient(700px 520px at 0% 45%, rgba(255, 226, 214, .55), transparent 65%),
+    radial-gradient(800px 600px at 70% 100%, rgba(234, 214, 255, .45), transparent 65%),
+    linear-gradient(172deg, #fff3f5 0%, #fde3eb 45%, #f6d3dc 100%);
+}
+.elx .elora-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.eg-bubbles { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
+.eg-ribbon { opacity: .38; }
+
+/* Entrada escalonada al cargar (contenido visible al terminar en < 1 s) */
+@keyframes eg-rise { from { opacity: 0; transform: translateY(18px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes eg-fade { from { opacity: 0; } to { opacity: 1; } }
+.eg-topbar, .eg-header { animation: eg-fade .6s ease both; }
+.eg-h1 { animation: eg-rise .8s cubic-bezier(.2,.7,.2,1) .05s both; }
+.eg-lead { animation: eg-rise .8s cubic-bezier(.2,.7,.2,1) .15s both; }
+.eg-hero-copy .eg-btn { animation: eg-rise .8s cubic-bezier(.2,.7,.2,1) .25s both; }
+.eg-hero-media { animation: eg-rise .9s cubic-bezier(.2,.7,.2,1) .2s both; }
+.eg-trust { animation: eg-rise .8s cubic-bezier(.2,.7,.2,1) .35s both; }
+.eg-packs { animation: eg-rise .8s cubic-bezier(.2,.7,.2,1) .45s both; }
+.eg-benefit:nth-child(1) { animation: eg-rise .7s ease .55s both; }
+.eg-benefit:nth-child(2) { animation: eg-rise .7s ease .62s both; }
+.eg-benefit:nth-child(3) { animation: eg-rise .7s ease .69s both; }
+.eg-benefit:nth-child(4) { animation: eg-rise .7s ease .76s both; }
+
+/* Producto del hero: flota suave sobre el podio que respira */
+@keyframes eg-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes eg-breathe { 0%, 100% { opacity: .9; transform: scaleX(1); } 50% { opacity: 1; transform: scaleX(1.04); } }
+.eg-hero-frame { animation: eg-float 6s ease-in-out 1s infinite; }
+.eg-podium { animation: eg-breathe 6s ease-in-out 1s infinite; }
+
+/* Brillo que recorre títulos y botones */
+@keyframes eg-sheen { 0% { background-position: -160% 0; } 60%, 100% { background-position: 260% 0; } }
+.eg-btn, .elx .elora-pill:not(.is-outline) { position: relative; overflow: hidden; isolation: isolate; }
+.eg-btn::after, .elx .elora-pill:not(.is-outline)::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .45) 50%, transparent 65%);
+  background-size: 220% 100%; animation: eg-sheen 4.5s ease-in-out 1.5s infinite; }
+.eg-btn { z-index: 0; }
+
+/* Pack elegido: halo que late suave */
+@keyframes eg-halo { 0%, 100% { box-shadow: 0 16px 34px -12px rgba(192, 67, 111, .55), 0 0 0 0 rgba(221, 106, 147, .35); }
+  50% { box-shadow: 0 16px 34px -12px rgba(192, 67, 111, .55), 0 0 0 7px rgba(221, 106, 147, 0); } }
+.eg-pack.is-on, .elx .elx-pack.is-active { animation: eg-halo 2.8s ease-in-out infinite; }
+
+/* Tarjetas: elevación y reflejo de luz al pasar */
+.eg-glass, .eg-pack, .eg-step-img, .elx .elx-benefit, .elx .elx-ingredient, .elx .elx-step, .elx .elx-trust-item {
+  transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease, background .45s ease; }
+.eg-benefit:hover, .eg-step:hover .eg-step-img, .elx .elx-benefit:hover, .elx .elx-ingredient:hover, .elx .elx-step:hover {
+  transform: translateY(-5px); box-shadow: 0 26px 60px -20px rgba(192, 67, 111, .38), inset 0 1px 0 rgba(255,255,255,.8); }
+.eg-benefit:hover .eg-benefit-ico svg { transform: scale(1.08) rotate(-4deg); }
+.eg-benefit-ico svg { transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+
+/* Página de producto: entrada suave */
+.elx .elx-hero > * { animation: eg-rise .8s cubic-bezier(.2,.7,.2,1) both; }
+.elx .elx-hero > *:nth-child(2) { animation-delay: .12s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .eg *, .elx * { animation: none !important; transition: none !important; }
+}

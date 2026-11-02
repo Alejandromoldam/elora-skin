@@ -7,6 +7,7 @@ import EloraCartLink from "@/components/elora/EloraCartLink";
 import MobileNav from "@/components/elora/MobileNav";
 import LangSwitcher from "@/components/elora/LangSwitcher";
 import HomePackPicker from "@/components/elora/HomePackPicker";
+import BubbleBackground from "@/components/elora/BubbleBackground";
 
 // Portada "Glow": fondo rosa iridiscente, tarjetas de vidrio y acentos
 // frambuesa. Mobile-first: el hero mantiene texto + producto lado a lado.
@@ -81,6 +82,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
         <span className="eg-ribbon r1" />
         <span className="eg-ribbon r2" />
         <span className="eg-ribbon r3" />
+        <BubbleBackground />
       </div>
 
       <div className="eg-shell">
