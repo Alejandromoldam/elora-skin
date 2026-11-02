@@ -26,7 +26,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "all-in-one-22092396.myshopify.com",
+        hostname: "**.myshopify.com",
       },
       {
         protocol: "https",
