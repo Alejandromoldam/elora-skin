@@ -5118,3 +5118,7 @@ body.cart-page-active .whatsapp-float-root {
   background-size: 220% 100% !important; animation: eg-skel 1.4s ease-in-out infinite !important; border-radius: 22px; }
 @keyframes eg-skel { from { background-position: 120% 0; } to { background-position: -120% 0; } }
 .eg-hero-frame, .eg-step-img, .elx .elx-main-media, .elx .elx-thumb { background-color: rgba(255, 228, 238, .7); }
+
+/* Fix: en móvil la fila de miniaturas ensanchaba la galería (desborde lateral) */
+.elx-hero > .elx-gallery, .elx-hero > .elx-info { min-width: 0; }
+.elx-thumbs { max-width: 100%; }

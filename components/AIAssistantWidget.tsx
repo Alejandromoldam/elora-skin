@@ -44,7 +44,7 @@ const INITIAL_ASSISTANT_TEXT =
 function formatMoney(amount: string, currencyCode: string) {
   const numeric = Number(amount);
   if (Number.isNaN(numeric)) return `${amount} ${currencyCode}`;
-  return new Intl.NumberFormat("es-MX", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currencyCode,
     maximumFractionDigits: 2,

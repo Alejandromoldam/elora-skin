@@ -45,7 +45,7 @@ function formatMoney(amount: string, currencyCode: string) {
   if (Number.isNaN(value)) {
     return `${amount} ${currencyCode}`;
   }
-  return new Intl.NumberFormat("es-MX", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currencyCode,
     maximumFractionDigits: 2,
