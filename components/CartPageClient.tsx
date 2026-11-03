@@ -1,5 +1,6 @@
 "use client";
 
+import { moneyWithCode } from "@/lib/money";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -40,16 +41,8 @@ const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
 const LOCAL_CART_EVENT_SOURCE = "cart-page";
 
-function formatMoney(amount: string, currencyCode: string) {
-  const value = Number(amount);
-  if (Number.isNaN(value)) {
-    return `${amount} ${currencyCode}`;
-  }
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currencyCode,
-    maximumFractionDigits: 2,
-  }).format(value);
+function formatMoney(amount: string, currencyCode: string, _intlLocale?: string) {
+  return moneyWithCode(amount, currencyCode);
 }
 
 function getPriceNumber(amount: string) {

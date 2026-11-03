@@ -1,5 +1,6 @@
 "use client";
 
+import { moneyWithCode } from "@/lib/money";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { trackAddToCart } from "@/lib/ga";
@@ -34,16 +35,8 @@ type CartLine = {
   productUrl: string;
 };
 
-function formatMoney(amount: string, currencyCode: string, intlLocale = "en-US") {
-  const value = Number(amount);
-  if (Number.isNaN(value)) {
-    return `${amount} ${currencyCode}`;
-  }
-  return new Intl.NumberFormat(intlLocale, {
-    style: "currency",
-    currency: currencyCode || "USD",
-    maximumFractionDigits: 2,
-  }).format(value);
+function formatMoney(amount: string, currencyCode: string, _intlLocale?: string) {
+  return moneyWithCode(amount, currencyCode);
 }
 
 function readCart(): { lines: CartLine[] } {

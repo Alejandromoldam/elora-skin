@@ -5225,3 +5225,8 @@ body.cart-page-active .whatsapp-float-root {
 .eg-card-price { font-weight: 600; font-variant-numeric: tabular-nums; font-size: clamp(13px, 3.6vw, 16px); }
 .eg-card-cta { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; color: #fff; background: var(--eg-btn); font-size: 18px; line-height: 1; flex: none; }
 @media (prefers-reduced-motion: reduce) { .eg-card, .eg-card-media img { transition: none; } }
+
+/* ── Precios: código de moneda (USD) en pequeño junto a la cifra ── */
+.usd { margin-left: .32em; font-family: var(--font-body), "Lexend", sans-serif; font-size: .46em; font-weight: 600; letter-spacing: .08em; opacity: .72; vertical-align: baseline; white-space: nowrap; }
+.eg-pack-price .usd { display: block; margin: 2px 0 0; font-size: 11px; letter-spacing: .1em; }
+.elx-pack-price .usd { font-size: 11px; }

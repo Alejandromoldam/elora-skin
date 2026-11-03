@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { moneyWithCode } from "@/lib/money";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -18,16 +19,8 @@ export const revalidate = 1800;
 const FALLBACK_DESCRIPTION =
   "Categoria de productos premium en Elora Skin.";
 
-function formatMoney(amount: string, currencyCode: string) {
-  const value = Number(amount);
-  if (Number.isNaN(value)) {
-    return `${amount} ${currencyCode}`;
-  }
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currencyCode,
-    maximumFractionDigits: 2,
-  }).format(value);
+function formatMoney(amount: string, currencyCode: string, _intlLocale?: string) {
+  return moneyWithCode(amount, currencyCode);
 }
 
 function compactText(text: string, maxLength = 160) {

@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { trackBeginCheckout } from "@/lib/ga";
 import type { Locale } from "@/lib/i18n";
 import { packLabel, type PackLabels } from "@/lib/packs";
+import { moneyNumber } from "@/lib/money";
+import Money from "@/components/elora/Money";
 
 type Variant = {
   id: string;
@@ -26,13 +28,6 @@ function units(title: string) {
   return m ? Number(m[1]) : 0;
 }
 
-function money(amount: number, currency: string, locale: Locale) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: amount % 1 === 0 ? 0 : 2,
-  }).format(amount);
-}
 
 function BottleGlyph({ count }: { count: number }) {
   return (
@@ -121,11 +116,11 @@ export default function HomePackPicker({
               <BottleGlyph count={n} />
               <span className="eg-pack-name">{packLabel(p.title, n, labels)}</span>
               {p.compareAtAmount && Number(p.compareAtAmount) > Number(p.priceAmount) ? (
-                <s className="eg-pack-was">{money(Number(p.compareAtAmount), currency, locale)}</s>
+                <s className="eg-pack-was">{moneyNumber(Number(p.compareAtAmount), currency)}</s>
               ) : (
                 <span className="eg-pack-was is-empty" aria-hidden="true">&nbsp;</span>
               )}
-              <span className="eg-pack-price">{money(Number(p.priceAmount), currency, locale)}</span>
+              <span className="eg-pack-price"><Money amount={Number(p.priceAmount)} currency={currency} /></span>
             </button>
           );
         })}

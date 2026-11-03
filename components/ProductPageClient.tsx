@@ -13,6 +13,8 @@ import { LightningIcon } from "@/components/elora/Icons";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
 import { getProductLandingContent, getProductTheme, type BenefitIcon } from "@/lib/productContent";
 import { packLabel } from "@/lib/packs";
+import { moneyNumber, moneyWithCode } from "@/lib/money";
+import Money from "@/components/elora/Money";
 import BubbleBackground from "@/components/elora/BubbleBackground";
 
 type ProductImage = {
@@ -146,17 +148,6 @@ const TRUST_SIGNAL_ICONS: TrustSignalIconType[] = [
   "badge",
 ];
 
-function formatMoney(amount: string, currencyCode: string, intlLocale = "en-US") {
-  const value = Number(amount);
-  if (Number.isNaN(value)) {
-    return `${amount} ${currencyCode}`;
-  }
-  return new Intl.NumberFormat(intlLocale, {
-    style: "currency",
-    currency: currencyCode,
-    maximumFractionDigits: 2,
-  }).format(value);
-}
 
 function extractVariantNumericId(variantGid: string | undefined) {
   if (!variantGid) return null;
@@ -488,12 +479,16 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     if (usesPacks) setQuantity(1);
   }, [usesPacks]);
 
+  const curOf = (currency?: string) => currency || selectedVariant?.priceCurrency || product?.priceCurrency || "USD";
+  // money: solo cifra (tachados, ahorros, "c/u"); moneyS: texto con USD; moneyP: cifra con USD en pequeño
   function money(amount: number | string, currency?: string) {
-    return formatMoney(
-      String(amount),
-      currency || selectedVariant?.priceCurrency || product?.priceCurrency || "USD",
-      intlLocale
-    );
+    return moneyNumber(amount, curOf(currency));
+  }
+  function moneyS(amount: number | string, currency?: string) {
+    return moneyWithCode(amount, curOf(currency));
+  }
+  function moneyP(amount: number | string, currency?: string) {
+    return <Money amount={amount} currency={curOf(currency)} />;
   }
 
   async function buyNow() {
@@ -624,7 +619,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                 {landing?.tagline ? <p className="elx-tagline">{landing.tagline}</p> : null}
 
                 <div className="elx-price-row">
-                  <span className="elx-price">{money(priceNow)}</span>
+                  <span className="elx-price">{moneyP(priceNow)}</span>
                   {priceWas ? <span className="elx-was">{money(priceWas)}</span> : null}
                   {selectedPack && selectedPack.saving > 0 ? <span className="elx-save">{pt.save.replace("{amount}", money(selectedPack.saving))}</span> : null}
                 </div>
@@ -653,7 +648,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                           <span className="elx-pack-price">
                             <strong>
                               {p.saving > 0 ? <s className="elx-pack-was">{money(p.reference)}</s> : null}
-                              {money(p.price)}
+                              {moneyP(p.price)}
                             </strong>
                             {p.saving > 0 ? <span className="elx-pack-save">{pt.save.replace("{amount}", money(p.saving))}</span> : null}
                           </span>
@@ -668,7 +663,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                       <div className="mt-5">
                         <label className="elx-label">{pt.eyebrow}</label>
                         <select value={selectedVariant?.id || ""} onChange={(e) => setSelectedVariantId(e.target.value)} className="elora-shop-select mt-2">
-                          {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {money(v.priceAmount, v.priceCurrency)}</option>)}
+                          {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {moneyS(v.priceAmount, v.priceCurrency)}</option>)}
                         </select>
                       </div>
                     ) : null}
@@ -687,7 +682,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
 
                 <div className="elx-ctas">
                   <PillButton onClick={() => void buyNow()} disabled={buyingNow || !selectedVariant?.availableForSale} className="elora-shop-cta elx-cta-main">
-                    {!selectedVariant?.availableForSale ? pt.soldOut : buyingNow ? pt.redirecting : `${pt.buyNow} · ${money(priceNow * effectiveQty)}`}
+                    {!selectedVariant?.availableForSale ? pt.soldOut : buyingNow ? pt.redirecting : `${pt.buyNow} · ${moneyS(priceNow * effectiveQty)}`}
                   </PillButton>
                   <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} variant="outline" className="elora-shop-cta">
                     {addingToCart ? pt.adding : pt.addToBag}
@@ -874,7 +869,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                         <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} className="aspect-square w-full object-cover" />
                       </Link>
                       <h3 className="elora-shop-card-title mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
-                      <p className="elora-shop-price mt-2 text-lg">{money(related.priceAmount, related.priceCurrency)}</p>
+                      <p className="elora-shop-price mt-2 text-lg">{moneyP(related.priceAmount, related.priceCurrency)}</p>
                       <div className="mt-4">
                         <PillButton onClick={() => void addRelatedToCart(related)} disabled={addingRelatedId === related.id || !related.availableForSale || !related.variantId} className="elora-shop-cta elora-shop-cta-sm">
                           {addingRelatedId === related.id ? pt.adding : pt.addToBag}
@@ -895,7 +890,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
           <div className="mx-auto flex w-full max-w-7xl items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="elora-shop-muted truncate text-xs font-medium">{selectedPack ? selectedPack.label : shortenTitle(product.title, 34)}</p>
-              <p className="elora-shop-price text-base">{money(priceNow * effectiveQty)}</p>
+              <p className="elora-shop-price text-base">{moneyP(priceNow * effectiveQty)}</p>
             </div>
             <PillButton onClick={() => void buyNow()} disabled={buyingNow || !selectedVariant?.availableForSale} className="elora-shop-cta-sm shrink-0">
               {buyingNow ? "..." : pt.buyNow}

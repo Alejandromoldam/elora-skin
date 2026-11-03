@@ -3,6 +3,7 @@ import Link from "next/link";
 import { fetchHomeCatalogSnapshot } from "@/lib/shopifyCatalog";
 import { getMessages, localizePath, type Locale } from "@/lib/i18n";
 import { getProductLandingContent } from "@/lib/productContent";
+import { moneyWithCode } from "@/lib/money";
 import EloraCartLink from "@/components/elora/EloraCartLink";
 import MobileNav from "@/components/elora/MobileNav";
 import LangSwitcher from "@/components/elora/LangSwitcher";
@@ -67,8 +68,7 @@ export default async function HomePage({ locale }: { locale: Locale }) {
   const gallery = featured?.gallery ?? [];
   const howToImg = gallery.find((g) => /how to use|modo de/i.test(g.alt)) ?? null;
 
-  const money0 = (amount: string, currency: string) =>
-    new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(Number(amount));
+  const money0 = (amount: string, currency: string) => moneyWithCode(amount, currency);
   const productSlides: HeroSlide[] = catalog.products.slice(0, 6).map((prod) => {
     const content = getProductLandingContent(prod.handle, locale);
     const img = prod.gallery?.[0] ?? { url: prod.imageUrl, alt: prod.imageAlt };
