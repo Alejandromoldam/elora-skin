@@ -66,14 +66,22 @@ export default function HeroCarousel({ slides, labels }: { slides: HeroSlide[]; 
         go(index + (end < start ? 1 : -1));
       }}
     >
-      <div className="eg-hero-copy" key={`copy-${slide.key}`} aria-live="polite">
-        {slide.eyebrow ? <p className="eg-hero-eyebrow">{slide.eyebrow}</p> : null}
-        <h1 className="eg-h1"><Title pre={slide.titlePre} em={slide.titleEm} /></h1>
-        <p className="eg-lead">{slide.lead}</p>
-        <a className="eg-btn" href={slide.href}>
-          {slide.cta}
-          <span aria-hidden="true" className="eg-chev">›</span>
-        </a>
+      <div className="eg-hero-copies" aria-live="polite">
+        {slides.map((s, i) => {
+          const on = i === index;
+          const Heading = i === 0 ? "h1" : "h2";
+          return (
+            <div key={`copy-${s.key}`} className={`eg-hero-copy${on ? " is-active" : ""}`} aria-hidden={!on}>
+              {s.eyebrow ? <p className="eg-hero-eyebrow">{s.eyebrow}</p> : null}
+              <Heading className="eg-h1"><Title pre={s.titlePre} em={s.titleEm} /></Heading>
+              <p className="eg-lead">{s.lead}</p>
+              <a className="eg-btn" href={s.href} tabIndex={on ? 0 : -1}>
+                {s.cta}
+                <span aria-hidden="true" className="eg-chev">›</span>
+              </a>
+            </div>
+          );
+        })}
       </div>
 
       <div className="eg-hero-media">
