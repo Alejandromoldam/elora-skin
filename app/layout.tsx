@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, Lexend } from "next/font/google";
-import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
 import { GA_MEASUREMENT_ID, META_PIXEL_ID } from "@/lib/ga";
@@ -142,7 +141,6 @@ export default function RootLayout({
         {hasGaMeasurementId || hasMetaPixelId ? <GaPageTracker /> : null}
 
         <div className="app-content">{children}</div>
-        <AIAssistantWidget />
         <FloatingWhatsAppButton />
       </body>
     </html>
