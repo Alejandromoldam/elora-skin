@@ -12,6 +12,7 @@ import EloraCartLink from "@/components/elora/EloraCartLink";
 import { LightningIcon } from "@/components/elora/Icons";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
 import { getProductLandingContent, getProductTheme, type BenefitIcon } from "@/lib/productContent";
+import { packLabel } from "@/lib/packs";
 import BubbleBackground from "@/components/elora/BubbleBackground";
 
 type ProductImage = {
@@ -474,11 +475,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
               ? pt.mostPopular
               : null
           : null;
-      const label = units > 0
-        ? units === 1
-          ? pt.oneUnit
-          : pt.nUnits.replace("{n}", String(units))
-        : v.title;
+      const label = units > 0 ? packLabel(v.title, units, pt) : v.title;
       return { variant: v, units, price, reference, saving, badge, label };
     });
   }, [product, pt]);
@@ -772,7 +769,7 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                     </div>
                   ) : null}
                   <div>
-                    <p className="elx-eyebrow">{pt.ingredientsEyebrow}</p>
+                    <p className="elx-eyebrow">{landing.ingredientsEyebrow ?? pt.ingredientsEyebrow}</p>
                     <h2 className="elx-h2 text-left">{landing.ingredientsTitle}</h2>
                     <div className="elx-ingredients">
                       {landing.ingredients.map((ing) => (
@@ -967,6 +964,24 @@ function BenefitGlyph({ icon }: { icon: BenefitIcon }) {
     return (
       <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
         <path d="M16 4c4 5.5 7 9.4 7 13a7 7 0 0 1-14 0c0-3.6 3-7.5 7-13Z" {...common} />
+      </svg>
+    );
+  }
+  if (icon === "lashes") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M4 15c3.5 4 7.5 6 12 6s8.5-2 12-6" {...common} />
+        <path d="M7 18.4 5 21.5M11 20.3l-1.2 3.4M16 21v3.6M21 20.3l1.2 3.4M25 18.4l2 3.1" {...common} />
+        <path d="M23 4v7m0-7-2.6 2.6M23 4l2.6 2.6" {...common} />
+      </svg>
+    );
+  }
+  if (icon === "volume") {
+    return (
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M4 17c3.5 4 7.5 6 12 6s8.5-2 12-6" {...common} />
+        <path d="M6.5 20 4 23.5M10 21.8l-1.6 3.8M14 22.8l-.6 4M18 22.8l.6 4M22 21.8l1.6 3.8M25.5 20l2.5 3.5" {...common} />
+        <path d="M12 5.5v5M9.5 8h5M21.5 9v3.5M19.75 10.75h3.5" {...common} />
       </svg>
     );
   }

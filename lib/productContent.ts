@@ -6,7 +6,7 @@
 
 import type { Locale } from "@/lib/i18n";
 
-export type BenefitIcon = "pores" | "blackheads" | "oil" | "gentle" | "glow" | "hydrate";
+export type BenefitIcon = "pores" | "blackheads" | "oil" | "gentle" | "glow" | "hydrate" | "lashes" | "volume";
 
 // Tema visual propio de cada producto: tiñe el fondo, las burbujas y los
 // acentos secundarios con los tonos de su empaque. Los botones de compra
@@ -31,6 +31,14 @@ export const PRODUCT_THEMES: Record<string, ProductTheme> = {
     accentSoft: "rgba(118, 146, 226, 0.16)",
     mist: ["rgba(186, 204, 255, 0.55)", "rgba(255, 214, 230, 0.6)"],
   },
+  // Sérum de pestañas: caja rosa y tubo oro rosa -> rosa empolvado con
+  // neblina durazno-champán y acentos rosa antiguo.
+  "eyelash-boost-serum": {
+    hues: [345, 18, 332, 8, 300],
+    accent: "#a5556b",
+    accentSoft: "rgba(205, 128, 146, 0.17)",
+    mist: ["rgba(255, 208, 188, 0.55)", "rgba(255, 196, 216, 0.6)"],
+  },
 };
 
 export function getProductTheme(handle: string): ProductTheme | null {
@@ -44,6 +52,8 @@ export type ProductLandingContent = {
   highlights: string[];
   benefitsTitle: string;
   benefits: Array<{ icon: BenefitIcon; title: string; text: string }>;
+  /** Sustituye la etiqueta "Ingredients" cuando la sección habla de la fórmula. */
+  ingredientsEyebrow?: string;
   ingredientsTitle: string;
   ingredients: Array<{ name: string; tag: string; text: string }>;
   howToTitle: string;
@@ -167,6 +177,122 @@ const CONTENT: Record<string, Record<Locale, ProductLandingContent>> = {
       ],
       finalTitle: "¿Lista para una piel más lisa?",
       finalText: "Elige tu pack y empieza tu ritual hoy. Envío gratis con seguimiento en todos los pedidos.",
+    },
+  },
+  "eyelash-boost-serum": {
+    en: {
+      hero: { eyebrow: "New · Eyelash Boost Serum", titlePre: "Longer-looking lashes,", titleEm: "one swipe a night.", lead: "A nourishing lash and brow serum for a fuller, more defined look, no extensions needed." },
+      tagline: "Longer-looking, fuller-looking lashes.",
+      highlights: [
+        "Lashes look longer and fuller with nightly use",
+        "Nourishes and conditions lashes and brows",
+        "Precision brush, one swipe per eye",
+        "Lightweight, no sticky feel",
+      ],
+      benefitsTitle: "Why you'll love it",
+      benefits: [
+        { icon: "lashes", title: "Longer-looking lashes", text: "Conditioned lashes look longer and more defined, even before mascara." },
+        { icon: "volume", title: "Fuller-looking lashes", text: "Helps lashes look thicker and fuller from root to tip." },
+        { icon: "hydrate", title: "Nourishes lashes & brows", text: "Keeps lashes and brows soft and conditioned, so they look healthier." },
+        { icon: "gentle", title: "Gentle daily use", text: "A light formula made for a simple nightly ritual at the lash line." },
+      ],
+      ingredientsEyebrow: "The formula",
+      ingredientsTitle: "Made for your nightly ritual",
+      ingredients: [
+        { name: "Precision brush", tag: "Applicator", text: "A fine brush draws a thin line right at the base of the lashes, like a liner. One swipe per eye is enough." },
+        { name: "Lightweight texture", tag: "Comfort", text: "Absorbs quickly with no sticky or heavy feel, so you can apply it and go to sleep." },
+        { name: "Lashes & brows", tag: "Two in one", text: "Use the same tube along sparse brows for a fuller, more groomed look." },
+      ],
+      howToTitle: "Your 10-second ritual",
+      howTo: [
+        { title: "Clean lashes", text: "Remove makeup and start with clean, dry lashes." },
+        { title: "Apply at the lash line", text: "Draw one thin line along the upper lash line, like a liner." },
+        { title: "Use nightly", text: "Repeat every night. Consistency is what makes the difference." },
+      ],
+      howToTip: "Apply only at the lash line, not inside the eye. Let it dry before going to bed.",
+      faq: [
+        { q: "When will I see results?", a: "Lashes feel softer from the first nights. For a longer, fuller look, use it every night for 4 to 8 weeks or more." },
+        { q: "Can I use it with lash extensions or contact lenses?", a: "Remove contact lenses before applying and wait until it's dry to put them back in. With extensions, check with your lash artist first." },
+        { q: "Can I use it on my brows?", a: "Yes. Apply a thin layer along the brows once a day for a fuller, more groomed look." },
+        { q: "Is it suitable for sensitive eyes?", a: "Apply only at the lash line and avoid contact with the eye. As with any new product, do a patch test first and stop using it if you notice irritation." },
+        { q: "How long does one tube last?", a: "Each 3 ml tube lasts about 6–8 weeks with nightly use. That's why the 2- and 3-tube packs are the best value." },
+        { q: "How long does shipping take?", a: "Shipping is free and tracked. Orders ship within 1–3 business days and usually arrive in 2–3 weeks." },
+        { q: "What if it's not right for me?", a: "Write to us and we'll help you. You can read the details in our Returns policy." },
+      ],
+      expectTitle: "What to expect",
+      expect: [
+        { when: "First nights", text: "Lashes feel softer and conditioned." },
+        { when: "4 weeks", text: "Lashes look more defined and fuller." },
+        { when: "8+ weeks", text: "A longer, fuller look with nightly use." },
+      ],
+      compareTitle: "Why a lash serum",
+      compareUs: "Elora lash serum",
+      compareThem: "Lash extensions",
+      compareRows: [
+        { label: "No salon visits", us: true, them: false },
+        { label: "Your own natural lashes", us: true, them: false },
+        { label: "No glue near your eyes", us: true, them: false },
+        { label: "Fuller-looking lashes", us: true, them: true },
+      ],
+      finalTitle: "Ready for your longest-looking lashes?",
+      finalText: "Choose your pack and start your nightly ritual today. Free tracked shipping on every order.",
+    },
+    es: {
+      hero: { eyebrow: "Nuevo · Sérum para pestañas", titlePre: "Pestañas más largas,", titleEm: "un trazo cada noche.", lead: "Un sérum nutritivo para pestañas y cejas que las hace ver más llenas y definidas, sin extensiones." },
+      tagline: "Pestañas que se ven más largas y llenas.",
+      highlights: [
+        "Pestañas que se ven más largas y llenas con el uso diario",
+        "Nutre y acondiciona pestañas y cejas",
+        "Pincel de precisión, un solo trazo por ojo",
+        "Textura ligera que no se siente pegajosa",
+      ],
+      benefitsTitle: "Por qué te va a encantar",
+      benefits: [
+        { icon: "lashes", title: "Se ven más largas", text: "Las pestañas acondicionadas se ven más largas y definidas, incluso antes de la máscara." },
+        { icon: "volume", title: "Se ven más llenas", text: "Ayuda a que las pestañas se vean más gruesas y con más volumen de raíz a punta." },
+        { icon: "hydrate", title: "Nutre pestañas y cejas", text: "Las mantiene suaves y acondicionadas para que se vean más sanas." },
+        { icon: "gentle", title: "Uso diario suave", text: "Una fórmula ligera para un ritual sencillo cada noche en la línea de las pestañas." },
+      ],
+      ingredientsEyebrow: "La fórmula",
+      ingredientsTitle: "Pensado para tu ritual de noche",
+      ingredients: [
+        { name: "Pincel de precisión", tag: "Aplicador", text: "Un pincel fino traza una línea delgada justo en la base de las pestañas, como un delineador. Basta un trazo por ojo." },
+        { name: "Textura ligera", tag: "Comodidad", text: "Se absorbe rápido y no se siente pesada ni pegajosa, así que lo aplicas y te vas a dormir." },
+        { name: "Pestañas y cejas", tag: "Dos en uno", text: "Usa el mismo tubo en las cejas escasas para que se vean más llenas y definidas." },
+      ],
+      howToTitle: "Tu ritual de 10 segundos",
+      howTo: [
+        { title: "Limpia las pestañas", text: "Retira el maquillaje y empieza con las pestañas limpias y secas." },
+        { title: "Aplica en la línea", text: "Traza una línea delgada sobre la línea de las pestañas superiores, como un delineador." },
+        { title: "Úsalo cada noche", text: "Repite todas las noches. La constancia es lo que marca la diferencia." },
+      ],
+      howToTip: "Aplícalo solo en la línea de las pestañas, no dentro del ojo. Deja que se seque antes de dormir.",
+      faq: [
+        { q: "¿Cuándo veré resultados?", a: "Las pestañas se sienten más suaves desde las primeras noches. Para que se vean más largas y llenas, úsalo cada noche durante 4 a 8 semanas o más." },
+        { q: "¿Lo puedo usar con extensiones o lentes de contacto?", a: "Retira los lentes antes de aplicarlo y espera a que se seque para volver a ponerlos. Si tienes extensiones, consulta primero con tu especialista." },
+        { q: "¿Sirve para las cejas?", a: "Sí. Aplica una capa delgada sobre las cejas una vez al día para que se vean más llenas y definidas." },
+        { q: "¿Sirve para ojos sensibles?", a: "Aplícalo solo en la línea de las pestañas y evita el contacto con el ojo. Como con cualquier producto nuevo, haz primero una prueba y suspende el uso si notas irritación." },
+        { q: "¿Cuánto dura un tubo?", a: "Cada tubo de 3 ml dura unas 6–8 semanas usándolo cada noche. Por eso los packs de 2 y 3 tubos son los que más rinden." },
+        { q: "¿Cuánto tarda el envío?", a: "El envío es gratis y con seguimiento. Los pedidos salen en 1–3 días hábiles y suelen llegar en 2–3 semanas." },
+        { q: "¿Y si no es para mí?", a: "Escríbenos y te ayudamos. Puedes ver los detalles en nuestra política de devoluciones." },
+      ],
+      expectTitle: "Qué esperar",
+      expect: [
+        { when: "Primeras noches", text: "Las pestañas se sienten más suaves y acondicionadas." },
+        { when: "4 semanas", text: "Las pestañas se ven más definidas y llenas." },
+        { when: "8+ semanas", text: "Un look más largo y lleno con el uso diario." },
+      ],
+      compareTitle: "Por qué un sérum de pestañas",
+      compareUs: "Sérum de pestañas Elora",
+      compareThem: "Extensiones de pestañas",
+      compareRows: [
+        { label: "Sin citas en el salón", us: true, them: false },
+        { label: "Tus propias pestañas naturales", us: true, them: false },
+        { label: "Sin pegamento cerca de los ojos", us: true, them: false },
+        { label: "Pestañas que se ven más llenas", us: true, them: true },
+      ],
+      finalTitle: "¿Lista para unas pestañas que se vean más largas?",
+      finalText: "Elige tu pack y empieza tu ritual de noche hoy. Envío gratis con seguimiento en todos los pedidos.",
     },
   },
 };

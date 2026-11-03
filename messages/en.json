@@ -4,7 +4,7 @@
       "Free tracked shipping on every order",
       "Gentle on sensitive skin",
       "Secure, encrypted checkout",
-      "New: Pore Refining Serum"
+      "New: Eyelash Boost Serum"
     ],
     "nav": {
       "skincare": "Shop",
@@ -72,7 +72,7 @@
     "footerTerms": "Terms",
     "footerRights": "© 2026 Elora Skin. All rights reserved.",
     "metaTitle": "Elora Skin | Gentle skincare that works",
-    "metaDescription": "Elora Skin — gentle, honest skincare. Shop the Lactobionic Acid Pore Refining Serum with free tracked shipping.",
+    "metaDescription": "Elora Skin — gentle, honest skincare and lash care. Free tracked shipping on every order.",
     "brandEyebrow": "Elora Skin · Skincare",
     "brandTitlePre": "Your skin,",
     "brandTitleEm": "at its very best.",
@@ -81,7 +81,11 @@
     "heroPrev": "Previous",
     "heroNext": "Next",
     "heroGoTo": "Go to slide {n}",
-    "heroShop": "Shop now"
+    "heroShop": "Shop now",
+    "shopEyebrow": "Shop",
+    "shopTitle": "Our bestsellers",
+    "shopFrom": "From {price}",
+    "shopView": "View product"
   },
   "bestsellers": {
     "eyebrow": "Bestseller",
@@ -143,6 +147,8 @@
     "packTitle": "Choose your pack",
     "oneUnit": "1 bottle",
     "nUnits": "{n} bottles",
+    "oneTube": "1 tube",
+    "nTubes": "{n} tubes",
     "perUnit": "{price} each",
     "save": "Save {amount}",
     "mostPopular": "Most popular",

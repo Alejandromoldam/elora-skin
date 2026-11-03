@@ -5198,3 +5198,25 @@ body.cart-page-active .whatsapp-float-root {
 @keyframes eg-dot { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .eg-hero-dots button:focus-visible { outline: 2px solid var(--eg-plum); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .eg-hero-stack .eg-hero-frame { transition: none; } .eg-hero-dots button.is-on span { animation: none; } }
+
+/* ── Portada: vitrina de productos (se activa con 2+ productos) ── */
+.eg-shop { margin: 26px max(16px, env(safe-area-inset-left, 0px)) 0; }
+@media (min-width: 900px) { .eg-shop { margin: 40px 56px 0; } }
+.eg-shop .eg-h2 { margin-bottom: 16px; }
+.eg-shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 900px) { .eg-shop-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; max-width: 980px; margin: 0 auto; } }
+.eg-card { display: flex; flex-direction: column; overflow: hidden; padding: 0; min-width: 0; color: var(--eg-plum);
+  transition: transform .25s ease, box-shadow .25s ease; }
+.eg-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -22px rgba(160, 30, 82, .45); }
+.eg-card:focus-visible { outline: 2px solid var(--eg-plum); outline-offset: 3px; }
+.eg-card-media { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: rgba(255,255,255,.4); }
+.eg-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.eg-card:hover .eg-card-media img { transform: scale(1.04); }
+.eg-card-body { display: flex; flex-direction: column; gap: 4px; padding: 12px 12px 14px; flex: 1; }
+@media (min-width: 900px) { .eg-card-body { padding: 16px 18px 18px; gap: 6px; } }
+.eg-card-title { font-family: var(--font-display), "Lexend", sans-serif; font-weight: 600; font-size: clamp(14px, 3.8vw, 18px); line-height: 1.25; text-wrap: balance; }
+.eg-card-tag { font-size: clamp(12px, 3.2vw, 14px); line-height: 1.4; opacity: .78; text-wrap: pretty; }
+.eg-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 8px; }
+.eg-card-price { font-weight: 600; font-variant-numeric: tabular-nums; font-size: clamp(13px, 3.6vw, 16px); }
+.eg-card-cta { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; color: #fff; background: var(--eg-btn); font-size: 18px; line-height: 1; flex: none; }
+@media (prefers-reduced-motion: reduce) { .eg-card, .eg-card-media img { transition: none; } }

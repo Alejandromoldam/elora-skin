@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { trackBeginCheckout } from "@/lib/ga";
 import type { Locale } from "@/lib/i18n";
+import { packLabel, type PackLabels } from "@/lib/packs";
 
 type Variant = {
   id: string;
@@ -12,9 +13,7 @@ type Variant = {
   compareAtAmount: string | null;
 };
 
-type Labels = {
-  oneUnit: string;
-  nUnits: string;
+type Labels = PackLabels & {
   mostPopular: string;
   bestValue: string;
   buyNow: string;
@@ -120,7 +119,7 @@ export default function HomePackPicker({
             >
               {tag ? <span className="eg-pack-tag">{tag}</span> : null}
               <BottleGlyph count={n} />
-              <span className="eg-pack-name">{n === 1 ? labels.oneUnit : labels.nUnits.replace("{n}", String(n))}</span>
+              <span className="eg-pack-name">{packLabel(p.title, n, labels)}</span>
               {p.compareAtAmount && Number(p.compareAtAmount) > Number(p.priceAmount) ? (
                 <s className="eg-pack-was">{money(Number(p.compareAtAmount), currency, locale)}</s>
               ) : (
