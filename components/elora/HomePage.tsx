@@ -83,6 +83,8 @@ export default async function HomePage({ locale }: { locale: Locale }) {
       image: img,
     };
   });
+  // Un slide por producto, en orden de lanzamiento: la imagen y el título
+  // siempre corresponden al mismo producto. Sin productos, slide de marca.
   const brandSlide: HeroSlide = {
     key: "brand",
     eyebrow: home.brandEyebrow,
@@ -91,10 +93,9 @@ export default async function HomePage({ locale }: { locale: Locale }) {
     lead: home.brandLead,
     cta: home.brandCta,
     href: "#shop",
-    // Solo imágenes principales de producto: la marca usa la del primero.
-    image: productSlides[0]?.image ?? null,
+    image: null,
   };
-  const heroSlides: HeroSlide[] = [brandSlide, ...productSlides];
+  const heroSlides: HeroSlide[] = productSlides.length ? productSlides : [brandSlide];
 
   // Con varios productos, la portada es una vitrina: beneficios y pasos de uso
   // viven en la landing de cada producto.

@@ -139,7 +139,7 @@ export async function fetchHomeCatalogSnapshot(
   const endpoint = `https://${domain}/api/${version}/graphql.json`;
   const query = `
     query HomeCatalogProducts($first: Int!) {
-      products(first: $first, sortKey: BEST_SELLING) {
+      products(first: $first, sortKey: CREATED_AT) {
         pageInfo {
           hasNextPage
           endCursor
