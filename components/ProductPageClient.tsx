@@ -300,12 +300,32 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
     return () => { active = false; };
   }, [handle]);
 
+  // Video de la ficha según el idioma de la página: se detecta por el texto
+  // alternativo del archivo en Shopify ("(español)" / "(English)").
+  const localeVideo = useMemo(() => {
+    const list = product?.videos ?? [];
+    if (!list.length) return null;
+    const isEs = (v: ProductVideo) => /espa[ñn]ol|spanish|\(es\)/i.test(v.alt);
+    const isEn = (v: ProductVideo) => /english|ingl[eé]s|\(en\)/i.test(v.alt);
+    const own = list.find((v) => (locale === "es" ? isEs(v) : isEn(v)));
+    if (own) return own;
+    return list.find((v) => !(locale === "es" ? isEn(v) : isEs(v))) ?? null;
+  }, [product, locale]);
+
+  type Slide = { kind: "image"; url: string; altText: string } | { kind: "video"; video: ProductVideo; url: string; altText: string };
+  const slides = useMemo<Slide[]>(() => {
+    const imgs: Slide[] = (product?.images ?? []).map((i) => ({ kind: "image", url: i.url, altText: i.altText }));
+    if (!localeVideo || !imgs.length) return imgs;
+    const vs: Slide = { kind: "video", video: localeVideo, url: localeVideo.previewImageUrl || imgs[0].url, altText: localeVideo.alt };
+    imgs.splice(1, 0, vs);
+    return imgs;
+  }, [product, localeVideo]);
+  const currentSlide = slides[Math.min(activeImage, Math.max(slides.length - 1, 0))];
   const currentImage = useMemo(() => {
-    if (!product?.images?.length) {
-      return { url: "/producto-real.png", altText: "Producto Elora Skin" };
-    }
-    return product.images[Math.min(activeImage, product.images.length - 1)];
-  }, [activeImage, product]);
+    if (currentSlide?.kind === "image") return { url: currentSlide.url, altText: currentSlide.altText };
+    const first = product?.images?.[0];
+    return first ?? { url: "/producto-real.png", altText: "Producto Elora Skin" };
+  }, [currentSlide, product]);
 
   const selectedVariant = useMemo(() => {
     if (!product?.variants?.length) return null;
@@ -516,8 +536,8 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
   }
 
   function goToImage(delta: number) {
-    if (!product?.images?.length) return;
-    const total = product.images.length;
+    if (!slides.length) return;
+    const total = slides.length;
     setActiveImage((c) => (c + delta + total) % total);
   }
 
@@ -591,22 +611,41 @@ export default function ProductPage({ locale = "en" }: { locale?: Locale }) {
                     goToImage(end < start ? 1 : -1);
                   }}
                 >
-                  <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} priority sizes="(min-width: 1024px) 50vw, 100vw" className="elx-main-img" />
-                  {product.images.length > 1 ? (
+                  {currentSlide?.kind === "video" ? (
+                    <video
+                      key={currentSlide.video.sources[0]?.url}
+                      className="elx-main-video"
+                      controls
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      poster={currentSlide.video.previewImageUrl || undefined}
+                    >
+                      {currentSlide.video.sources
+                        .filter((src) => !/mpegurl/i.test(src.mimeType))
+                        .map((src) => <source key={src.url} src={src.url} type={src.mimeType} />)}
+                    </video>
+                  ) : (
+                    <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} priority sizes="(min-width: 1024px) 50vw, 100vw" className="elx-main-img" />
+                  )}
+                  {slides.length > 1 ? (
                     <>
                       <button type="button" className="elx-arrow is-prev" onClick={() => goToImage(-1)} aria-label="Previous image">‹</button>
                       <button type="button" className="elx-arrow is-next" onClick={() => goToImage(1)} aria-label="Next image">›</button>
                       <div className="elx-dots" aria-hidden="true">
-                        {product.images.map((img, i) => <span key={`${img.url}-dot`} className={i === activeImage ? "is-on" : ""} />)}
+                        {slides.map((img, i) => <span key={`${img.url}-${i}-dot`} className={i === activeImage ? "is-on" : ""} />)}
                       </div>
                     </>
                   ) : null}
                 </div>
-                {product.images.length > 1 ? (
+                {slides.length > 1 ? (
                   <div className="elx-thumbs">
-                    {product.images.map((image, index) => (
+                    {slides.map((image, index) => (
                       <button key={`${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={index === activeImage ? "elx-thumb is-active" : "elx-thumb"} aria-label={image.altText}>
                         <Image src={image.url} alt="" width={200} height={200} className="h-full w-full object-cover" />
+                        {image.kind === "video" ? <span className="elx-thumb-play" aria-hidden="true">▶</span> : null}
                       </button>
                     ))}
                   </div>

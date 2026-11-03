@@ -5230,3 +5230,8 @@ body.cart-page-active .whatsapp-float-root {
 .usd { margin-left: .32em; font-family: var(--font-body), "Lexend", sans-serif; font-size: .46em; font-weight: 600; letter-spacing: .08em; opacity: .72; vertical-align: baseline; white-space: nowrap; }
 .eg-pack-price .usd { display: block; margin: 2px 0 0; font-size: 11px; letter-spacing: .1em; }
 .elx-pack-price .usd { font-size: 11px; }
+
+/* Video en la galería de producto */
+.elx-main-video { width: 100%; height: 100%; object-fit: contain; background: #2a0a14; display: block; }
+.elx-thumb { position: relative; }
+.elx-thumb-play { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 18px; background: rgba(42, 10, 20, 0.38); }
