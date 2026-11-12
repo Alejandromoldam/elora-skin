@@ -14,6 +14,10 @@ export const META_PIXEL_ID = (
   process.env.NEXT_PUBLIC_META_PIXEL_ID || ""
 ).trim();
 
+export const META_PIXEL_ID_2 = (
+  process.env.NEXT_PUBLIC_META_PIXEL_ID_2 || ""
+).trim();
+
 export type GaItem = {
   item_id: string;
   item_name: string;

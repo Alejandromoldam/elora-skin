@@ -3,7 +3,7 @@ import Script from "next/script";
 import { Inter, Lexend } from "next/font/google";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
-import { GA_MEASUREMENT_ID, META_PIXEL_ID } from "@/lib/ga";
+import { GA_MEASUREMENT_ID, META_PIXEL_ID, META_PIXEL_ID_2 } from "@/lib/ga";
 import { GOOGLE_ADS_ID } from "@/lib/ga";
 import {
   buildOrganizationSchema,
@@ -124,6 +124,7 @@ export default function RootLayout({
                 s.parentNode.insertBefore(t,s)}(window, document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
                 fbq('init', '${META_PIXEL_ID}');
+                ${META_PIXEL_ID_2 ? `fbq('init', '${META_PIXEL_ID_2}');` : ''}
               `}
             </Script>
             <noscript>
